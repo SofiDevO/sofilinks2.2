@@ -3,7 +3,6 @@ import LiveStatus from "./LiveStatus.astro";
 import { isLive } from "@src/utils/IsLive";
 const { isLiveBroadcast } = await isLive();
 const { twitchLink } = Astro.props;
-
 ---
 
 <a
