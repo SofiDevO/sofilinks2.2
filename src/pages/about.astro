@@ -1,0 +1,79 @@
+---
+import Avatar from "@src/components/atoms/Avatar.astro";
+import Layout from "@src/layouts/Layout.astro";
+import userData from "@data/user.json";
+export const prerender = false;
+import { Content as AboutDescription } from "@data/about.mdx";
+import CardAbout from "@src/components/atoms/CardAbout.astro";
+import ArrowLink from "@src/components/atoms/ArrowLink.astro";
+import { fade } from "astro:transitions";
+---
+
+<Layout title="About">
+  <main id="about" class="flex flex-col relative mb-20 pt-20 items-start">
+    <ArrowLink
+      link="/"
+      direction="left"
+      transition="home"
+      class="absolute top-4 left-4"
+    />
+    <Avatar
+      transition="about"
+      animate="fade"
+      hasName={false}
+      name={userData.name}
+      profile__pic={userData.profilePic}
+    />
+    <CardAbout>
+      <h1 class="text-gradient text-center font-bold text-3xl text-color-text">
+        {userData.name}
+      </h1>
+      <AboutDescription />
+    </CardAbout>
+  </main>
+</Layout>
+
+<style is:global>
+  main {
+    padding: 2rem 0.5rem 0.5rem;
+  }
+  #about {
+    & h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li {
+      color: var(--text-color);
+      & a {
+        color: #096ffd;
+        font-weight: 600;
+        text-decoration: underline solid 1px;
+        text-underline-offset: 2px;
+      }
+    }
+    & pre {
+      padding: 1rem;
+      border-radius: 6px;
+    }
+    li {
+      list-style: disc;
+      font-weight: 600;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      background: var(--purple-color);
+      background: linear-gradient(
+        90deg,
+        #6a00ff 0%,
+        rgba(0, 116, 174, 0.92) 100%
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+</style>
