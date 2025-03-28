@@ -3,9 +3,9 @@ const { position, positionStyle="absolute" } = Astro.props;
 
 ---
 
-<script is:inline>
+<script >
 
-document.addEventListener( 'astro:page-load', () => {
+/* document.addEventListener( 'astro:page-load', () => { */
   const theme = (() => {
     if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -34,7 +34,7 @@ document.addEventListener( 'astro:page-load', () => {
   document
     .getElementById("themeToggle")
     .addEventListener("click", handleToggleClick);
-});
+/* }); */
 
 
 </script>

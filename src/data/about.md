@@ -1,0 +1,12 @@
+Javascript Developer  y creadora de contenido didáctico en Youtube.
+
+Me encanta hacer proyectos de código abierto en dónde pueda incentivar a otros a contribuir  y trabajar en proyectos comunitarios.
+![alt text](../../public/img/Jack.gif)
+Otra de mis pasiones es escribir artículos Auí puedes ver mi blog.
+
+Gracias por seguir apoyando mi contenido. te recuerdo que si vuelves atrás 👈🏻 encontrás mis enlaces de Kofi, PayPal o cualquier otro enlace con el que puedes invitarme un café si crees que mi contenido te ha ayudado de alguna manera 🦝.
+
+
+
+
+Saludos.
