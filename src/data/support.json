@@ -1,6 +1,6 @@
 {
     "youtube": {
-        "url": "https://www.youtube.com/@SofiDev/membership",
+        "url": "https://www.youtube.com/channel/UC36_js-krsAHAEAWpEDhHtw/join",
         "icon": "fab fa-youtube",
         "title": "Become a Youtube member"
     },
@@ -20,7 +20,7 @@
         "title": "Contribute in Github Sponsors"
     },
     "amazon": {
-        "url": "https://www.amazon.com.mx/hz/wishlist/dl/invite/gC6Vb1D?ref_=wl_share",
+        "url": "https://www.amazon.com.mx/hz/wishlist/dl/invite/cY77feG?ref_=wl_share",
         "icon": "ant-design:amazon-outlined",
         "title": "Wish List"
     },
