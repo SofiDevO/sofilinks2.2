@@ -13,5 +13,10 @@
     "name": "CV",
     "icon": "ant-design:file-pdf-filled",
     "link": "https://itssofi.dev/docs/Angela_Sofia_Osorio_CV2024_updated.pdf"
+  },
+  {
+    "name": "codepen",
+    "icon": "devicon:codepen",
+    "link": "https://codepen.io/collection/MgdMdM?sort_order=Desc&sort_by=Id"
   }
 ]
