@@ -42,7 +42,7 @@ html {
 }
 
 body {
-    @apply font-sans bg-primary m-0 p-0 flex flex-col h-full items-center;
+    @apply font-sans bg-primary m-0  mx-auto p-0 flex flex-col h-full items-center w-full overflow-x-hidden max-w-[600px] xl:max-w-[800px] shadow-2xl;
 }
 
 
