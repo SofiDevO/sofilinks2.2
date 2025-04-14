@@ -2,14 +2,12 @@
 
 :root {
     --swiper-navigation-color: aqua;
-
-
     --white-color: #E8E7E7;
     --bg-color-default: var(--white-color);
     --text-color: #181818;
     --purple-color: #6A00FF;
     --dark-purple: #140030;
-    --clock-font:  "DigitalNumbers-Regular", sans-serif;
+    --clock-font: "DigitalNumbers-Regular", sans-serif;
     --card-bg: #ffffff;
 
     --color-celeste: rgba(0, 116, 174, 0.92);
@@ -20,6 +18,7 @@
     font-family: "DigitalNumbers-Regular";
     src: url("/fonts/DigitalNumbers-Regular.ttf") format("truetype");
 }
+
 .dark {
     --bg-color-default: #191b22;
     --text-color: #E8E7E7;
@@ -42,15 +41,12 @@ html {
 }
 
 body {
-    @apply font-sans bg-primary m-0  mx-auto p-0 flex flex-col h-full items-center w-full overflow-x-hidden max-w-[600px] xl:max-w-[800px] shadow-2xl;
+    @apply font-sans bg-primary m-0 mx-auto p-0 flex flex-col h-full items-center w-full overflow-x-hidden max-w-[600px] xl:max-w-[800px] shadow-2xl;
 }
-
-
-
 
 .text-gradient {
     background: var(--purple-color);
-    background:  linear-gradient(90deg, #6A00FF 0%, rgba(0, 116, 174, 0.92) 100%);
+    background: linear-gradient(90deg, #6A00FF 0%, rgba(0, 116, 174, 0.92) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
