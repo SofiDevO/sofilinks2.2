@@ -13,7 +13,7 @@ console.log(userData.blog)
         target="_blank"
         rel="noopener noreferrer nofollow"
       >
-        <h2>{firstPost.title}</h2>
+        <h2 className="text-xl font-bold mb-2 text-color-text">{firstPost.title}</h2>
       </a>
       {firstPost ? (
         <a

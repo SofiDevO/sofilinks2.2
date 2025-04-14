@@ -5,6 +5,7 @@ import TwichCard from "../atoms/TwichCard.astro";
 import CardSkeleton from "@molecules/CardSkeleton.astro";
 import CardBento from "../atoms/CardBento/CardBento.astro";
 const { userData } = Astro.props;
+export const prerender = true;
 ---
 
 <section class="bento__grid">
@@ -13,7 +14,7 @@ const { userData } = Astro.props;
   </div>
   <div class="bento__item bento__item-2">
     <TwichCard twitchLink={userData.twitch} server:defer>
-        <CardSkeleton slot="fallback" />
+        <CardSkeleton slot="fallback" server:defer/>
     </TwichCard>
   </div>
   <div class="bento__item bento__item-3 overflow-hidden">

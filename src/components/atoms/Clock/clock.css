@@ -1,9 +1,14 @@
 .dateTime {
-    font-size: clamp(1.5rem, 2vw, 3rem);
+    font-size: clamp(.8rem, 2vw, 3rem);
     color: var(--purple-color);
     font-weight: 700;
     font-family: var(--clock-font);
+}
 
+.dark{
+    .dateTime{
+        color:aqua;
+    }
 }
 .hour {
 

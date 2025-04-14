@@ -2,110 +2,35 @@
 import YoutubeChannels from "@data/youtubeChannels.json";
 import { fetchYouTubeVideos } from "@src/services/youtubeService";
 
-const MAX_VIDEOS = 5;
+const MAX_VIDEOS = 1;
 const CHANNEL_ID = YoutubeChannels[0].split("channel/")[1];
 const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
 ---
 
 <div class="swiper__container">
-  <swiper-container
-    class="mySwiper"
-    effect="cards"
-    grab-cursor="true"
-    pagination="true"
-    pagination-clickable="true"
-    navigation="true"
-    loop="true"
-  >
+
     {
       latestVideos.slice(0, MAX_VIDEOS).map((video: any) => {
         const { link, title } = video;
         return (
-          <swiper-slide>
-            <article class="rounded-2xl overflow-hidden w-full">
               <fast-youtube src={link} title={title} />
-            </article>
-          </swiper-slide>
+
         );
       })
     }
-  </swiper-container>
 
-<!--   <script
-    src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"
-  ></script> -->
+
 </div>
 
 <style >
-  swiper-container {
-    &::part(button-next),
-    &::part(button-prev) {
-      padding: 10px 15px;
-      border-radius: 50%;
-      background-color: #0000002e;
-      backdrop-filter: blur(10px);
-    }
+  .swiper__container{
+    width: 100%;
+    height: 100%;
   }
-
-  .swiper__container {
-    position: relative;
+  iframe{
+    width: 100%;
     height: 100%;
   }
 
-  .swiper__container {
-    font-family:
-      Helvetica Neue,
-      Helvetica,
-      Arial,
-      sans-serif;
-    font-size: 14px;
-    color: #000;
-    margin: 0;
-    padding: 0;
-  }
 
-  .swiper__container {
-    font-family:
-      Helvetica Neue,
-      Helvetica,
-      Arial,
-      sans-serif;
-    font-size: 14px;
-    color: #000;
-    margin: 0;
-    padding: 0;
-  }
-
-  .swiper__container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  swiper-container {
-    padding: 0 0.5rem;
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    max-width: 29rem;
-    @media screen and (max-width: 768px) {
-      max-width: 23rem;
-    }
-  }
-
-  swiper-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 18px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #fff;
-  }
-
-  swiper-slide:nth-child(1n) {
-    background-color: rgba(64, 0, 128, 0.26);
-    backdrop-filter: blur(12px);
-    padding: 0.5rem;
-  }
 </style>
