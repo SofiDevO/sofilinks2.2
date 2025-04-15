@@ -30,7 +30,7 @@ const Clock = () => {
       <span className="dateTime hour">{time.hours}</span>
       <span  className="dateTime colon">:</span>
       <span className="dateTime minute">{time.minutes}</span>
-      <span  className="dateTime colon">:</span>
+      <span  className="dateTime colon absolute hidden lg:block lg:static ">:</span>
       <span className="dateTime secconds absolute hidden lg:block lg:static ">{time.seconds}</span>
       <span className="dateTime meridiem">{time.meridiem}</span>
     </time>

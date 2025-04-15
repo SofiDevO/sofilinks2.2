@@ -1,26 +1,15 @@
 .dateTime {
-    font-size: clamp(.8rem, 2vw, 3rem);
+    font-size: clamp(1rem, 2vw, 3rem);
     color: var(--purple-color);
     font-weight: 700;
     font-family: var(--clock-font);
 }
-
 .dark{
     .dateTime{
         color:aqua;
     }
 }
-.hour {
-
-}
-.minute {
-
-}
 .colon {
-    font-size: 1.5rem;
-}
-.meridiem {
     margin-top: 6px;
-    font-size: 1rem;
-
+    font-size: 1.5rem;
 }

@@ -5,16 +5,16 @@ const { url, title } = Support.youtube;
 ---
 
 <article
-  class="yt-card relative w-full h-full hover:bg-red-500 flex flex-row flex-wrap items-center justify-center gap-3 p-2 group"
+  class="yt-card relative w-full h-full transition-bg duration-500 hover:bg-red-500 flex flex-row flex-wrap lg:items-center items-start justify-center gap-10 p-2 group"
 >
-  <div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-5 lg:gap-10">
     <h3
       class="yt-title text-text font-bold text-lg xl:text-3xl text-pretty group-hover:text-white"
     >
       {title}
     </h3>
     <a
-      class="yt-button z-20 text-text font-bold text-lg text-white group-hover:text-red-600 group-hover:bg-white bg-red-600 px-5 py-2 rounded-md text-center max-w-[200px]"
+      class="yt-button z-20 text-text font-bold text-lg text-white group-hover:text-red-600 group-hover:bg-white bg-red-600 px-5 py-2 rounded-md text-center w-full lg:max-w-[200px]"
       href={url}
       target="_blank"
       >Unirte
@@ -22,10 +22,10 @@ const { url, title } = Support.youtube;
   </div>
 
   <Crown
-    class="absolute z-10 top-29 lg:top-0 xl:-top-[20%] left-24 lg:left-[64%] xl:left-110 right-0 lg:w-40 lg:h-40"
+    class="absolute z-20 top-[53%] lg:top-0 xl:top-[10%] left-20 lg:left-[64%] xl:left-100 right-0 lg:w-40 lg:h-40"
   />
   <iconify-icon
-    class="text-4xl lg:text-8xl group-hover:rotate-10 transition-all ease-in-out duration-200 self-end filter drop-shadow-[0_2px_1px_rgba(0,0,0,0.25)]"
+    class="absolute z-10 top-[78%] lg:top-0 lg:bottom-[10%] lg:left-90   text-4xl lg:text-8xl group-hover:rotate-10 transition-all ease-in-out duration-200 self-end filter drop-shadow-[0_2px_1px_rgba(0,0,0,0.25)]"
     icon="logos:youtube-icon"></iconify-icon>
 </article>
 
