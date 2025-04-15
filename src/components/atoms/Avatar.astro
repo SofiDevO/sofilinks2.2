@@ -12,7 +12,7 @@ const { profile__pic, name, hasName = true, transition, animate} = Astro.props;
     <div
     transition:animate={animate}
     transition:name={transition}
-      class="profile__container border-3 border-caracol w-[100px] h-[100px] rounded-full overflow-hidden"
+      class="profile__container border-3 border-violet-400 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] rounded-full overflow-hidden bg-caracol"
     >
       <img
         id="avatar"
@@ -21,7 +21,7 @@ const { profile__pic, name, hasName = true, transition, animate} = Astro.props;
         alt="Profile image"
       />
     </div>
-    <ThemeButton position="left-[60%] top-[60%]" />
+    <ThemeButton position="left-[60%] top-[70%]" />
   </div>
   {
     hasName && (
