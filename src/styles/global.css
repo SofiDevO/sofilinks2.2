@@ -3,6 +3,7 @@
 
 :root {
     --swiper-navigation-color: aqua;
+    --ufo-green: #33ff76;
     --white-color: #E8E7E7;
     --bg-color-default: var(--white-color);
     --text-color: #181818;
@@ -27,6 +28,7 @@
 
 @theme {
     --color-primary: var(--bg-color-default);
+    --color-ufo: var(--ufo-green);
     --color-color-text: var(--text-color);
     --color-btn: #F5F5F5;
     --color-caracol: var(--purple-color);
