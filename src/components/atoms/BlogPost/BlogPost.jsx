@@ -1,11 +1,10 @@
-import React from "react";
 import { cardsData } from "@src/services/getCards";
 import userData from "@data/user.json";
-import Title from "../Title.astro";
+
 const BlogPost = () => {
   const posts = cardsData.posts.nodes;
   const firstPost = posts.length > 0 ? posts[0] : null;
-console.log(userData.blog)
+  console.log(userData.blog);
   return (
     <>
       <a
@@ -13,7 +12,9 @@ console.log(userData.blog)
         target="_blank"
         rel="noopener noreferrer nofollow"
       >
-        <h2 className="text-xl font-bold mb-2 text-color-text">{firstPost.title}</h2>
+        <h2 className="text-xl font-bold mb-2 text-color-text">
+          {firstPost.title}
+        </h2>
       </a>
       {firstPost ? (
         <a

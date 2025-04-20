@@ -12,6 +12,11 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "target": "es5",
+    "lib": [
+      "dom",
+      "es2017"
+    ],
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
