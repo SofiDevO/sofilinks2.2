@@ -1,5 +1,5 @@
 ---
-import LiveStatus from "./LiveStatus.astro";
+import LiveStatus from "@atoms/LiveStatus/LiveStatus";
 import { isLive } from "@src/utils/IsLive";
 const { isLiveBroadcast } = await isLive();
 const { twitchLink } = Astro.props;
@@ -9,7 +9,7 @@ const { twitchLink } = Astro.props;
   href="/lives"
   class="w-full h-full max-h-[128px] flex flex-col items-center justify-center gap-2 relative bg-linear-to-b from-caracol to-darkpurple rounded-[14px]"
 >
-  <LiveStatus class={"absolute top-2 left-[85%]"} {isLiveBroadcast}/>
+  <LiveStatus className={"absolute top-2 left-[85%]"} {isLiveBroadcast} client:load/>
   <div class="flex items-center gap-2 flex-wrap justify-center">
     <iconify-icon
       icon="akar-icons:twitch-fill"

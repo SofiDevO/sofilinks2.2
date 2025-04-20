@@ -11,7 +11,7 @@
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "preact",
+    "jsxImportSource": "react",
     "allowJs": true,
     "baseUrl": ".",
     "paths": {

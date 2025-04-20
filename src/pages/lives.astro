@@ -27,11 +27,11 @@ const { isLiveBroadcast } = await isLive();
     />
     <section class="flex flex-col items-center px-2">
       <article
-      id="card"
-        class="group shadow-shadow-cards bg-gradient-to-t from-[#CA95FF] to-white border-[1.8px] border-[#D6ACFF] shadow-[0_1px_6.7px_0] px-4 py-10 rounded-xl h-auto mt-10 content flex flex-col lg:flex-row text-left flex-wrap justify-around items-center lg:items-start gap-6 lg:gap-2 "
+        id="card"
+        class="group shadow-shadow-cards bg-gradient-to-t from-[#CA95FF] to-white border-[1.8px] border-[#D6ACFF] shadow-[0_1px_6.7px_0] px-4 py-10 rounded-xl h-auto mt-10 content flex flex-col lg:flex-row text-left flex-wrap justify-between items-center lg:items-start gap-6 lg:gap-2"
       >
         <div
-          class="flex-1 lg:min-w-[28rem] prose dark:prose-invert prose-p:text-left prose-p:text-black prose-p:font-semibold prose-img:rounded-xl"
+          class="flex-1  lg:min-w-[27rem] prose dark:prose-invert prose-p:text-left prose-p:text-black prose-p:font-semibold prose-img:rounded-xl text-pretty  prose-h3:text-indigo-600 prose-h3:my-3"
         >
           <AboutTwitch />
         </div>
@@ -45,7 +45,7 @@ const { isLiveBroadcast } = await isLive();
           />
 
           <div
-            class="absolute  top-20 md:right-28 lg:top-10 lg:right-40 overflow-hidden rounded-full w-20 h-20 lg:w-30 lg:h-30 bg-caracol group-hover:bg-gradient-to-b from-caracol to-darkpurple transition-all duration-200 ease-in-out "
+            class="absolute top-20 right-30 lg:right-20 lg:top-10 xl:right-40 overflow-hidden rounded-full w-20 h-20 lg:w-30 lg:h-30 bg-caracol group-hover:bg-gradient-to-b from-caracol to-darkpurple transition-all duration-200 ease-in-out"
           >
             <img
               src="https://avatars.githubusercontent.com/u/102200061?v=4"
@@ -73,7 +73,7 @@ const { isLiveBroadcast } = await isLive();
     -webkit-animation: pulse-1 0.3s linear infinite both;
     animation: pulse-1 0.3s linear infinite both;
   }
-  #card:hover .icon.active{
+  #card:hover .icon.active {
     animation-play-state: paused;
   }
   @keyframes pulse {

@@ -6,6 +6,8 @@ import mdx from "@astrojs/mdx";
 
 import preact from "@astrojs/preact";
 
+import react from "@astrojs/react";
+
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
@@ -14,6 +16,6 @@ export default defineConfig({
   site: "https://link.itssofi.dev",
   adapter: vercel(),
   output: "server",
-  integrations: [ mdx(), preact()],
+  integrations: [mdx(), preact(), react()],
 
 });
