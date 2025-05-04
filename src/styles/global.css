@@ -26,7 +26,7 @@
     --card-bg: #0c0c0c;
 }
 
-@theme {
+@theme  {
     --color-primary: var(--bg-color-default);
     --color-ufo: var(--ufo-green);
     --color-color-text: var(--text-color);

@@ -22,7 +22,7 @@ const { position, positionStyle="absolute" } = Astro.props;
     document.documentElement.classList.add("dark");
   }
 
-  window.localStorage.setItem("theme", theme);
+  window.localStorage.setItem("theme", theme || "light");
 
   const handleToggleClick = () => {
     const element = document.documentElement;
@@ -31,10 +31,11 @@ const { position, positionStyle="absolute" } = Astro.props;
     localStorage.setItem("theme", isDark ? "dark" : "light");
   };
 
-  document
-    .getElementById("themeToggle")
-    .addEventListener("click", handleToggleClick);
-/* }); */
+  const themeToggleButton = document.getElementById("themeToggle");
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener("click", handleToggleClick);
+  }
+
 
 
 </script>

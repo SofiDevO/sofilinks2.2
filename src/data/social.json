@@ -16,7 +16,12 @@
   },
   {
     "name": "codepen",
-    "icon": "devicon:codepen",
+    "icon": "tabler:brand-codepen",
+    "link": "https://codepen.io/collection/MgdMdM?sort_order=Desc&sort_by=Id"
+  },
+  {
+    "name": "instagram",
+    "icon": "basil:instagram-solid",
     "link": "https://codepen.io/collection/MgdMdM?sort_order=Desc&sort_by=Id"
   }
 ]

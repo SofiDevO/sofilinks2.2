@@ -6,8 +6,7 @@ import userData from "@data/user.json";
 import LiveCard from "@src/components/molecules/LiveCard.astro";
 import { isLive } from "@src/utils/IsLive";
 const { isLiveBroadcast } = await isLive();
-//  const isLiveBroadcast = true; // Placeholder for the live status
-export const prerender = true;
+
 ---
 
 <Layout title="Lives">
@@ -17,6 +16,7 @@ export const prerender = true;
       direction="left"
       transition="home"
       class="absolute top-4 left-10"
+      ariaLabel="Back to home"
     />
     <Avatar
       transition="about"
