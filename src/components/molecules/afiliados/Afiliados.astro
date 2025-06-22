@@ -1,26 +1,32 @@
 ---
-
 const linksAfiliadosf = [
-    {
-        title: 'Hostinger',
-        href: 'https://afiliados.terra.com.br/',
-        icon: 'simple-icons:hostinger',
-        description: 'Obtén 20% de descuento en tu primera compra de hosting con Hostinger'
-    },
-    {
-        title: 'Afiliados 2',
-        href: 'https://afiliados2.terra.com.br/',
-        icon: 'https://www.terra.com.br/favicon.ico',
-        description: 'Programa de afiliados 2 do Terra'
-    }
-]
-
-
+  {
+    title: "Hostinger",
+    href: "https://hostinger.mx?REFERRALCODE=sofidev",
+    icon: "simple-icons:hostinger",
+    description: "Obtén 20% de descuento ",
+  }
+];
 ---
-<>
 
-</>
+<section class="flex flex-col items-center justify-center w-full">
+  <ul class="flex flex-col gap-4 w-full">
+    {
+      linksAfiliadosf.map((link) => (
+        <li class="w-full">
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            class="flex items-center gap-2  text-white bg-caracol px-5  py-6 w-full rounded-md hover:bg-indigo-700"
+          >
+            <iconify-icon class="text-3xl" icon={link.icon} />
+            {link.description}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
 
-<style>
-
-</style>
+<style></style>

@@ -9,6 +9,7 @@ import BlogPost from "@src/components/molecules/BlogPost/BlogPost";
 import Title from "@src/components/atoms/Title.astro";
 import SwiperComponent from "@molecules/SwiperComponent/SwiperComponent.astro";
 import InstagramPost from "@src/components/organisms/InstagramPost.astro";
+import Afiliados from "@src/components/molecules/afiliados/Afiliados.astro";
 export const prerender = true;
 
 ---
@@ -24,9 +25,8 @@ export const prerender = true;
     <Title title="Apoya mi contenido" class="text-center bg-gradient-to-r from-caracol to-celeste bg-clip-text  text-4xl lg:text-5xl font-bold text-transparent my-4"/>
     <SupportBento />
     <Title title="Mi video más reciente" />
-    <SwiperComponent server/>
-    <InstagramPost />
-
-
+    <SwiperComponent server:defer/>
+    <Title title="Referidos y descuentos" />
+    <Afiliados />
   </main>
 </Layout>
