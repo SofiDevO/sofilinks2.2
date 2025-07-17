@@ -4,7 +4,6 @@ import {YT_API}  from "astro:env/client";
 export const fetchYouTubeVideos = async (channelId) => {
   const channelURL = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
   const reqURL = `https://api.rss2json.com/v1/api.json?rss_url=${channelURL}&api_key=${YT_API}`;
-
   try {
     const response = await fetch(reqURL);
     if (!response.ok) {

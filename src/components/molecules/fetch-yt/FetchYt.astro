@@ -1,0 +1,150 @@
+---
+import Title from "@src/components/atoms/Title.astro";
+import { fetchPlaylist } from "./fetchPlaylist.js";
+
+let playlists: any[] = [];
+let error: string | null = null;
+
+// Load playlists
+const result = await fetchPlaylist();
+playlists = result.playlists;
+error = result.error;
+---
+
+<div class="youtube-feed">
+  {error ? (
+    <div class="error-message">
+      <p>Error loading YouTube playlists: {error}</p>
+    </div>
+  ) : (
+    <div class="playlists-container">
+      {playlists.length > 0 ? (
+        <div class="playlists-grid">
+          {playlists.map((playlist) => (
+            <a href={playlist.link} target="_blank" rel="noopener noreferrer nofollow" class="playlist-card">
+              <div class="playlist-thumbnail">
+                <img
+                  src={playlist.thumbnail}
+                  alt={playlist.title}
+                  loading="lazy"
+                />
+                <div class="playlist-info-overlay">
+                  <span class="video-count">{playlist.videoCount} videos</span>
+                </div>
+              </div>
+              <div class="playlist-info">
+                <h3 class="playlist-title">{playlist.title}</h3>
+                <p class="playlist-description">
+                  {playlist.description ? playlist.description.substring(0, 100) + '...' : 'Ver playlist completa'}
+                </p>
+                <p class="playlist-channel">{playlist.channelTitle}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p>No hay playlists disponibles en este momento.</p>
+      )}
+    </div>
+  )}
+
+
+<style>
+  .youtube-feed {
+    padding: 1rem;
+  }
+
+  .error-message {
+    padding: 1rem;
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: 0.5rem;
+    color: #c33;
+  }
+
+  .playlists-container h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .playlists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .playlist-card {
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .playlist-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .playlist-thumbnail {
+    position: relative;
+  }
+
+  .playlist-thumbnail img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .playlist-info-overlay {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .playlist-info {
+    padding: 1rem;
+  }
+
+  .playlist-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .playlist-description {
+    color: #666;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .playlist-channel {
+    color: #888;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .playlist-card {
+      background: #1a1a1a;
+      color: white;
+    }
+
+    .playlist-description {
+      color: #ccc;
+    }
+
+    .playlist-channel {
+      color: #aaa;
+    }
+  }
+</style>
