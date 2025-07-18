@@ -21,7 +21,7 @@ const BlogPost = () => {
           href={`${userData.blog}/blog/${firstPost.slug}`}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          className="w-full flex flex-col p-2 bg-btn rounded-2xl mb-3.5 min-h-[30dvh]  aspect-video"
+          className="w-full flex flex-col p-2 bg-gradient-to-t from-[#CA95FF] to-white border-[1.8px] border-[#D6ACFF] rounded-2xl mb-3.5   aspect-video"
         >
           <div className="rounded-2xl overflow-hidden group">
             <img
