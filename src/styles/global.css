@@ -2,7 +2,7 @@
 @plugin '@tailwindcss/typography';
 
 :root {
-    --swiper-navigation-color: aqua;
+    --swiper-navigation-color: rgb(68, 0, 255);
     --ufo-green: #33ff76;
     --white-color: #E8E7E7;
     --bg-color-default: var(--white-color);
@@ -14,6 +14,9 @@
     --color-celeste: rgba(0, 116, 174, 0.92);
 }
 
+div.swiper-button-next svg, div.swiper-button-prev svg{
+    background: black!important;
+}
 
 @font-face {
     font-family: "DigitalNumbers-Regular";

@@ -7,7 +7,7 @@ const { twitchLink } = Astro.props;
 
 <a
   href="/lives"
-  class="w-full h-full max-h-[128px] flex flex-col items-center justify-center gap-2 relative bg-linear-to-b from-caracol to-darkpurple rounded-[14px]"
+  class="w-full h-full  flex flex-col items-center justify-center gap-2 relative bg-linear-to-b from-caracol to-darkpurple rounded-[14px] flex-wrap px-2"
 >
   <LiveStatus className={"absolute top-2 left-[85%]"} {isLiveBroadcast} client:load/>
   <div class="flex items-center gap-2 flex-wrap justify-center">

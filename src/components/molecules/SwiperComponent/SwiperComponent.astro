@@ -2,12 +2,12 @@
 import YoutubeChannels from "@data/youtubeChannels.json";
 import { fetchYouTubeVideos } from "@src/services/youtubeService";
 
-const MAX_VIDEOS = 3;
+const MAX_VIDEOS = 4;
 const CHANNEL_ID = YoutubeChannels[0].split("channel/")[1];
 const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
 ---
 
-<script >
+<script>
   // Slider
   const slider = function () {
     const slides = document.querySelectorAll(".slide");
@@ -35,7 +35,9 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
         .querySelectorAll(".dots__dot")
         .forEach((dot) => dot.classList.remove("dots__dot--active"));
 
-      const activeDot = document.querySelector(`.dots__dot[data-slide="${slide}"]`);
+      const activeDot = document.querySelector(
+        `.dots__dot[data-slide="${slide}"]`
+      );
       if (activeDot) {
         activeDot.classList.add("dots__dot--active");
       }
@@ -43,7 +45,9 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
 
     const goToSlide = function (slide: number) {
       slides.forEach(
-        (s, i) => ((s as HTMLElement).style.transform = `translateX(${100 * (i - slide)}%)`)
+        (s, i) =>
+          ((s as HTMLElement).style.transform =
+            `translateX(${100 * (i - slide)}%)`)
       );
     };
 
@@ -92,14 +96,14 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
       const target = e.target as Element;
       if (target?.classList.contains("dots__dot")) {
         const { slide } = (target as HTMLElement).dataset;
-        goToSlide(slide? Number(slide) : 0);
-        activateDot(slide? Number(slide) : 0);
+        goToSlide(slide ? Number(slide) : 0);
+        activateDot(slide ? Number(slide) : 0);
       }
     });
   };
   slider();
 </script>
-
+<!--
 <section class="latest__video">
   <div class="slider">
     {
@@ -116,6 +120,31 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
       <button class="slider__btn slider__btn--left">&#8249;</button>
       <button class="slider__btn slider__btn--right">&#8250;</button>
   </div>
+</section> -->
+<section class="latest__video">
+  <div class="slider">
+    <swiper-container
+      class="swiperProduct"
+      grab-cursor="true"
+      pagination="true"
+      pagination-clickable="true"
+      navigation="true"
+      loop="true"
+      pagination-type="bullets"
+      pagination-dynamic-bullets="true"
+    >
+      {
+        latestVideos.slice(0, MAX_VIDEOS).map((video: any, index: number) => {
+          const { link, title } = video;
+          return (
+            <swiper-slide>
+              <fast-youtube src={link} title={title} />
+            </swiper-slide>
+          );
+        })
+      }
+    </swiper-container>
+  </div>
 </section>
 
 <style is:inline>
@@ -129,18 +158,22 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
     height: 100%;
   }
 
-  /* SLIDER */
-  .slider {
+  div.swiper-button-prev,
+  div.swiper-button-next {
+    background: black !important;
+  }
+
+  /* SLIDER  VANILLA*/
+  /* .slider {
     width: 100%;
     aspect-ratio: 16 / 9;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
 
-
     /* IN THE END */
     overflow: hidden;
-  }
+
 
   .slide {
     position: absolute;
@@ -152,7 +185,6 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
     justify-content: center;
     margin-right: 1rem;
 
-
     /* THIS creates the animation! */
     transition: transform 1s;
   }
@@ -161,7 +193,6 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
     width: 100%;
     height: 100%;
     object-fit: cover;
-
   }
 
   .slider__btn {
@@ -203,13 +234,12 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
     @media screen and (max-width: 768px) {
       right: 9%;
       transform: translate(50%, 30%);
-
     }
   }
 
   .dots {
     position: absolute;
-    top:96%;
+    top: 96%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -225,14 +255,14 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
     border: none;
     background-color: #00ff33;
     opacity: 0.7;
-    height: .8rem;
-    width: .8rem;
+    height: 0.8rem;
+    width: 0.8rem;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.5s;
     @media screen and (max-width: 768px) {
-      height: .6rem;
-      width: .6rem;
+      height: 0.6rem;
+      width: 0.6rem;
     }
   }
 
@@ -244,5 +274,5 @@ const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
     /* background-color: #fff; */
     background-color: #3b088f;
     opacity: 1;
-  }
+  } */
 </style>

@@ -25,7 +25,7 @@ const Clock = () => {
 
   return (
     <time
-      className="flex items-center justify-center bg-gradient-to-b from-[rgba(106,0,255,0.14)] to-[rgba(255,255,255,0.14)] p-4 rounded-sm h-full max-h-[105px] gap-[.5px]"
+      className="flex items-center justify-center bg-gradient-to-b from-[rgba(106,0,255,0.14)] to-[rgba(255,255,255,0.14)] p-4 rounded-sm h-full  gap-[.5px]"
     >
       <span className="dateTime hour">{time.hours}</span>
       <span  className="dateTime colon">:</span>

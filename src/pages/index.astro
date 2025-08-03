@@ -10,6 +10,7 @@ import Title from "@src/components/atoms/Title.astro";
 import SwiperComponent from "@molecules/SwiperComponent/SwiperComponent.astro";
 import InstagramPost from "@src/components/organisms/InstagramPost.astro";
 import Afiliados from "@src/components/molecules/afiliados/Afiliados.astro";
+import FetchYt from "@src/components/molecules/fetch-yt/FetchYt.astro";
 export const prerender = true;
 
 ---
@@ -28,5 +29,7 @@ export const prerender = true;
     <Afiliados />
     <Title title="Mi video más reciente" />
     <SwiperComponent />
+    <Title title="Cursos" />
+    <FetchYt />
   </main>
 </Layout>
