@@ -4,7 +4,15 @@ const linksAfiliadosf = [
     title: "Hostinger",
     href: "https://hostinger.mx?REFERRALCODE=sofidev",
     icon: "simple-icons:hostinger",
+    color: "#fffff1",
     description: "Obtén 20% de descuento en Hostinger",
+  },
+  {
+    title: "Platzi",
+    href: "https://platzi.com/r/SofiDev",
+    icon: "simple-icons:platzi",
+    color: "#14e632",
+    description: " 7 días sin costo en Platzi Expert. (usuarios nuevos)",
   }
 ];
 ---
@@ -20,7 +28,7 @@ const linksAfiliadosf = [
             rel="noopener noreferrer nofollow"
             class="flex items-center gap-2  text-white bg-caracol px-5  py-6 w-full rounded-md hover:bg-indigo-700"
           >
-            <iconify-icon class="text-3xl" icon={link.icon} />
+            <iconify-icon class="text-3xl" icon={link.icon}  style={`color: ${link.color}`} />
             {link.description}
           </a>
         </li>
