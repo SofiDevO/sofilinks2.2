@@ -8,7 +8,6 @@ export const fetchPlaylist = async () => {
   // IDs de las playlists que queremos mostrar
   const playlistIds = [
     "PLU7AGreFiX-HjcXJi4uHHBclC4cu3FER5",
-    "PLU7AGreFiX-GGDZaMiSUE1DGFkbXCJG-e",
     "PLU7AGreFiX-EIPKti1v2Vwp2ldY2aQaSL",
     "PLU7AGreFiX-E9cK4VNozzly9JAXI_tTPk"
   ];
