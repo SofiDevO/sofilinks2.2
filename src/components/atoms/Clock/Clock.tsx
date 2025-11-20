@@ -13,9 +13,19 @@ const Clock = () => {
     };
   };
 
-  const [time, setTime] = useState(getCurrentTime());
+  // Use static initial state to avoid hydration mismatches
+  const [time, setTime] = useState({
+    hours: 12,
+    minutes: '00',
+    seconds: '00',
+    meridiem: 'AM'
+  });
 
   useEffect(() => {
+    // Set the current time immediately when component mounts
+    setTime(getCurrentTime());
+
+    // Then update every second
     const timer = setInterval(() => {
       setTime(getCurrentTime());
     }, 1000);

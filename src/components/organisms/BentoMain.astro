@@ -10,7 +10,7 @@ const { userData } = Astro.props;
 
 <section class="bento__grid">
   <div class="bento__item bento__item-1">
-    <Clock client:load />
+    <Clock client:only />
   </div>
   <div class="bento__item bento__item-2">
     <TwichCard twitchLink={userData.twitch} server:defer>

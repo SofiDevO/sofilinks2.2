@@ -11,6 +11,7 @@ export const fetchYouTubeVideos = async (channelId) => {
     }
 
     const result = await response.json();
+    console.log('YouTube API response data:', result.items[0]);
     if (result.items && result.items.length > 0) {
       return result.items;
 

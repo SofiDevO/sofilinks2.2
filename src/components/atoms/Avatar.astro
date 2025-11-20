@@ -3,20 +3,23 @@ import ArrowLink from "./ArrowLink.astro";
 import ThemeButton from "./ThemeButton.astro";
 
 const { profile__pic, name, hasName = true, transition, animate} = Astro.props;
+const pathname =  Astro.url.pathname;
+
+console.log('current url', pathname);
 ---
 
 <article
-  class={`flex items-center  px-3 ${hasName && "absolute top-3/5 xl:top-3/4 left-0 xl:left-[0]"} `}
+  class={`flex items-center z-[500]  px-3 ${hasName && "absolute top-3/5 xl:top-3/4 left-0 xl:left-[0]"} `}
 >
-  <div class="relative z-1">
+  <div class="relative z-50">
     <div
     transition:animate={animate}
     transition:name={transition}
-      class="profile__container border-3 border-violet-400 lg:w-[130px] lg:h-[130px] w-[100px] h-[100px] rounded-full overflow-hidden bg-caracol"
+      class={`profile__container  lg:w-[150px] lg:h-[150px] w-[120px] h-[120px] rounded-full overflow-hidden bg-[--bg-main-color] ${pathname === '/about' ? 'profile__container-about' : 'profile__container'}  `}
     >
       <img
         id="avatar"
-        class="w-full object-cover h-full"
+        class="w-full object-cover h-full avatar"
         src={profile__pic}
         alt="Profile image"
       />
@@ -38,3 +41,19 @@ const { profile__pic, name, hasName = true, transition, animate} = Astro.props;
     )
   }
 </article>
+
+<style>
+  .profile__container{
+    --color-ring: rgb(var(--bg-main-color ));
+    border: 3.5px solid var( --purple-color);
+    border: 3.5px solid var(--color-ring);
+    filter:saturate(2)
+  }
+  .profile__container-about{
+    border: 3.5px solid var( --purple-color);
+    filter:saturate(2)
+  }
+  .avatar{
+    filter:saturate(.5);
+  }
+</style>

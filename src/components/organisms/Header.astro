@@ -5,15 +5,17 @@ import { fade } from "astro:transitions";
 ---
 
 <header
-  class="w-full   h-[20dvh] xl:h-[25dvh] min-h-[8rem] flex flex-col justify-start relative margin-x-auto"
+  class="header w-full min-h-[8rem] flex flex-col justify-start relative margin-x-auto"
 >
   <div class="banner__container">
     <img
-      class="h-[20dvh] xl:h-[40dvh] object-cover w-full bg-top"
+      class="banner-img object-cover object-center w-full bg-top h-full"
       src={userData.bannerImage}
     />
+    <canvas id="colorCanvas" hidden></canvas>
     <div class="reflect"></div>
   </div>
+
   <Avatar
     name={userData.name}
     profile__pic={userData.profilePic}
@@ -22,28 +24,101 @@ import { fade } from "astro:transitions";
   />
 </header>
 
+<script>
+  import { waitForImageLoad, getPrevalentColor } from "@utils/get-img-color.ts";
+  const header = document.querySelector(".header") as HTMLDivElement;
+  const canvas = document.querySelector("canvas") as HTMLCanvasElement;
+  let banner = document.querySelector(".banner-img") as HTMLImageElement;
+
+  const images = [
+    "debian.webp",
+    "ciber-punk.webp",
+    "ducks.webp",
+    "bannerYT.webp",
+  ];
+
+  let currentImageIndex = 0;
+
+  const randomImageIndex = () => {
+    let newIndex = Math.floor(Math.random() * images.length);
+    while (newIndex === currentImageIndex) {
+      newIndex = Math.floor(Math.random() * images.length);
+    }
+    return newIndex;
+  };
+
+  setInterval(() => {
+    currentImageIndex = randomImageIndex();
+    banner.src = `/img/${images[currentImageIndex]}`;
+    banner.onload = async () => {
+      const levelColor = await getPrevalentColor({
+        img: banner,
+        x: 40,
+        y: 277,
+        canvas,
+      });
+      header.style.setProperty("--bg-main-color", levelColor);
+    };
+  }, 3000);
+
+  await waitForImageLoad(banner);
+
+  const levelColor = await getPrevalentColor({
+    img: banner,
+    x: 40,
+    y: 277,
+    canvas,
+  });
+  document.body.style.setProperty("--bg-main-color", levelColor);
+</script>
+
 <style>
+  .header {
+    --img-height: 23rem;
+    @media (width <= 768px) {
+      --img-height: 14rem;
+    }
+
+    @media screen and (width: 768px) and (height: 1024px) {
+      --img-height: 30rem;
+    }
+    /* Ipad Pro */
+    @media screen and (width: 1024px) and (height: 1366px) {
+      --img-height: 20rem;
+    }
+  }
   .banner__container {
     position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 10dvh;
-    z-index: -1;
-    @media (width < 768px) {
-      height: 5dvh;
-    }
-  }
+    /* height: 33dvh; */
+    height: var(--img-height);
+    z-index: -10;
 
+  }
+  .banner-img {
+    height: var(--img-height);
+    z-index: -2;
+    /* mask-image: linear-gradient(
+      to bottom,
+      rgba(var(--bg-main-color), 1) 30%,
+      rgba(var(--bg-main-color), 0) 96%
+    ); */
+  }
   .reflect {
     background-size: cover;
     width: 100%;
-    height: 14dvh;
+    height: calc(var(--img-height) - 70%);
     backdrop-filter: blur(26px);
     position: absolute;
-    top: 360%;
-    background: linear-gradient(to bottom, #4b00559d, var(--bg-color-default));
-    mask-image: linear-gradient(to bottom, #5c0063, #2c014a);
+    top: calc(var(--img-height) + -2rem);
+    background: linear-gradient(
+      180deg,
+      rgb(var(--bg-main-color), 0.3) 25%,
+      var(--bg-color-default) 100%
+    );
+
     overflow: hidden;
   }
   .card__container {

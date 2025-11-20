@@ -1,5 +1,5 @@
 
-const YTKey = import.meta.env.YT_PUBLIC_KEY;
+const YTKey = import.meta.env.PUBLIC_YT_API_KEY;
 
 export const fetchPlaylist = async () => {
   let playlists = [];
@@ -13,7 +13,6 @@ export const fetchPlaylist = async () => {
   ];
 
   try {
-    // Crear una solicitud para obtener información de todas las playlists
     const playlistIdsString = playlistIds.join(',');
     const response = await fetch(
       `https://youtube.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&id=${playlistIdsString}&key=${YTKey}`,
@@ -30,7 +29,7 @@ export const fetchPlaylist = async () => {
     }
 
     const data = await response.json();
-
+    // console.log('YouTube API response data:', data);
     if (data.error) {
       throw new Error(`YouTube API error: ${data.error.message}`);
     }

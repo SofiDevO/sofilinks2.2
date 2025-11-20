@@ -5,7 +5,7 @@ const { url, title } = Support.youtube;
 ---
 
 <article
-  class="yt-card relative w-full h-full transition-bg duration-500 hover:bg-red-500 flex flex-row flex-wrap lg:items-center items-start justify-center gap-10 p-2 group"
+  class="yt-card relative w-full h-full transition-bg duration-500 bg-gradient-to-t from-softpurple to-white hover:bg-gradient-to-t hover:from-red-500  hover:to-red-800 flex flex-row flex-wrap lg:items-center items-start justify-center gap-10 p-2 group"
 >
   <div class="flex flex-col gap-5 lg:gap-10">
     <h3
@@ -40,7 +40,7 @@ const { url, title } = Support.youtube;
   }
   @media (width <= 464px) {
     .yt-card.show {
-      background: #fb2c36;
+      background: #ca161f;
       transition: background 0.6s ease-in-out 1s;
       animation-timeline: view();
       & .yt-title {

@@ -8,18 +8,19 @@ import userData from "@data/user.json";
 import BlogPost from "@src/components/molecules/BlogPost/BlogPost";
 import Title from "@src/components/atoms/Title.astro";
 import SwiperComponent from "@molecules/SwiperComponent/SwiperComponent.astro";
-import InstagramPost from "@src/components/organisms/InstagramPost.astro";
 import Afiliados from "@src/components/molecules/afiliados/Afiliados.astro";
 import FetchYt from "@src/components/molecules/fetch-yt/FetchYt.astro";
-export const prerender = true;
 
+const prerender = true;
 ---
 
-<Layout title="Welcome to Astro.">
-  <Header userData={userData}/>
-  <main class="flex flex-col justify-center items-center  w-full space-y-6 pb-10 h-full  px-4 gap-[.8rem] pt-[4rem] lg:pt-[3rem]">
+<Layout title="Hola Raccoones ! 🦝" description="¡Bienvenidos a mi espacio en la web! Soy Sofi, una desarrolladora apasionada por la tecnología y el código. Aquí encontrarás enlaces a mis proyectos, redes sociales y recursos favoritos. ¡Explora y conéctate conmigo!">
+
+  <Header userData={userData} />
+
+  <main class="flex flex-col justify-center items-center  w-full mt-20 md:mt-30  space-y-6 pb-10 h-full  px-4 gap-[.8rem] shadow-none border-0  ">
+    <SocialIcons />
     <!-- Num of social links 👇🏻 by default it show all -->
-    <SocialIcons linksCount={5}/>
     <BentoMain  userData={userData} />
     <Title title="Mi artículo más reciente" />
     <BlogPost />
@@ -28,7 +29,7 @@ export const prerender = true;
     <Title title="Referidos y descuentos" />
     <Afiliados />
     <Title title="Mi video más reciente" />
-    <SwiperComponent />
+    <SwiperComponent  server:defer/>
     <Title title="Cursos" />
     <FetchYt />
   </main>

@@ -1,6 +1,6 @@
 ---
 import Title from "@src/components/atoms/Title.astro";
-import { fetchPlaylist } from "./fetchPlaylist.js";
+import { fetchPlaylist } from "@services/fetchPlaylist.js";
 
 let playlists: any[] = [];
 let error: string | null = null;
@@ -8,7 +8,7 @@ let error: string | null = null;
 // Load playlists
 const result = await fetchPlaylist();
 playlists = result.playlists;
-console.log(playlists);
+// console.log(playlists);
 
 error = result.error;
 ---
