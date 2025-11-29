@@ -5,6 +5,6 @@ const {linksCount=socialData.length} = Astro.props
 
 ---
 
-<section class={`flex  justify-center  w-full gap-4  h-full`}>
+<section class={`flex  justify-center  w-full gap-2  h-full flex-wrap`}>
   {socialData.slice(0, linksCount).map((e) => <LinkSocial {...e} />)}
 </section>

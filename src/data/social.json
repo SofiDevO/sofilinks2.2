@@ -23,5 +23,15 @@
     "name": "Youtube",
     "icon": "basil:youtube-solid",
     "link": "https://www.youtube.com/channel/UC36_js-krsAHAEAWpEDhHtw/"
+  },
+  {
+    "name": "tiktok",
+    "icon": "ion:logo-tiktok",
+    "link": "https://www.tiktok.com/@im_sofidev"
+  },
+  {
+    "name": "Instagram",
+    "icon": "basil:instagram-solid",
+    "link": "https://www.instagram.com/sofi.raccoon"
   }
 ]
