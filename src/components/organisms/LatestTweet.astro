@@ -1,0 +1,93 @@
+---
+const { response } = Astro.props;
+
+const tweet = response?.data?.[0];
+const author = response?.includes?.users?.[0];
+const media = response?.includes?.media?.[0];
+
+const tweetDate = new Date(tweet?.created_at);
+const formattedDate = tweetDate.toLocaleDateString("es-ES", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
+const currentDateFallback = new Date();
+const formatedFallbackDate = currentDateFallback.toLocaleString("es-ES", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+const fallbackText =
+  "Sígueme en twitter (Jmás lo llaamre X) para ver mis tweets más recientes y actualizaciones sobre mis proyectos y contenido. Prometo responder ❤️";
+---
+
+<a
+  href={response
+    ? `https://twitter.com/${author?.username}/status/${tweet?.id}`
+    : "https://x.com/itssofidev"}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group w-full mx-auto min-h-[300px] overflow-hidden rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 relative bg-[url('/img/ciber-punk.jpg')] bg-cover bg-center bg-no-repeat"
+>
+  <div
+    class="flex flex-col absolute w-full h-full rounded-lg pointer-events-none top-0 left-0 right-0 hover:opacity-30 transition-all duration-300 backdrop-blur-[1.3px] backdrop-brightness-100 md:px-10 md:py-6 px-3 py-5"
+  >
+    <!-- Header con info del autor -->
+    <div class="flex items-center gap-3 mb-6">
+      <img
+        src={author?.profile_image_url || "/img/profile_pic.jpeg"}
+        alt={author?.name || "SofiDev"}
+        class="w-12 h-12 rounded-full"
+      />
+
+      <div>
+        <h3 class="font-bold text-gray-900 dark:text-white">
+          {author?.name || "SofiDev"}
+          {author?.verified && <span class="ml-1 text-blue-500">✓</span>}
+        </h3>
+        <p
+          class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1"
+        >
+          @{author?.username || "itssofidev"}
+          <iconify-icon
+            icon="si:verified-duotone"
+            width="20"
+            height="20"
+            style="color: #14a4ff"></iconify-icon> · {
+            !response ? formatedFallbackDate : formattedDate
+          }
+        </p>
+      </div>
+    </div>
+
+    <!-- Contenido del tweet -->
+    <p class="text-gray-800 dark:text-gray-200 mb-4 whitespace-pre-wrap">
+      {`${tweet?.text || fallbackText}`}
+    </p>
+
+    {
+      media && media.type === "photo" && (
+        <img
+          src={media.url}
+          alt={media.alt_text || "Tweet image"}
+          class="rounded-lg w-full object-cover max-h-96"
+        />
+      )
+    }
+
+    <!-- Link al tweet -->
+    <div class="flex w-full justify-between mt-auto">
+      <p
+        class="inline-block mt-4 bg-slate-900 shadow-amber-200 px-4 py-2 rounded-xl text-blue-300 hover:text-blue-600 text-sm font-medium"
+      >
+        Ver en Twitter
+      </p>
+      <iconify-icon
+        class="self-end text-white group-hover:scale-200 transition-all duration-300"
+        icon="line-md:twitter-x-alt"
+        width="24"
+        height="24"></iconify-icon>
+    </div>
+  </div>
+</a>

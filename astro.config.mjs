@@ -16,6 +16,10 @@ export default defineConfig({
     schema: {
       WPGRAPHQL_URL: envField.string({ required: true, context: "server", access: "secret" }),
       YT_API: envField.string({ required: true, context: "client", access: "public" }),
+      BEARER_TOKEN: envField.string({ context: "server", access: "secret" }),
+      ACCESS_TOKEN: envField.string({ context: "server", access: "secret" }),
+      ACCESS_TOKEN_SECRET: envField.string({ context: "server", access: "secret" }),
+
     }
   },
   vite: {

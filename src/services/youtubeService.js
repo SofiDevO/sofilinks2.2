@@ -11,7 +11,7 @@ export const fetchYouTubeVideos = async (channelId) => {
     }
 
     const result = await response.json();
-    console.log('YouTube API response data:', result.items[0]);
+    // console.log('YouTube API response data:', result.items[0]);
     if (result.items && result.items.length > 0) {
       return result.items;
 
@@ -19,7 +19,7 @@ export const fetchYouTubeVideos = async (channelId) => {
       throw new Error("No videos found in the feed.");
     }
   } catch (error) {
-    console.error("Error fetching videos:", error);
+    // console.error("Error fetching videos:", error);
     throw error;
   }
 };

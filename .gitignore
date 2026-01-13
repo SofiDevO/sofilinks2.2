@@ -19,6 +19,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# cache
+.cache/
+
 # macOS-specific files
 .DS_Store
 
