@@ -1,0 +1,23 @@
+---
+import Layout from "@src/layouts/Layout.astro";
+
+
+---
+
+
+<Layout>
+    <section class="flex flex-col gap-10 justify-center items-center h-screen">
+        <p class="text-2xl font-bold ">Me haz decepcionado</p>
+        <video autoplay muted loop controls src="/img/cat.mp4"></video>
+    </section>
+
+</Layout>
+
+<script>
+    const playVideo = document.querySelector("video") as HTMLVideoElement;
+    window.onload = () => {
+      setTimeout(() => {
+        playVideo.muted = false;
+      }, 300);
+    };
+</script>

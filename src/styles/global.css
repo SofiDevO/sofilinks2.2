@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
     --swiper-navigation-color: rgb(68, 0, 255);
@@ -15,8 +16,9 @@
     --color-celeste: rgba(0, 116, 174, 0.92);
 }
 
-div.swiper-button-next svg, div.swiper-button-prev svg{
-    background: black!important;
+div.swiper-button-next svg,
+div.swiper-button-prev svg {
+    background: black !important;
 }
 
 /* bg-gradient-to-t from-[#CA95FF] to-white */
@@ -25,13 +27,8 @@ div.swiper-button-next svg, div.swiper-button-prev svg{
     src: url("/fonts/DigitalNumbers-Regular.ttf") format("truetype");
 }
 
-.dark {
-    --bg-color-default: #191b22;
-    --text-color: #E8E7E7;
-    --card-bg: #0c0c0c;
-}
 
-@theme  {
+@theme {
     --color-primary: var(--bg-color-default);
     --color-ufo: var(--ufo-green);
     --color-color-text: var(--text-color);
@@ -42,9 +39,20 @@ div.swiper-button-next svg, div.swiper-button-prev svg{
     --color-darkpurple: var(--dark-purple);
     --color-card: var(--card-bg);
     --drop-shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
-
 }
 
+.dark {
+    --bg-color-default: #191b22;
+    --text-color: #E8E7E7;
+    --card-bg: #0c0c0c;
+}
+
+body:has(dialog[open]) {
+    overflow: hidden;
+    -webkit-overflow-scrolling: none;
+    overscroll-behavior: none;
+
+}
 
 body {
     font-family: sans-serif;

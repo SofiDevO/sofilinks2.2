@@ -19,7 +19,7 @@ const formatedFallbackDate = currentDateFallback.toLocaleString("es-ES", {
   year: "numeric",
 });
 const fallbackText =
-  "Sígueme en twitter (Jmás lo llaamre X) para ver mis tweets más recientes y actualizaciones sobre mis proyectos y contenido. Prometo responder ❤️";
+  "Sígueme en twitter (Jmás lo llamaré X) para ver mis tweets más recientes y actualizaciones sobre mis proyectos y contenido. Prometo responder ❤️";
 ---
 
 <a
@@ -42,12 +42,12 @@ const fallbackText =
       />
 
       <div>
-        <h3 class="font-bold text-gray-900 dark:text-white">
+        <h3 class="font-bold text-white">
           {author?.name || "SofiDev"}
           {author?.verified && <span class="ml-1 text-blue-500">✓</span>}
         </h3>
         <p
-          class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1"
+          class="text-sm text-gray-400 flex items-center gap-1"
         >
           @{author?.username || "itssofidev"}
           <iconify-icon
@@ -62,7 +62,7 @@ const fallbackText =
     </div>
 
     <!-- Contenido del tweet -->
-    <p class="text-gray-800 dark:text-gray-200 mb-4 whitespace-pre-wrap">
+    <p class="text-gray-400 mb-4 whitespace-pre-wrap">
       {`${tweet?.text || fallbackText}`}
     </p>
 

@@ -1,12 +1,12 @@
 ---
-import YoutubeChannels from "@data/youtubeChannels.json";
+
 import { fetchYouTubeVideos } from "@src/services/youtubeService";
 
-const MAX_VIDEOS = 5;
-const CHANNEL_ID = YoutubeChannels[0].split("channel/")[1];
-const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
----
 
+const {MAX_VIDEOS, CHANNEL_ID } = Astro.props;
+const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
+await fetchYouTubeVideos(CHANNEL_ID);
+---
 <script >
   // Slider
   const slider = function () {

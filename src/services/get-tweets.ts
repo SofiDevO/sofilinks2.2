@@ -29,7 +29,7 @@ function getCachedTweets(): any | null {
       return cache.data;
     }
 
-    console.log("⚠️ Caché expirado, obteniendo nuevos tweets...");
+    console.log("Caché expirado, obteniendo nuevos tweets...");
     return null;
   } catch (error) {
     console.error("Error al leer caché:", error);
@@ -106,7 +106,7 @@ export async function fetchTweets() {
 
   } catch (error: any) {
     if (error.status === 429) {
-      console.warn("⚠️ Rate limit de Twitter excedido. Reinténtalo más tarde.");
+      console.warn("Rate limit de Twitter excedido. Reinténtalo más tarde.");
       if (error.headers?.['x-rate-limit-reset']) {
         const resetTime = new Date(parseInt(error.headers['x-rate-limit-reset']) * 1000);
         console.warn(`   Se reiniciará en: ${resetTime.toLocaleString()}`);
@@ -118,7 +118,7 @@ export async function fetchTweets() {
     // Si hay error, intentar devolver caché antiguo como fallback
     const oldCache = getCachedTweets();
     if (oldCache) {
-      console.log("⚠️ Usando caché antiguo como fallback");
+      console.log("Usando caché antiguo como fallback");
       return oldCache;
     }
 

@@ -3,25 +3,48 @@ import User from "@data/user.json";
 import Support from "@data/support.json";
 const { url, title } = Support.github;
 const githubImagaProfile = User.github + ".png";
+const picGif  = "img/sofi-kiss.gif"
+const picPng  = "img/sofi-kiss.png"
+
 ---
 
 <a
   href={url}
   target="_blank"
-  class="relative group/icon w-full h-full flex flex-col items-center justify-around gap-4 p-2 bg-gradient-to-t from-[#CA95FF] to-white border-[1.8px] border-[#D6ACFF] shadow-[0_1px_6.7px_0] shadow-[#763CC7] rounded-md"
+  class="github-card relative group/icon w-full h-full flex flex-col items-start justify-around gap-4 p-2 bg-gradient-to-t from-[#CA95FF] to-white border-[1.8px] border-[#D6ACFF] shadow-[0_1px_6.7px_0] shadow-[#763CC7] rounded-md"
 >
   <h3 class="text-text font-bold text-xl lg:text-3xl text-balance z-10">{title}</h3>
-  <div class="w-full flex flex-row justify-around gap-2">
+  <div class="profile-pic  flex flex-row justify-around gap-2  bg-cover bg-center rounded-full z-10 border-2 border-[#763CC7]">
     <img
-      src={githubImagaProfile}
-      alt="Github Sponsors"
-      class="object-cover aspect-square w-40 h-40 rounded-full"
+      src={picPng}
+      alt="GitHub Profile Picture"
+      class="w-16 h-16 lg:w-50 lg:h-50 rounded-full  object-cover"
+      loading="lazy"
     />
-
+  </div>
     <iconify-icon
       class="text-[#763CC7] w-full  text-[15rem] absolute top-30 left-60 rotate-30   duration-500 group-hover/icon:top-17 group-hover/ transition-all ease-in-out "
       icon="fa:github-alt"
     >
     </iconify-icon>
-  </div>
 </a>
+
+
+<script>
+  const picContainer = document.querySelector('.github-card') as HTMLElement;
+  const image = document.querySelector('.github-card img') as HTMLImageElement;
+  const gifImage = picContainer?.style?.getPropertyValue('--picGif') ;
+  const pngImage = picContainer?.style?.getPropertyValue('--picPng') ;
+  picContainer?.addEventListener('mouseenter', () => {
+      image.src = gifImage.trim();
+  });
+  picContainer?.addEventListener('mouseleave', () => {
+      image.src = pngImage.trim();
+  });
+
+
+</script>
+
+
+<style define:vars={{ picGif, picPng }}>
+</style>
