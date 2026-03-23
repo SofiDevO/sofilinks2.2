@@ -1,5 +1,5 @@
 const YTKey = import.meta.env.PUBLIC_YT_SECRET_KEY;
-
+const SiteUrl = import.meta.env.PUBLIC_SITE_URL;
 export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
   const url =
     `https://youtube.googleapis.com/youtube/v3/search` +
@@ -9,9 +9,11 @@ export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
     `&order=date` +
     `&type=video` +
     `&key=${YTKey}`;
-
-  const response = await fetch(url);
-
+  const response = await fetch(url, {
+    headers: {
+      Referer: SiteUrl,
+    },
+  });
   if (!response.ok) {
     throw new Error(
       `YouTube API error: ${response.status} ${response.statusText}`,
