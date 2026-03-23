@@ -37,10 +37,15 @@ const prerender = true;
     (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
   <Header userData={userData} />
-
   <main
     class="flex flex-col justify-center items-center w-full mt-20 md:mt-30 space-y-6 pb-10 h-full px-4 gap-[.8rem] shadow-none border-0"
   >
+    <p class="text-white text-sm">
+      ¡ Bienvenidos a mi espacio en la web! Soy Sofi, una desarrolladora
+      apasionada por la tecnología y el código. Aquí encontrarás enlaces a mis
+      proyectos, redes sociales y recursos favoritos. ¡Explora y conéctate
+      conmigo!
+    </p>
     <SocialIcons />
     <!-- Num of social links 👇🏻 by default it show all -->
     <BentoMain userData={userData} />
@@ -80,4 +85,14 @@ const prerender = true;
     <Title title="Cursos" />
     <FetchYt />
   </main>
+  <footer class="flex justify-center items-center gap-4 bg-black w-full p-4">
+    <a
+      class="text-white text-sm hover:text-caracol transition-colors"
+      href="/privacy-policy">Política de Privacidad</a
+    >
+    <a
+      class="text-white text-sm hover:text-caracol transition-colors"
+      href="/terms-of-service">Términos de Servicio</a
+    >
+  </footer>
 </Layout>
