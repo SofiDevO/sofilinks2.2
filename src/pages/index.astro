@@ -13,7 +13,6 @@ import FetchYt from "@src/components/molecules/fetch-yt/FetchYt.astro";
 import LatestTweet from "@organisms/LatestTweet.astro";
 import { fetchTweets } from "@src/services/get-tweets";
 import YoutubeChannels from "@data/youtubeChannels.json";
-import OnlyFans from "@components/organisms/only-fans/OnlyFans.astro";
 const response = await fetchTweets();
 const prerender = true;
 ---
@@ -22,6 +21,21 @@ const prerender = true;
   title="Hola Raccoones ! 🦝"
   description="¡Bienvenidos a mi espacio en la web! Soy Sofi, una desarrolladora apasionada por la tecnología y el código. Aquí encontrarás enlaces a mis proyectos, redes sociales y recursos favoritos. ¡Explora y conéctate conmigo!"
 >
+  <script
+    is:inline
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3828278469742835"
+    crossorigin="anonymous"></script>
+  <ins
+    class="adsbygoogle"
+    style="display:block"
+    data-ad-format="fluid"
+    data-ad-layout-key="-6t+ed+2i-1n-4w"
+    data-ad-client="ca-pub-3828278469742835"
+    data-ad-slot="5983516738"></ins>
+  <script is:inline>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
   <Header userData={userData} />
 
   <main
@@ -40,18 +54,30 @@ const prerender = true;
     <Title title="Referidos y descuentos" />
     <Afiliados />
     <Title title="Mi video más reciente" />
-    <SwiperComponent server:defer
+    <SwiperComponent
+      server:defer
       CHANNEL_ID={YoutubeChannels[0].split("channel/")[1]}
       MAX_VIDEOS={5}
     />
-    <Title title="Canal Secundario" />
-    <SwiperComponent server:defer
-      CHANNEL_ID={YoutubeChannels[1].split("channel/")[1]}
-      MAX_VIDEOS={5}
-    />
+
+    <script
+      is:inline
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3828278469742835"
+      crossorigin="anonymous"></script>
+    <!-- banerHorzontal -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-3828278469742835"
+      data-ad-slot="1391467357"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
     <Title title="Cursos" />
     <FetchYt />
-    <Title title="Solo mayores de 18 años" />
-    <OnlyFans />
   </main>
 </Layout>

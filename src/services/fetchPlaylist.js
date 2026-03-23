@@ -1,5 +1,5 @@
 
-const YTKey = import.meta.env.PUBLIC_YT_API_KEY;
+const YTKey = import.meta.env.PUBLIC_YT_SECRET_KEY;
 
 export const fetchPlaylist = async () => {
   let playlists = [];

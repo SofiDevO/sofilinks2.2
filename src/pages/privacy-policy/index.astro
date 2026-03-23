@@ -1,0 +1,12 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Content as Policy } from "@src/content/privacy-policy.md";
+export const prerender = true;
+import "./_privacy-policy.css";
+---
+
+<Layout title="Privacy Policy">
+  <section class="privacy-policy">
+    <Policy />
+  </section>
+</Layout>

@@ -1,25 +1,39 @@
-import {YT_API}  from "astro:env/client";
+const YTKey = import.meta.env.PUBLIC_YT_SECRET_KEY;
 
+export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
+  const url =
+    `https://youtube.googleapis.com/youtube/v3/search` +
+    `?part=snippet` +
+    `&channelId=${channelId}` +
+    `&maxResults=${maxResults}` +
+    `&order=date` +
+    `&type=video` +
+    `&key=${YTKey}`;
 
-export const fetchYouTubeVideos = async (channelId) => {
-  const channelURL = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
-  const reqURL = `https://api.rss2json.com/v1/api.json?rss_url=${channelURL}&api_key=${YT_API}`;
-  try {
-    const response = await fetch(reqURL);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+  const response = await fetch(url, {
+    headers: {
+      Referer: 'https://links.itssofi.dev/',
+    },
+  });
 
-    const result = await response.json();
-    // console.log('YouTube API response data:', result.items[0]);
-    if (result.items && result.items.length > 0) {
-      return result.items;
-
-    } else {
-      throw new Error("No videos found in the feed.");
-    }
-  } catch (error) {
-    // console.error("Error fetching videos:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error(`YouTube API error: ${response.status} ${response.statusText}`);
   }
+
+  const data = await response.json();
+
+  if (data.error) {
+    throw new Error(`YouTube API error: ${data.error.message}`);
+  }
+
+  if (!data.items || data.items.length === 0) {
+    throw new Error('No videos found for this channel.');
+  }
+
+  return data.items.map((item) => ({
+    link: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+    title: item.snippet.title,
+    thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url,
+    publishedAt: item.snippet.publishedAt,
+  }));
 };

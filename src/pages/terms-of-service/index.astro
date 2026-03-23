@@ -1,0 +1,12 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Content as Policy } from "@src/content/terms-of-service.md";
+export const prerender = true;
+import "./_terms.css";
+---
+
+<Layout title="Terms of Service">
+  <section class="privacy-policy">
+    <Policy />
+  </section>
+</Layout>
