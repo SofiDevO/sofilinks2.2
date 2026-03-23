@@ -10,14 +10,12 @@ export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
     `&type=video` +
     `&key=${YTKey}`;
 
-  const response = await fetch(url, {
-    headers: {
-      Referer: 'https://links.itssofi.dev/',
-    },
-  });
+  const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`YouTube API error: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `YouTube API error: ${response.status} ${response.statusText}`,
+    );
   }
 
   const data = await response.json();
@@ -27,13 +25,15 @@ export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
   }
 
   if (!data.items || data.items.length === 0) {
-    throw new Error('No videos found for this channel.');
+    throw new Error("No videos found for this channel.");
   }
 
   return data.items.map((item) => ({
     link: `https://www.youtube.com/watch?v=${item.id.videoId}`,
     title: item.snippet.title,
-    thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url,
+    thumbnail:
+      item.snippet.thumbnails?.medium?.url ||
+      item.snippet.thumbnails?.default?.url,
     publishedAt: item.snippet.publishedAt,
   }));
 };
