@@ -1,4 +1,4 @@
-const YTKey = import.meta.env.PUBLIC_YT_SECRET_KEY;
+const YTKey = import.meta.env.YT_API_KEY;
 const SiteUrl = import.meta.env.PUBLIC_SITE_URL;
 export const fetchPlaylist = async () => {
   let playlists = [];
@@ -17,8 +17,7 @@ export const fetchPlaylist = async () => {
       `https://youtube.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&id=${playlistIdsString}&key=${YTKey}`,
       {
         headers: {
-          Referer: "http://localhost:4321/",
-          Referer: SiteUrl,
+          Referer: SiteUrl || "http://localhost:4321",
         },
       },
     );

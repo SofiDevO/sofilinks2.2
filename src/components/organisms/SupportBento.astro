@@ -5,8 +5,13 @@ import GithubSponsor from "@molecules/GithubSponsor.astro";
 import WishList from "@atoms/SupportCard.astro";
 import dataSupport from "@data/support.json";
 import SupportCard from "@atoms/SupportCard.astro";
+import Title from "../atoms/Title.astro";
 ---
 
+<Title
+  title="Apoya mi contenido"
+  class="text-center bg-gradient-to-r from-caracol to-celeste bg-clip-text text-4xl lg:text-5xl font-bold text-transparent my-4"
+/>
 <section id="support-bento">
   <div class="bento__item">
     <YoutubeMember />
@@ -43,8 +48,8 @@ import SupportCard from "@atoms/SupportCard.astro";
       "tres cinco cinco"
       "cuatro cinco cinco";
     gap: 10px;
-    grid-template-rows:  repeat(4, minmax(100px, 1fr));
-}
+    grid-template-rows: repeat(4, minmax(100px, 1fr));
+  }
 
   .bento__item {
     border-radius: 12px;

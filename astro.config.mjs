@@ -18,8 +18,12 @@ export default defineConfig({
         context: "client",
         access: "public",
       }),
+      YT_API_KEY: envField.string({
+        required: true,
+        context: "server",
+        access: "secret",
+      }),
       BEARER_TOKEN: envField.string({ context: "server", access: "secret" }),
-      SITE_URL: envField.string({ context: "server", access: "public" }),
 
       // ACCESS_TOKEN: envField.string({ context: "server", access: "secret" }),
       // ACCESS_TOKEN_SECRET: envField.string({ context: "server", access: "secret" }),

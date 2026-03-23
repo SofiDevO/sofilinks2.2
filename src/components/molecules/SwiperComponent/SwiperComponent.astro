@@ -1,11 +1,20 @@
 ---
 
 import { fetchYouTubeVideos } from "@src/services/youtubeService";
+import Title from "@src/components/atoms/Title.astro";
 
 
-const {MAX_VIDEOS, CHANNEL_ID } = Astro.props;
-const latestVideos = await fetchYouTubeVideos(CHANNEL_ID);
-await fetchYouTubeVideos(CHANNEL_ID);
+const {CHANNEL_ID } = Astro.props;
+console.log("CHANNEL_ID", CHANNEL_ID);
+let latestVideos = [];
+let error = null;
+
+try {
+  latestVideos = await fetchYouTubeVideos(CHANNEL_ID, 5);
+} catch (e) {
+  error = e instanceof Error ? e.message : "Unknown error occurred";
+  console.error("Error fetching YouTube videos:", e);
+}
 ---
 <script >
   // Slider
@@ -103,26 +112,11 @@ await fetchYouTubeVideos(CHANNEL_ID);
   };
   slider();
 </script>
-<!--
 <section class="latest__video">
-  <div class="slider">
-    {
-      latestVideos.slice(0, MAX_VIDEOS).map((video: any, index: number) => {
-        const { link, title } = video;
-        return (
-          <div class={`slide slide--${index + 1}`}>
-            <fast-youtube src={link} title={title} />
-          </div>
-          );
-        })
-      }
-      <div class="dots"></div>
-      <button class="slider__btn slider__btn--left">&#8249;</button>
-      <button class="slider__btn slider__btn--right">&#8250;</button>
-  </div>
-</section> -->
-<section class="latest__video">
-  <div class="slider">
+  { !error && latestVideos && latestVideos.length > 0 &&
+  <>
+    <Title title="Mi video más reciente" />
+    <div class="slider">
     <swiper-container
       class="swiperProduct"
       grab-cursor="true"
@@ -134,7 +128,7 @@ await fetchYouTubeVideos(CHANNEL_ID);
       pagination-dynamic-bullets="true"
     >
       {
-        latestVideos.slice(0, MAX_VIDEOS).map((video: any, index: number) => {
+        latestVideos.map((video: any, index: number) => {
           const { link, title } = video;
           return (
             <swiper-slide>
@@ -145,6 +139,8 @@ await fetchYouTubeVideos(CHANNEL_ID);
       }
     </swiper-container>
   </div>
+  </>
+  }
 </section>
 
 <style is:inline>

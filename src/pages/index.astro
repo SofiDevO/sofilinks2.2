@@ -10,10 +10,13 @@ import Title from "@src/components/atoms/Title.astro";
 import SwiperComponent from "@molecules/SwiperComponent/SwiperComponent.astro";
 import Afiliados from "@src/components/molecules/afiliados/Afiliados.astro";
 import FetchYt from "@src/components/molecules/fetch-yt/FetchYt.astro";
-import LatestTweet from "@organisms/LatestTweet.astro";
-import { fetchTweets } from "@src/services/get-tweets";
-import YoutubeChannels from "@data/youtubeChannels.json";
-const response = await fetchTweets();
+import Footer from "@src/components/organisms/footer/Footer.astro";
+const YoutubeChannel =
+  "https://www.youtube.com/channel/UC36_js-krsAHAEAWpEDhHtw".split(
+    "channel/",
+  )[1];
+console.log(YoutubeChannel);
+
 const prerender = true;
 ---
 
@@ -21,6 +24,41 @@ const prerender = true;
   title="Hola Raccoones ! 🦝"
   description="¡Bienvenidos a mi espacio en la web! Soy Sofi, una desarrolladora apasionada por la tecnología y el código. Aquí encontrarás enlaces a mis proyectos, redes sociales y recursos favoritos. ¡Explora y conéctate conmigo!"
 >
+  <Header userData={userData} />
+  <main
+    class="flex flex-col justify-center items-center w-full mt-16 md:mt-20 space-y-6 pb-10 h-full px-4 gap-[.8rem] shadow-none border-0"
+  >
+    <p class="text-color-text text-sm">
+      ¡ Bienvenidos a mi espacio en la web! Soy Sofi, una desarrolladora
+      apasionada por la tecnología y el código. Aquí encontrarás enlaces a mis
+      proyectos, redes sociales y recursos favoritos. ¡Explora y conéctate
+      conmigo!
+    </p>
+    <SocialIcons />
+    <!-- Num of social links 👇🏻 by default it show all -->
+    <BentoMain userData={userData} />
+    <script
+      is:inline
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3828278469742835"
+      crossorigin="anonymous"></script>
+    <ins
+      class="adsbygoogle"
+      style="display:block; text-align:center;"
+      data-ad-layout="in-article"
+      data-ad-format="fluid"
+      data-ad-client="ca-pub-3828278469742835"
+      data-ad-slot="9333003725"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <BlogPost />
+    <SupportBento />
+    <Afiliados />
+    <SwiperComponent server:defer CHANNEL_ID={YoutubeChannel} />
+    <FetchYt />
+  </main>
   <script
     is:inline
     async
@@ -30,69 +68,12 @@ const prerender = true;
     class="adsbygoogle"
     style="display:block"
     data-ad-format="fluid"
-    data-ad-layout-key="-6t+ed+2i-1n-4w"
+    data-ad-layout-key="-fb+5w+4e-db+86"
     data-ad-client="ca-pub-3828278469742835"
-    data-ad-slot="5983516738"></ins>
+    data-ad-slot="4092852581"></ins>
   <script is:inline>
     (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
-  <Header userData={userData} />
-  <main
-    class="flex flex-col justify-center items-center w-full mt-20 md:mt-30 space-y-6 pb-10 h-full px-4 gap-[.8rem] shadow-none border-0"
-  >
-    <p class="text-white text-sm">
-      ¡ Bienvenidos a mi espacio en la web! Soy Sofi, una desarrolladora
-      apasionada por la tecnología y el código. Aquí encontrarás enlaces a mis
-      proyectos, redes sociales y recursos favoritos. ¡Explora y conéctate
-      conmigo!
-    </p>
-    <SocialIcons />
-    <!-- Num of social links 👇🏻 by default it show all -->
-    <BentoMain userData={userData} />
-    <LatestTweet response={response} server:defer />
-    <BlogPost />
-    <Title
-      title="Apoya mi contenido"
-      class="text-center bg-gradient-to-r from-caracol to-celeste bg-clip-text text-4xl lg:text-5xl font-bold text-transparent my-4"
-    />
-    <SupportBento />
-    <Title title="Referidos y descuentos" />
-    <Afiliados />
-    <Title title="Mi video más reciente" />
-    <SwiperComponent
-      server:defer
-      CHANNEL_ID={YoutubeChannels[0].split("channel/")[1]}
-      MAX_VIDEOS={5}
-    />
 
-    <script
-      is:inline
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3828278469742835"
-      crossorigin="anonymous"></script>
-    <!-- banerHorzontal -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-3828278469742835"
-      data-ad-slot="1391467357"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
-    <Title title="Cursos" />
-    <FetchYt />
-  </main>
-  <footer class="flex justify-center items-center gap-4 bg-black w-full p-4">
-    <a
-      class="text-white text-sm hover:text-caracol transition-colors"
-      href="/privacy-policy">Política de Privacidad</a
-    >
-    <a
-      class="text-white text-sm hover:text-caracol transition-colors"
-      href="/terms-of-service">Términos de Servicio</a
-    >
-  </footer>
+  <Footer />
 </Layout>

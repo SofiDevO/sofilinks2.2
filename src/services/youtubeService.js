@@ -1,17 +1,12 @@
 const YTKey = import.meta.env.PUBLIC_YT_SECRET_KEY;
 const SiteUrl = import.meta.env.PUBLIC_SITE_URL;
 export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
-  const url =
-    `https://youtube.googleapis.com/youtube/v3/search` +
-    `?part=snippet` +
-    `&channelId=${channelId}` +
-    `&maxResults=${maxResults}` +
-    `&order=date` +
-    `&type=video` +
-    `&key=${YTKey}`;
+  const playlistId = channelId.replace(/^UC/, "UU");
+  const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=${maxResults}&key=${YTKey}`;
+
   const response = await fetch(url, {
     headers: {
-      Referer: SiteUrl,
+      Referer: SiteUrl || "http://localhost:4321",
     },
   });
   if (!response.ok) {
@@ -31,7 +26,7 @@ export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
   }
 
   return data.items.map((item) => ({
-    link: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+    link: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`,
     title: item.snippet.title,
     thumbnail:
       item.snippet.thumbnails?.medium?.url ||

@@ -1,4 +1,6 @@
 ---
+import Title from "@src/components/atoms/Title.astro";
+
 const linksAfiliadosf = [
   {
     title: "Hostinger",
@@ -13,10 +15,14 @@ const linksAfiliadosf = [
     icon: "simple-icons:hostinger",
     color: "#fffff1",
     description: "20% de descuento en Hosting VPS ",
-  }
+  },
 ];
 ---
 
+<Title
+  title="Referidos y descuentos"
+  class="text-center bg-gradient-to-r from-caracol to-celeste bg-clip-text text-4xl lg:text-5xl font-bold text-transparent my-4"
+/>
 <section class="flex flex-col items-center justify-center w-full">
   <ul class="flex flex-col gap-4 w-full">
     {
@@ -28,7 +34,11 @@ const linksAfiliadosf = [
             rel="noopener noreferrer nofollow"
             class="flex items-center gap-2  text-white bg-caracol px-5  py-6 w-full rounded-md hover:bg-indigo-700"
           >
-            <iconify-icon class="text-3xl" icon={link.icon}  style={`color: ${link.color}`} />
+            <iconify-icon
+              class="text-3xl"
+              icon={link.icon}
+              style={`color: ${link.color}`}
+            />
             {link.description}
           </a>
         </li>

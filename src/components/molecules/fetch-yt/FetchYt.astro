@@ -15,13 +15,10 @@ error = result.error;
 
 <div class="youtube-feed">
   {
-    error ? (
-      <div class="error-message">
-        <p>Error loading YouTube playlists: {error}</p>
-      </div>
-    ) : (
+    !error && playlists.length > 0 && (
+      <>
+      <Title title="Cursos" />
       <div class="playlists-container">
-        {playlists.length > 0 ? (
           <div class="playlists-grid">
             {playlists.map((playlist) => (
               <a
@@ -54,10 +51,8 @@ error = result.error;
               </a>
             ))}
           </div>
-        ) : (
-          <p>No hay playlists disponibles en este momento.</p>
-        )}
       </div>
+      </>
     )
   }
 
