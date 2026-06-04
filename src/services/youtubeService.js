@@ -1,4 +1,4 @@
-const YTKey = import.meta.env.PUBLIC_YT_SECRET_KEY;
+const YTKey = import.meta.env.YT_API_KEY;
 const SiteUrl = import.meta.env.PUBLIC_SITE_URL;
 export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
   const playlistId = channelId.replace(/^UC/, "UU");
