@@ -1,10 +1,10 @@
 ---
 import Layout from "@src/layouts/Layout.astro";
-import Avatar from "@src/components/atoms/Avatar.astro";
-import ArrowLink from "@src/components/atoms/ArrowLink.astro";
+import Avatar from "@shared/components/Avatar.astro";
+import ArrowLink from "@features/social/components/ArrowLink.astro";
 import userData from "@data/user.json";
-import LiveCard from "@src/components/molecules/LiveCard.astro";
-import { isLive } from "@src/utils/IsLive";
+import LiveCard from "@features/lives/components/LiveCard.astro";
+import { isLive } from "@features/lives/utils/IsLive";
 const { isLiveBroadcast } = await isLive();
 
 export const prerender = true;

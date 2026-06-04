@@ -31,6 +31,14 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        '@src': '/src',
+        '@shared': '/src/shared',
+        '@features': '/src/features',
+        '@core': '/src/core',
+      }
+    }
   },
 
   site: "https://links.sofidev.blog",

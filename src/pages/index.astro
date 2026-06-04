@@ -1,16 +1,16 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import SocialIcons from "@src/components/atoms/SocialIcons.astro";
-import BentoMain from "@organisms/BentoMain.astro";
-import SupportBento from "@organisms/SupportBento.astro";
-import Header from "@src/components/organisms/Header.astro";
+import SocialIcons from "@features/social/components/SocialIcons.astro";
+import BentoMain from "@core/components/BentoMain.astro";
+import SupportBento from "@features/sponsors/components/SupportBento.astro";
+import Header from "@core/components/Header.astro";
 import userData from "@data/user.json";
-import BlogPost from "@src/components/molecules/BlogPost/BlogPost";
-import Title from "@src/components/atoms/Title.astro";
-import SwiperComponent from "@molecules/SwiperComponent/SwiperComponent.astro";
-import Afiliados from "@src/components/molecules/afiliados/Afiliados.astro";
-import FetchYt from "@src/components/molecules/fetch-yt/FetchYt.astro";
-import Footer from "@src/components/organisms/footer/Footer.astro";
+import BlogPost from "@features/blog/components/BlogPost/BlogPost";
+import Title from "@shared/components/Title.astro";
+import SwiperComponent from "@features/youtube/components/SwiperComponent/SwiperComponent.astro";
+import Afiliados from "@features/products/components/afiliados/Afiliados.astro";
+import FetchYt from "@features/youtube/components/fetch-yt/FetchYt.astro";
+import Footer from "@core/components/footer/Footer.astro";
 const YoutubeChannel =
   "https://www.youtube.com/channel/UC36_js-krsAHAEAWpEDhHtw".split(
     "channel/",

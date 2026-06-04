@@ -1,0 +1,16 @@
+---
+const { link="/", direction,  class: className, ariaLabel , transition, ...res } = Astro.props;
+import Icon from "@shared/components/icons/Icon.astro";
+---
+
+<a href={link} class={className}   transition:name={transition}   {...res} aria-label={ariaLabel}>
+    <slot name="arrow-content" />
+
+    {
+        direction === "left" ? (
+        <Icon name="stash:arrow-left-solid " class="text-caracol text" width="25" height="25" />
+    ) : (
+        <Icon name="stash:arrow-right-solid" class="rotate-180 text-caracol text" width="25" height="25" />
+    )
+  }
+</a>

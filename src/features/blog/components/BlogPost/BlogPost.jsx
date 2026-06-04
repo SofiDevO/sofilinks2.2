@@ -1,0 +1,43 @@
+import { cardsData } from "@features/blog/services/getCards";
+import userData from "@data/user.json";
+
+const BlogPost = () => {
+  const posts = cardsData?.posts?.nodes;
+  const firstPost = posts?.length > 0 ? posts[0] : null;
+  console.log(userData.blog);
+  return (
+    <>
+      <a
+        href={`${userData.blog}/post/${firstPost.slug}`}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        className=" flex-flex-col gap-2 bg-darkpurple p-4 rounded-2xl "
+      >
+        <h2 className="text-xl font-bold mb-3 text-ufo hover:underline">
+          {firstPost.title}
+        </h2>
+        {firstPost ? (
+          <div
+
+            className="w-full flex flex-col p-2 bg-gradient-to-t from-[#CA95FF] to-white border-[1.8px] border-[#D6ACFF] rounded-2xl mb-3.5   aspect-video"
+          >
+            <div className="rounded-2xl overflow-hidden group">
+              <img
+                alt={firstPost.featuredImage?.node.altText || "Post image"}
+                src={
+                  firstPost.featuredImage?.node.mediaItemUrl ||
+                  "/img/bannerSofidev.webp"
+                }
+                className="w-full h-full object-cover group-hover:scale-[1.05]  group-hover:saturate-50 transition-transform duration-500 ease-in-out"
+              />
+            </div>
+          </div>
+        ) : (
+          <p>No hay posts disponibles.</p>
+        )}
+      </a>
+    </>
+  );
+};
+
+export default BlogPost;

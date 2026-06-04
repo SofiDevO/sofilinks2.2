@@ -1,0 +1,50 @@
+---
+import Title from "@shared/components/Title.astro";
+
+const linksAfiliadosf = [
+  {
+    title: "Hostinger",
+    href: "https://www.hostinger.mx/cart?product=hosting%3Acloud_professional&period=12&referral_type=cart_link&REFERRALCODE=sofidev&referral_id=01990760-c4ee-72a9-9487-63a5a7d3a33c",
+    icon: "simple-icons:hostinger",
+    color: "#fffff1",
+    description: "20% de descuento en Cloud Hosting ",
+  },
+  {
+    title: "Hostinger",
+    href: "https://www.hostinger.mx/cart?product=vps%3Avps_kvm_2&period=12&referral_type=cart_link&REFERRALCODE=sofidev&referral_id=01990761-2a13-7281-900c-76302ebf9e64",
+    icon: "simple-icons:hostinger",
+    color: "#fffff1",
+    description: "20% de descuento en Hosting VPS ",
+  },
+];
+---
+
+<Title
+  title="Referidos y descuentos"
+  class="text-center bg-gradient-to-r from-caracol to-celeste bg-clip-text text-4xl lg:text-5xl font-bold text-transparent my-4"
+/>
+<section class="flex flex-col items-center justify-center w-full">
+  <ul class="flex flex-col gap-4 w-full">
+    {
+      linksAfiliadosf.map((link) => (
+        <li class="w-full">
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            class="flex items-center gap-2  text-white bg-caracol px-5  py-6 w-full rounded-md hover:bg-indigo-700"
+          >
+            <iconify-icon
+              class="text-3xl"
+              icon={link.icon}
+              style={`color: ${link.color}`}
+            />
+            {link.description}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style></style>

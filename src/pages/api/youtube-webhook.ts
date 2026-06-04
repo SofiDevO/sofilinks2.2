@@ -21,9 +21,6 @@ export const GET: APIRoute = ({ request }) => {
 // POST endpoint to handle incoming notifications when a new video is published
 export const POST: APIRoute = async ({ request }) => {
   try {
-    // Optionally, you can parse the XML body to log what video was uploaded
-    // const bodyText = await request.text();
-    // console.log("Received WebSub notification:", bodyText);
 
     // Get the Vercel Deploy Hook URL from environment variables
     const deployHookUrl = import.meta.env.VERCEL_DEPLOY_HOOK_URL;
