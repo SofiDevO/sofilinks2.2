@@ -8,7 +8,7 @@ const BlogPost = () => {
   return (
     <>
       <a
-        href={`${userData.blog}/blog/${firstPost.slug}`}
+        href={`${userData.blog}/post/${firstPost.slug}`}
         target="_blank"
         rel="noopener noreferrer nofollow"
         className=" flex-flex-col gap-2 bg-darkpurple p-4 rounded-2xl "
@@ -18,9 +18,7 @@ const BlogPost = () => {
         </h2>
         {firstPost ? (
           <div
-            href={`${userData.blog}/blog/${firstPost.slug}`}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
+
             className="w-full flex flex-col p-2 bg-gradient-to-t from-[#CA95FF] to-white border-[1.8px] border-[#D6ACFF] rounded-2xl mb-3.5   aspect-video"
           >
             <div className="rounded-2xl overflow-hidden group">
