@@ -1,73 +1,32 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [
-    ".astro/types.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist"
-  ],
+  "include": [".astro/types.d.ts", "**/*.ts", "**/*.tsx", "src/**/*"],
+  "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "target": "es5",
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "lib": ["dom", "dom.iterable", "ESNext"],
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@src/*": [
-        "src/*"
-      ],
-      "@features/*": [
-        "src/features/*"
-      ],
-      "@shared/*": [
-        "src/shared/*"
-      ],
-      "@core/*": [
-        "src/core/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@atoms/*": [
-        "src/components/atoms/*"
-      ],
-      "@molecules/*": [
-        "src/components/molecules/*"
-      ],
-      "@organisms/*": [
-        "src/components/organisms/*"
-      ],
-      "@layouts/*": [
-        "src/layouts/*"
-      ],
-      "@pages/*": [
-        "src/pages/*"
-      ],
-      "@controllers/*": [
-        "src/controllers/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@services/*": [
-        "src/services/*"
-      ],
-      "@data/*": [
-        "src/data/*"
-      ],
-      "@sass/*": [
-        "src/sass/*"
-      ],
-      "@img/*": [
-        "public/img/*"
-      ]
+      "@src/*": ["src/*"],
+      "@features/*": ["src/features/*"],
+      "@shared/*": ["src/shared/*"],
+      "@core/*": ["src/core/*"],
+      "@components/*": ["src/components/*"],
+      "@atoms/*": ["src/components/atoms/*"],
+      "@molecules/*": ["src/components/molecules/*"],
+      "@organisms/*": ["src/components/organisms/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@utils/*": ["src/utils/*"],
+      "@services/*": ["src/services/*"],
+      "@data/*": ["src/data/*"],
+      "@sass/*": ["src/sass/*"],
+      "@img/*": ["public/img/*"],
+      "@styles/*": ["src/styles/*"]
     }
   }
 }

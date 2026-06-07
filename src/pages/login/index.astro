@@ -1,0 +1,127 @@
+---
+import Layout from "@src/layouts/Layout.astro";
+import LoginForm from "./_components/LoginForm.astro";
+import { isAuthenticated } from "@src/shared/utils/auth";
+
+if (isAuthenticated(Astro.cookies)) {
+  return Astro.redirect("/dashboard");
+}
+---
+
+<Layout title="Login" description="Login">
+  <main class="w-full h-full min-h-screen flex flex-col items-center mt-20">
+    <div class="w-full max-w-1/2 min-h-[40px] flex items-center justify-center">
+      <span
+        id="errorMessage"
+        class="w-full text-white bg-red-500 px-4 py-2 rounded-lg mt-2 mb-2 max-w-fit hidden mx-auto"
+      >
+        Esá mal y puntot</span
+      >
+    </div>
+    <div class="w-full max-w-1/2 flex flex-col items-center">
+      <h1 class="text-2xl font-bold text-violet-800">Incia sessión</h1>
+      <LoginForm />
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const form = document.getElementById("loginForm") as HTMLFormElement;
+  const submitBtn = document.getElementById("submitBtn") as HTMLButtonElement;
+  const errorMessage = document.getElementById(
+    "errorMessage",
+  ) as HTMLSpanElement;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="loader"></span>';
+    errorMessage.classList.add("hidden");
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        window.location.href = "/dashboard";
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error: any) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML =
+        'Login <iconify-icon icon="solar:login-line-duotone" width="20" height="20"></iconify-icon>';
+      errorMessage.classList.remove("hidden");
+      errorMessage.textContent = error.message;
+    }
+  });
+</script>
+
+<style is:inline>
+  .loader {
+    width: 90px;
+    height: 24px;
+    padding: 2px 0;
+    box-sizing: border-box;
+    display: flex;
+    animation: l5-0 3s infinite steps(6);
+    background:
+      linear-gradient(#37186d 0 0) 0 0/0% 100% no-repeat,
+      radial-gradient(circle 3px, #eeee89 90%, #5c3f97) 0 0/20% 100% #37186d00;
+    overflow: hidden;
+  }
+  .loader::before {
+    content: "";
+    width: 20px;
+    transform: translate(-100%);
+    border-radius: 50%;
+    background: #ffff2d;
+    animation:
+      l5-1 0.25s 0.153s infinite steps(5) alternate,
+      l5-2 3s infinite linear;
+  }
+  @keyframes l5-1 {
+    0% {
+      clip-path: polygon(
+        50% 50%,
+        100% 0,
+        100% 0,
+        0 0,
+        0 100%,
+        100% 100%,
+        100% 100%
+      );
+    }
+    100% {
+      clip-path: polygon(
+        50% 50%,
+        100% 65%,
+        100% 0,
+        0 0,
+        0 100%,
+        100% 100%,
+        100% 35%
+      );
+    }
+  }
+  @keyframes l5-2 {
+    100% {
+      transform: translate(90px);
+    }
+  }
+  @keyframes l5-0 {
+    100% {
+      background-size:
+        120% 100%,
+        20% 100%;
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+import LoginInput from "./LoginInput.astro";
+---
+
+<form id="loginForm" class="space-y-4 bg-violet-950 p-4 rounded-lg" novalidate>
+  <LoginInput name="username" type="text" id="username" label="Usuario" />
+  <LoginInput name="password" type="password" id="password" label="Password" />
+  <button
+    id="submitBtn"
+    type="submit"
+    class="flex items-center justify-between w-full text-left bg-violet-300/30 text-white p-2 rounded-xl"
+  >
+    Login
+    <iconify-icon icon="solar:login-line-duotone" width="20" height="20"
+    ></iconify-icon>
+  </button>
+</form>

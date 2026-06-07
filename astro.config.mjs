@@ -24,6 +24,7 @@ export default defineConfig({
         access: "secret",
       }),
       BEARER_TOKEN: envField.string({ context: "server", access: "secret" }),
+      STORIES_API_URL: envField.string({ context: "server", access: "secret" }),
 
       // ACCESS_TOKEN: envField.string({ context: "server", access: "secret" }),
       // ACCESS_TOKEN_SECRET: envField.string({ context: "server", access: "secret" }),
@@ -33,12 +34,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        '@src': '/src',
-        '@shared': '/src/shared',
-        '@features': '/src/features',
-        '@core': '/src/core',
-      }
-    }
+        "@src": "/src",
+        "@shared": "/src/shared",
+        "@features": "/src/features",
+        "@core": "/src/core",
+      },
+    },
   },
 
   site: "https://links.sofidev.blog",
