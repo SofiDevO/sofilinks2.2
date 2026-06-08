@@ -15,7 +15,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       );
     }
 
-    const API_URL = import.meta.env.STORIES_API_URL;
+    const API_URL = import.meta.env.STORIES_API_URL || "http://localhost:8787";
     const API_KEY = import.meta.env.STORIES_API_KEY;
     const response = await fetch(`${API_URL}/api/v1/auth/login`, {
       method: "POST",
