@@ -27,7 +27,7 @@ export default defineConfig({
       STORIES_API_URL: envField.string({
         context: "server",
         access: "secret",
-        optional: false,
+        optional: true,
       }),
       STORIES_API_KEY: envField.string({
         context: "server",

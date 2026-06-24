@@ -4,8 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev port-4321",
+    "dev:vault": "infisical run --env=dev -- astro dev port-4321",
     "build": "astro build",
+    "build:vault": "infisical run --env=dev -- astro build",
     "preview": "astro preview",
+    "preview:vault": "infisical run --env=dev -- astro preview",
     "astro": "astro"
   },
   "dependencies": {
