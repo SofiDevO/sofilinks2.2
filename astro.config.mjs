@@ -24,12 +24,12 @@ export default defineConfig({
         access: "secret",
       }),
       BEARER_TOKEN: envField.string({ context: "server", access: "secret" }),
-      STORIES_API_URL: envField.string({
+      PUBLIC_STORIES_API_URL: envField.string({
         context: "server",
         access: "secret",
         optional: true,
       }),
-      STORIES_API_KEY: envField.string({
+      PUBLIC_STORIES_API_KEY: envField.string({
         context: "server",
         access: "secret",
         optional: false,
