@@ -1,12 +1,12 @@
-const YTKey = import.meta.env.YT_API_KEY;
-const SiteUrl = import.meta.env.PUBLIC_SITE_URL;
+const API_KEY = import.meta.env.YT_API_KEY;
+const SITE_URL = import.meta.env.PUBLIC_SITE_URL;
 export const fetchYouTubeVideos = async (channelId, maxResults = 10) => {
   const playlistId = channelId.replace(/^UC/, "UU");
-  const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=${maxResults}&key=${YTKey}`;
+  const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=${maxResults}&key=${API_KEY}`;
 
   const response = await fetch(url, {
     headers: {
-      Referer: SiteUrl || "http://localhost:4321",
+      Referer: SITE_URL || "http://localhost:4321",
     },
   });
   if (!response.ok) {

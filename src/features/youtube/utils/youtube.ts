@@ -1,26 +1,24 @@
-
-
 export class fastYoutube extends HTMLElement {
-    static elementName = "fast-youtube";
+  static elementName = "fast-youtube";
 
-    constructor() {
-      super();
-      this.preview();
-    }
+  constructor() {
+    super();
+    this.preview();
+  }
 
-    static get observedAttributes() {
-      return ["id", "title", "start-at"];
-    }
+  static get observedAttributes() {
+    return ["id", "title", "start-at"];
+  }
 
-    connectedCallback() {
-      this.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.setVideo();
-      });
-    }
+  connectedCallback() {
+    this.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.setVideo();
+    });
+  }
 
-    static get style() {
-      return `
+  static get style() {
+    return `
               fast-youtube > .play__container {
                   position: relative;
                   width: 100%;
@@ -92,17 +90,17 @@ export class fastYoutube extends HTMLElement {
 
 
           `;
+  }
+
+  private preview() {
+    if (this.getAttribute("src")) {
+      const src = this.getAttribute("src");
+      if (src) {
+        this.id = this.getId(src);
+      }
     }
 
-    private preview() {
-      if (this.getAttribute("src")) {
-        const src = this.getAttribute("src");
-        if (src) {
-            this.id = this.getId(src);
-        }
-    }
-
-      this.innerHTML = `
+    this.innerHTML = `
 
           <style>${fastYoutube.style}</style>
           <div class="title__container">
@@ -116,29 +114,29 @@ export class fastYoutube extends HTMLElement {
           </noscript>
        `;
 
-      this.setThumbail();
-    }
-
-    private setThumbail() {
-      const thumbJpg = `https://i1.ytimg.com/vi/${this.id}/hqdefault.jpg`;
-
-      this.style.backgroundImage = `url(${thumbJpg})`;
-    }
-
-    private setVideo() {
-      const iframe = document.createElement("iframe");
-      iframe.src = `https://www.youtube-nocookie.com/embed/${this.id}?autoplay=1`;
-      iframe.allow =
-        "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
-      iframe.allowFullscreen = true;
-      this.appendChild(iframe);
-    }
-
-     private getId(src: string) : string {
-      const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([^#&?\s]*)/i;
-      const match = src.match(regex);
-      return match ? match[1] : new URL(src).searchParams.get("v") || "";
-    }
+    this.setThumbail();
   }
 
-  customElements.define(fastYoutube.elementName, fastYoutube);
+  private setThumbail() {
+    const thumbJpg = `https://i1.ytimg.com/vi/${this.id}/hqdefault.jpg`;
+
+    this.style.backgroundImage = `url(${thumbJpg})`;
+  }
+
+  private setVideo() {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube-nocookie.com/embed/${this.id}?autoplay=1`;
+    iframe.allow =
+      "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    this.appendChild(iframe);
+  }
+
+  private getId(src: string): string {
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([^#&?\s]*)/i;
+    const match = src.match(regex);
+    return match ? match[1] : new URL(src).searchParams.get("v") || "";
+  }
+}
+
+customElements.define(fastYoutube.elementName, fastYoutube);

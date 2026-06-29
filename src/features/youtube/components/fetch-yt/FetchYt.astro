@@ -5,7 +5,6 @@ import { fetchPlaylist } from "@features/youtube/services/fetchPlaylist.js";
 let playlists: any[] = [];
 let error: string | null = null;
 
-// Load playlists
 const result = await fetchPlaylist();
 playlists = result.playlists;
 // console.log(playlists);
@@ -17,8 +16,8 @@ error = result.error;
   {
     !error && playlists.length > 0 && (
       <>
-      <Title title="Cursos" />
-      <div class="playlists-container">
+        <Title title="Cursos" />
+        <div class="playlists-container">
           <div class="playlists-grid">
             {playlists.map((playlist) => (
               <a
@@ -51,11 +50,10 @@ error = result.error;
               </a>
             ))}
           </div>
-      </div>
+        </div>
       </>
     )
   }
-
 </div>
 <style>
   .youtube-feed {
@@ -87,7 +85,7 @@ error = result.error;
   .playlist-card {
     background: #1a1a1a;
     display: flex;
-    gap: .6rem;
+    gap: 0.6rem;
     width: 100%;
     min-height: 153px;
     border-radius: 0.5rem;
@@ -118,7 +116,6 @@ error = result.error;
     object-fit: cover;
   }
 
-
   .playlist-info {
     padding: 1rem;
   }
@@ -129,7 +126,7 @@ error = result.error;
     font-weight: 600;
     margin-bottom: 0.5rem;
     line-height: 1.4;
-    @media (width<= 768px){
+    @media (width<= 768px) {
       font-size: 1rem;
     }
   }
@@ -153,6 +150,4 @@ error = result.error;
     font-size: 0.75rem;
     font-weight: 500;
   }
-
-
 </style>

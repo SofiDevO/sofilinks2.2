@@ -12,12 +12,12 @@ jobs:
     steps:
       - name: Trigger Vercel Deploy Hook
         run: |
-          echo "🎬 Nuevo video detectado — disparando rebuild en Vercel..."
+          echo "Nuevo video detectado — disparando rebuild en Vercel..."
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}")
 
           if [ "$RESPONSE" = "201" ]; then
-            echo "✅ Deploy hook disparado correctamente (201)."
+            echo "Deploy hook disparado correctamente (201)."
           else
-            echo "❌ Falló el deploy hook. HTTP status: $RESPONSE"
+            echo "Falló el deploy hook. HTTP status: $RESPONSE"
             exit 1
           fi

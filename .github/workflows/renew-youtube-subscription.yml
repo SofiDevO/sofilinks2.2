@@ -1,7 +1,6 @@
 name: Renew YouTube PubSubHubbub Subscription
 
 on:
-  # Ejecutar cada 4 días a las 9am UTC (1 día antes de que caduquen los 5 días de lease)
   schedule:
     - cron: '0 9 */4 * *'
   # Permitir ejecución manual desde GitHub → Actions → Run workflow
@@ -15,7 +14,7 @@ jobs:
     steps:
       - name: Subscribe / Renew
         run: |
-          echo "🔄 Renovando suscripción PubSubHubbub de YouTube..."
+          echo "Renovando suscripción PubSubHubbub de YouTube..."
 
           RESPONSE=$(curl -s -w "\n%{http_code}" -X POST 'https://pubsubhubbub.appspot.com/subscribe' \
             -d 'hub.callback=https://links.sofidev.blog/api/youtube-webhook' \
@@ -28,10 +27,10 @@ jobs:
           HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
 
           if [ "$HTTP_STATUS" = "202" ]; then
-            echo "✅ Suscripción renovada correctamente (202 Accepted)."
-            echo "   Próxima expiración: en 5 días."
+            echo "Suscripción renovada correctamente (202 Accepted)."
+            echo "Próxima expiración: en 5 días."
           else
-            echo "❌ Falló la renovación. HTTP status: $HTTP_STATUS"
+            echo "Falló la renovación. HTTP status: $HTTP_STATUS"
             echo "$RESPONSE"
             exit 1
           fi

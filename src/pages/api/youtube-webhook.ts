@@ -49,7 +49,7 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response("Unauthorized — invalid signature", { status: 401 });
       }
 
-      console.log("[youtube-webhook] Firma HMAC verificada ✅");
+      console.log("[youtube-webhook] Firma HMAC verificada ");
     } else {
       console.warn("[youtube-webhook] YT_SECRET no configurado — saltando validación de firma.");
     }
@@ -78,12 +78,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     // GitHub responde 204 No Content en éxito
     if (githubResponse.status === 204) {
-      console.log("[youtube-webhook] ✅ repository_dispatch disparado correctamente.");
+      console.log("[youtube-webhook] repository_dispatch disparado correctamente.");
       return new Response("Webhook received and deploy triggered.", { status: 200 });
     }
 
     const errText = await githubResponse.text();
-    console.error(`[youtube-webhook] ❌ Falló el dispatch: ${githubResponse.status} — ${errText}`);
+    console.error(`[youtube-webhook] Falló el dispatch: ${githubResponse.status} — ${errText}`);
     return new Response("Failed to trigger GitHub dispatch.", { status: 500 });
 
   } catch (error) {
