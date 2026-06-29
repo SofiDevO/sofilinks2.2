@@ -18,10 +18,15 @@ export default defineConfig({
         access: "secret",
         optional: true,
       }),
-      VERCEL_DEPLOY_HOOK_URL: envField.string({
+      GH_PAT: envField.string({
         context: "server",
         access: "secret",
-        optional: true, // inyectado por Infisical en producción
+        optional: true, // GitHub Personal Access Token — inyectado por Infisical
+      }),
+      GH_REPO: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true, // formato: "owner/repo", ej: "SofiDevO/sofilinks2.2"
       }),
       YT_API_KEY: envField.string({
         required: true,

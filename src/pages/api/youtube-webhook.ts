@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { createHmac } from "node:crypto";
 
-// GET endpoint to handle the WebSub/PubSubHubbub verification challenge from YouTube
+// GET: Verificación de suscripción PubSubHubbub — YouTube confirma la URL del webhook
 export const GET: APIRoute = ({ request }) => {
   const url = new URL(request.url);
   const challenge = url.searchParams.get("hub.challenge");
@@ -21,11 +21,12 @@ export const GET: APIRoute = ({ request }) => {
   return new Response("Missing hub.challenge", { status: 400 });
 };
 
-// POST endpoint: YouTube notifica un nuevo video → dispara Vercel deploy hook
+// POST: YouTube notifica un nuevo video → dispara repository_dispatch en GitHub
 export const POST: APIRoute = async ({ request }) => {
   try {
     const secret = import.meta.env.YT_SECRET;
-    const deployHookUrl = import.meta.env.VERCEL_DEPLOY_HOOK_URL;
+    const ghPat = import.meta.env.GH_PAT;
+    const ghRepo = import.meta.env.GH_REPO; // formato: "owner/repo"
 
     // --- Validar firma HMAC-SHA1 de YouTube ---
     if (secret) {
@@ -39,14 +40,12 @@ export const POST: APIRoute = async ({ request }) => {
       const [algo, receivedHash] = signature.split("=");
 
       if (algo !== "sha1") {
-        console.warn(`[youtube-webhook] Algoritmo de firma inesperado: ${algo}`);
         return new Response("Unauthorized — unexpected algorithm", { status: 401 });
       }
 
       const expectedHash = createHmac("sha1", secret).update(body).digest("hex");
-
       if (expectedHash !== receivedHash) {
-        console.error("[youtube-webhook] Firma HMAC inválida — posible petición no autorizada.");
+        console.error("[youtube-webhook] Firma HMAC inválida.");
         return new Response("Unauthorized — invalid signature", { status: 401 });
       }
 
@@ -55,23 +54,38 @@ export const POST: APIRoute = async ({ request }) => {
       console.warn("[youtube-webhook] YT_SECRET no configurado — saltando validación de firma.");
     }
 
-    // --- Disparar Vercel Deploy Hook ---
-    if (!deployHookUrl) {
-      console.error("[youtube-webhook] VERCEL_DEPLOY_HOOK_URL no está configurada.");
-      return new Response("Deploy hook URL not configured.", { status: 500 });
+    // --- Disparar repository_dispatch en GitHub ---
+    if (!ghPat || !ghRepo) {
+      console.error("[youtube-webhook] GH_PAT o GH_REPO no están configurados.");
+      return new Response("GitHub credentials not configured.", { status: 500 });
     }
 
-    console.log("[youtube-webhook] Disparando Vercel deploy hook...");
-    const vercelResponse = await fetch(deployHookUrl, { method: "POST" });
+    console.log(`[youtube-webhook] Disparando repository_dispatch en ${ghRepo}...`);
 
-    if (vercelResponse.ok) {
-      console.log("[youtube-webhook] ✅ Deploy hook disparado correctamente.");
+    const githubResponse = await fetch(
+      `https://api.github.com/repos/${ghRepo}/dispatches`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${ghPat}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ event_type: "youtube-new-video" }),
+      }
+    );
+
+    // GitHub responde 204 No Content en éxito
+    if (githubResponse.status === 204) {
+      console.log("[youtube-webhook] ✅ repository_dispatch disparado correctamente.");
       return new Response("Webhook received and deploy triggered.", { status: 200 });
-    } else {
-      const errText = await vercelResponse.text();
-      console.error(`[youtube-webhook] ❌ Falló el deploy hook: ${vercelResponse.status} — ${errText}`);
-      return new Response("Failed to trigger deploy.", { status: 500 });
     }
+
+    const errText = await githubResponse.text();
+    console.error(`[youtube-webhook] ❌ Falló el dispatch: ${githubResponse.status} — ${errText}`);
+    return new Response("Failed to trigger GitHub dispatch.", { status: 500 });
+
   } catch (error) {
     console.error("[youtube-webhook] Error inesperado:", error);
     return new Response("Internal Server Error", { status: 500 });
