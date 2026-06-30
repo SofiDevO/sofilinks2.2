@@ -2,8 +2,6 @@
 import { isAuthenticated } from "@src/shared/utils/auth";
 const payload = await isAuthenticated(Astro.cookies);
 
-console.log(payload);
-
 if (!payload) {
   return Astro.redirect("/login");
 }

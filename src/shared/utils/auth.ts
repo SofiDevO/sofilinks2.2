@@ -8,14 +8,18 @@ export function getToken(cookies: AstroCookies): string | undefined {
 }
 
 export async function isAuthenticated(cookies: AstroCookies) {
+  const token = getToken(cookies);
+  // console.log(token);
 
-  console.log(getToken(cookies));
+  if (!token) {
+    return false;
+  }
 
   try {
     const verifyTokenResponse = await fetch(`${API_URL}/api/v1/auth/verify`, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${getToken(cookies)}`,
+        "Authorization": `Bearer ${token}`,
         "X-API-Key": API_KEY
       }
     });
@@ -23,7 +27,7 @@ export async function isAuthenticated(cookies: AstroCookies) {
     if (!verifyTokenResponse.ok) {
       throw new Error("Invalid token");
     }
-    console.log(verifyTokenResponse.ok);
+    // console.log(verifyTokenResponse.ok);
 
     return verifyTokenResponse.ok;
   } catch (error) {
