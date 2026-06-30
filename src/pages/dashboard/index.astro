@@ -1,5 +1,12 @@
 ---
+import { isAuthenticated } from "@src/shared/utils/auth";
+const payload = await isAuthenticated(Astro.cookies);
 
+console.log(payload);
+
+if (!payload) {
+  return Astro.redirect("/login");
+}
 ---
 
 <h1>Dashboard</h1>

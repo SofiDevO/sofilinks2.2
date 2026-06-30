@@ -2,8 +2,8 @@
 import Layout from "@src/layouts/Layout.astro";
 import LoginForm from "./_components/LoginForm.astro";
 import { isAuthenticated } from "@src/shared/utils/auth";
-
-if (isAuthenticated(Astro.cookies)) {
+const payload = await isAuthenticated(Astro.cookies);
+if (payload) {
   return Astro.redirect("/dashboard");
 }
 ---
