@@ -8,16 +8,173 @@ if (!payload) {
 }
 ---
 
+<script>
+  const toggleSidebar = document.querySelector(
+    "#toggle-sidebar",
+  ) as HTMLElement;
+  const sidebar = document.querySelector(".dashboad-sidebar") as HTMLElement;
+
+  let userPreferences = { active: false };
+  const storedPreferences = localStorage.getItem("dashboard-preferences");
+
+  if (storedPreferences) {
+    userPreferences = JSON.parse(storedPreferences);
+    if (userPreferences.active) {
+      sidebar.classList.add("active");
+      toggleSidebar.classList.add("active");
+    }
+  }
+  toggleSidebar.addEventListener("click", (e) => {
+    e.preventDefault();
+    userPreferences.active = !userPreferences.active;
+
+    sidebar.classList.toggle("active", userPreferences.active);
+    toggleSidebar.classList.toggle("active", userPreferences.active);
+
+    localStorage.setItem(
+      "dashboard-preferences",
+      JSON.stringify(userPreferences),
+    );
+  });
+</script>
 <Layout title="Dashboard" description="Dashboard">
-  <main>
-    <div class="dashboard-grid">
-      <h1>Dashboard</h1>
+  <div class="dashboard-grid">
+    <div class="dashboad-sidebar">
+      <div
+        class="logo flex items-center justify-center overflow-hidden w-10 h-10"
+      >
+        <img
+          src="/img/favicon.png"
+          alt="Panel de control"
+          class="w-full h-full onject-cover"
+        />
+      </div>
+      <button id="toggle-sidebar" class="dashboard-button">
+        <iconify-icon icon="fluent:panel-left-24-filled" width="40" height="40"
+        ></iconify-icon>
+      </button>
+      <nav>
+        <ul>
+          <li>
+            <a href="/dashboard" class="nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-layout-dashboard"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z"></path>
+                <path d="M4 4h6v8H4z"></path>
+                <path d="M14 4h6v6H14z"></path>
+                <path d="M4 16h6v6H4z"></path>
+                <path d="M14 12h6v8H14z"></path>
+              </svg>
+              <span class="nav-text">Panel de control</span>
+            </a>
+          </li>
+          <li>
+            <a href="/dashboard/stories" class="nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-layout-dashboard"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z"></path>
+                <path d="M4 4h6v8H4z"></path>
+                <path d="M14 4h6v6H14z"></path>
+                <path d="M4 16h6v6H4z"></path>
+                <path d="M14 12h6v8H14z"></path>
+              </svg>
+              <span class="nav-text">Panel de control</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-  </main>
+    <main class="dashboard-main">
+      <h1>Panel de control</h1>
+    </main>
+  </div>
 </Layout>
 
 <style>
   .dashboard-grid {
+    --sidebar-width: 6rem;
+    --sidebar-padding: 2rem 1rem;
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "sidebar main "
+      "sidebar main ";
     width: 100%;
+    min-height: 100vh;
+    transition: grid-template-columns 0.3s;
+    overflow: hidden;
+    &:has(> .dashboad-sidebar.active) {
+      --sidebar-width: 300px;
+      --sidebar-padding: 2rem;
+    }
+    @media (max-width: 768px) {
+      --sidebar-width: 6rem;
+      --sidebar-padding: 1rem;
+      &.sidebar-open {
+        --sidebar-width: 300px;
+      }
+    }
+  }
+  .dashboard-button {
+    background-color: var(--button-bg);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  .dashboad-sidebar {
+    grid-area: sidebar;
+    border-right: 1px solid var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .dashboard-main {
+    grid-area: main;
+  }
+  .logo {
+    margin-bottom: 2rem;
+  }
+  nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: all 0.2s ease-in-out;
+  }
+  .nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
   }
 </style>

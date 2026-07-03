@@ -26,12 +26,12 @@
 
 :root {
     --swiper-navigation-color: rgb(68, 0, 255);
-    
+
     /* Variables for dynamic theme support */
     --bg-color-default: #E8E7E7;
     --text-color: #181818;
     --card-bg: #ffffff;
-    
+
 
 }
 
@@ -71,11 +71,6 @@ body {
     overflow-x: hidden;
 
 
-    @media (min-width: 1280px) {
-
-        max-width: 750px;
-
-    }
 }
 
 .text-gradient {
