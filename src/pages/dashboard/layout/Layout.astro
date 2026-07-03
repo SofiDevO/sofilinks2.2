@@ -1,0 +1,17 @@
+---
+import BaseHead from "@core/components/BaseHead.astro";
+
+const { title, description } = Astro.props;
+---
+
+<script>
+    import { fastYoutube } from "@features/youtube/utils/youtube";
+</script>
+<html lang="es">
+    <head>
+        <BaseHead title={title} description={description} />
+    </head>
+    <body class="flex flex-col min-h-screen w-full !bg-slate-900">
+        <slot />
+    </body>
+</html>

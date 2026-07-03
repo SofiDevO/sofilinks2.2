@@ -11,18 +11,18 @@ main {
   padding: 11rem 3rem 30rem;
 
   p > a {
-    color: var(--purple-color);
+    color: var(--color-caracol);
   }
 
   h1 {
-    color: var(--purple-color);
+    color: var(--color-caracol);
     font-size: 4rem;
     font-weight: 700;
     margin-bottom: 1rem;
   }
 
   h2 {
-    color: var(--purple-color);
+    color: var(--color-caracol);
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 1rem;

@@ -5,10 +5,15 @@ const getPublicHeaders = () => ({
   "x-api-key": API_KEY,
 });
 
-const getAdminHeaders = (token?: string) => ({
-  "Content-Type": "application/json",
-  "x-api-key": token || API_KEY,
-});
+const getAdminHeaders = (token?: string) => {
+  if (!token) {
+    throw new Error("Admin token is required");
+  }
+  return {
+    "Content-Type": "application/json",
+    "x-api-key": token,
+  };
+};
 
 async function apiFetch(path: string, options: RequestInit) {
   try {

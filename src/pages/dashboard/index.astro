@@ -1,5 +1,6 @@
 ---
 import { isAuthenticated } from "@src/shared/utils/auth";
+import Layout from "./layout/Layout.astro";
 const payload = await isAuthenticated(Astro.cookies);
 
 if (!payload) {
@@ -7,4 +8,16 @@ if (!payload) {
 }
 ---
 
-<h1>Dashboard</h1>
+<Layout title="Dashboard" description="Dashboard">
+  <main>
+    <div class="dashboard-grid">
+      <h1>Dashboard</h1>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .dashboard-grid {
+    width: 100%;
+  }
+</style>

@@ -2,23 +2,37 @@
 @plugin '@tailwindcss/typography';
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-    --swiper-navigation-color: rgb(68, 0, 255);
-    --ufo-green: #33ff76;
-    --white-color: #E8E7E7;
-    --bg-color-default: var(--white-color);
-    --text-color: #181818;
-    --purple-color: #6A00FF;
-    --soft-purple: #CA95FF;
-    --dark-purple: #140030;
-    --clock-font: "DigitalNumbers-Regular", sans-serif;
-    --card-bg: #ffffff;
+@theme {
+    /* Dynamic Theme Colors (Light/Dark mode) */
+    --color-primary: var(--bg-color-default);
+    --color-color-text: var(--text-color);
+    --color-card: var(--card-bg);
+
+    /* Static Theme Colors */
+    --color-ufo: #33ff76;
+    --color-btn: #F5F5F5;
+    --color-caracol: #6A00FF;
+    --color-softpurple: #CA95FF;
     --color-celeste: rgba(0, 116, 174, 0.92);
+    --color-darkpurple: #140030;
+
+    /* Drop Shadows and Box Shadows */
+    --shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
+    --drop-shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
+
+    /* Fonts */
+    --font-clock: "DigitalNumbers-Regular", sans-serif;
 }
 
-div.swiper-button-next svg,
-div.swiper-button-prev svg {
-    background: black !important;
+:root {
+    --swiper-navigation-color: rgb(68, 0, 255);
+    
+    /* Variables for dynamic theme support */
+    --bg-color-default: #E8E7E7;
+    --text-color: #181818;
+    --card-bg: #ffffff;
+    
+
 }
 
 /* bg-gradient-to-t from-[#CA95FF] to-white */
@@ -27,24 +41,15 @@ div.swiper-button-prev svg {
     src: url("/fonts/DigitalNumbers-Regular.ttf") format("truetype");
 }
 
-
-@theme {
-    --color-primary: var(--bg-color-default);
-    --color-ufo: var(--ufo-green);
-    --color-color-text: var(--text-color);
-    --color-btn: #F5F5F5;
-    --color-caracol: var(--purple-color);
-    --color-softpurple: var(--soft-purple);
-    --color-celeste: var(--color-celeste);
-    --color-darkpurple: var(--dark-purple);
-    --color-card: var(--card-bg);
-    --drop-shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
-}
-
 .dark {
     --bg-color-default: #191b22;
     --text-color: #E8E7E7;
     --card-bg: #0c0c0c;
+}
+
+div.swiper-button-next svg,
+div.swiper-button-prev svg {
+    background: black !important;
 }
 
 body:has(dialog[open]) {
@@ -64,8 +69,7 @@ body {
     align-items: center;
     width: 100%;
     overflow-x: hidden;
-    max-width: 600px;
-    box-shadow: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
+
 
     @media (min-width: 1280px) {
 
@@ -75,8 +79,8 @@ body {
 }
 
 .text-gradient {
-    background: var(--purple-color);
-    background: linear-gradient(90deg, #6A00FF 0%, rgba(0, 116, 174, 0.92) 100%);
+    background: var(--color-caracol);
+    background: linear-gradient(90deg, var(--color-caracol) 0%, var(--color-celeste) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

@@ -1,8 +1,8 @@
 .dateTime {
     font-size: clamp(1rem, 2vw, 3rem);
-    color: var(--purple-color);
+    color: var(--color-caracol);
     font-weight: 700;
-    font-family: var(--clock-font);
+    font-family: var(--font-clock);
 }
 .dark{
     .dateTime{
