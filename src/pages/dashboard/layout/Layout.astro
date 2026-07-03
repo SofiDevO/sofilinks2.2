@@ -1,5 +1,6 @@
 ---
 import BaseHead from "@core/components/BaseHead.astro";
+import ThemeButton from "@src/shared/components/ThemeButton.astro";
 
 const { title, description } = Astro.props;
 ---
@@ -11,7 +12,8 @@ const { title, description } = Astro.props;
     <head>
         <BaseHead title={title} description={description} />
     </head>
-    <body class="flex flex-col min-h-screen w-full !bg-slate-900">
+    <body class="flex flex-col min-h-screen w-full">
+        <ThemeButton class="fixed bottom-5 right-5" />
         <slot />
     </body>
 </html>
