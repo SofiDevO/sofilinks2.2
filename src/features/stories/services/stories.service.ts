@@ -2,8 +2,8 @@ import type {
   Story,
   Comment,
   LikeResponse,
-  ApiResponse,
 } from "../types/stories.types";
+import type { ApiResponse } from "@shared/types/api.types";
 import { apiFetch, getPublicHeaders } from "@shared/helpers/stories.helpers";
 
 export const storiesService = {

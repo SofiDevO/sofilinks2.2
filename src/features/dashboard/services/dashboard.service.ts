@@ -1,4 +1,4 @@
-import type { ApiResponse } from "@features/stories/types/stories.types";
+import type { ApiResponse } from "@shared/types/api.types";
 import type { Ban } from "../types/dashboard.types";
 import {
   apiFetch,
