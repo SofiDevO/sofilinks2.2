@@ -1,10 +1,11 @@
 ---
 import LoginInput from "./LoginInput.astro";
+import PasswordInput from "./PasswordInput.astro";
 ---
 
 <form id="loginForm" class="space-y-4 bg-violet-950 p-4 rounded-lg" novalidate>
   <LoginInput name="username" type="text" id="username" label="Usuario" />
-  <LoginInput name="password" type="password" id="password" label="Password" />
+  <PasswordInput name="password" id="password" label="Password" />
   <button
     id="submitBtn"
     type="submit"

@@ -1,83 +1,82 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin '@tailwindcss/typography';
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    /* Dynamic Theme Colors (Light/Dark mode) */
-    --color-primary: var(--bg-color-default);
-    --color-color-text: var(--text-color);
-    --color-card: var(--card-bg);
+  /* Dynamic Theme Colors (Light/Dark mode) */
+  --color-primary: var(--bg-color-default);
+  --color-color-text: var(--text-color);
+  --color-card: var(--card-bg);
 
-    /* Static Theme Colors */
-    --color-ufo: #33ff76;
-    --color-btn: #F5F5F5;
-    --color-caracol: #6A00FF;
-    --color-softpurple: #CA95FF;
-    --color-celeste: rgba(0, 116, 174, 0.92);
-    --color-darkpurple: #140030;
+  /* Static Theme Colors */
+  --color-ufo: #33ff76;
+  --color-btn: #f5f5f5;
+  --color-caracol: #6a00ff;
+  --color-softpurple: #ca95ff;
+  --color-celeste: rgba(0, 116, 174, 0.92);
+  --color-darkpurple: #140030;
 
-    /* Drop Shadows and Box Shadows */
-    --shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
-    --drop-shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
+  /* Drop Shadows and Box Shadows */
+  --shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
+  --drop-shadow-shadow-cards: 0px 2px 6.8px 0px rgba(0, 0, 0, 0.25);
 
-    /* Fonts */
-    --font-clock: "DigitalNumbers-Regular", sans-serif;
+  /* Fonts */
+  --font-clock: "DigitalNumbers-Regular", sans-serif;
 }
 
 :root {
-    --swiper-navigation-color: rgb(68, 0, 255);
+  --swiper-navigation-color: rgb(68, 0, 255);
 
-    /* Variables for dynamic theme support */
-    --bg-color-default: #E8E7E7;
-    --text-color: #181818;
-    --card-bg: #ffffff;
-
-
+  /* Variables for dynamic theme support */
+  --bg-color-default: #e8e7e7;
+  --text-color: rgb(24, 24, 24);
+  --card-bg: #ffffff;
 }
 
 /* bg-gradient-to-t from-[#CA95FF] to-white */
 @font-face {
-    font-family: "DigitalNumbers-Regular";
-    src: url("/fonts/DigitalNumbers-Regular.ttf") format("truetype");
+  font-family: "DigitalNumbers-Regular";
+  src: url("/fonts/DigitalNumbers-Regular.ttf") format("truetype");
 }
 
 .dark {
-    --bg-color-default: #191b22;
-    --text-color: #E8E7E7;
-    --card-bg: #0c0c0c;
+  --bg-color-default: #191b22;
+  --text-color: rgb(232, 231, 231);
+  --card-bg: #0c0c0c;
 }
 
 div.swiper-button-next svg,
 div.swiper-button-prev svg {
-    background: black !important;
+  background: black !important;
 }
 
 body:has(dialog[open]) {
-    overflow: hidden;
-    -webkit-overflow-scrolling: none;
-    overscroll-behavior: none;
-
+  overflow: hidden;
+  -webkit-overflow-scrolling: none;
+  overscroll-behavior: none;
 }
 
 body {
-    font-family: sans-serif;
-    background-color: var(--color-primary);
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    align-items: center;
-    width: 100%;
-    overflow-x: hidden;
-
-
+  font-family: sans-serif;
+  background-color: var(--color-primary);
+  color: var(--color-color-text);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .text-gradient {
-    background: var(--color-caracol);
-    background: linear-gradient(90deg, var(--color-caracol) 0%, var(--color-celeste) 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
+  background: var(--color-caracol);
+  background: linear-gradient(
+    90deg,
+    var(--color-caracol) 0%,
+    var(--color-celeste) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
