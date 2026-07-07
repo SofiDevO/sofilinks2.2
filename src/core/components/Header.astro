@@ -5,7 +5,7 @@ import { fade } from "astro:transitions";
 ---
 
 <header
-  class="header w-full min-h-[8rem] flex flex-col justify-start relative margin-x-auto"
+  class="header w-full min-h-32 flex flex-col justify-start relative margin-x-auto"
 >
   <div class="banner__container">
     <img
@@ -25,7 +25,10 @@ import { fade } from "astro:transitions";
 </header>
 
 <script>
-  import { waitForImageLoad, getPrevalentColor } from "@shared/utils/get-img-color.ts";
+  import {
+    waitForImageLoad,
+    getPrevalentColor,
+  } from "@shared/utils/get-img-color.ts";
   const header = document.querySelector(".header") as HTMLDivElement;
   const canvas = document.querySelector("canvas") as HTMLCanvasElement;
   let banner = document.querySelector(".banner-img") as HTMLImageElement;
@@ -95,7 +98,6 @@ import { fade } from "astro:transitions";
     /* height: 33dvh; */
     height: var(--img-height);
     z-index: -10;
-
   }
   .banner-img {
     height: var(--img-height);
