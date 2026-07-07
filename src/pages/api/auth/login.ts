@@ -26,6 +26,16 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       },
       body: JSON.stringify({ username, password }),
     });
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.includes("application/json")) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: `API unreachable or misconfigured (status: ${response.status}). Check PUBLIC_STORIES_API_URL.`,
+        }),
+        { status: 502 },
+      );
+    }
     const data = await response.json();
 
     if (!response.ok) {
