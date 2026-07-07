@@ -1,7 +1,7 @@
 import type { AstroCookies } from "astro";
 
 const TOKEN_NAME = "stories_token";
-const API_URL = import.meta.env.PUBLIC_STORIES_API_URL || "http://localhost:3000";
+const API_URL = import.meta.env.PUBLIC_STORIES_API_URL || "http://localhost:8787";
 const API_KEY = import.meta.env.PUBLIC_STORIES_API_KEY;
 export function getToken(cookies: AstroCookies): string | undefined {
   return cookies.get(TOKEN_NAME)?.value;
