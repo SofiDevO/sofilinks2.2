@@ -11,7 +11,8 @@ const getAdminHeaders = (token?: string) => {
   }
   return {
     "Content-Type": "application/json",
-    "x-api-key": token,
+    "X-API-Key": API_KEY,
+    "Authorization": `Bearer ${token}`,
   };
 };
 

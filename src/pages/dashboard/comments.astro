@@ -1,0 +1,291 @@
+---
+import { isAuthenticated } from "@src/shared/utils/auth";
+import Layout from "./layout/Layout.astro";
+import { serverFetch } from "@features/dashboard/services/server-fetch";
+import type { Story, Comment } from "@features/stories/types/stories.types";
+
+const payload = await isAuthenticated(Astro.cookies);
+
+if (!payload) {
+  return Astro.redirect("/login");
+}
+
+const storiesRes = await serverFetch<Story[]>(Astro.cookies, "/api/v1/stories");
+const stories = storiesRes.data ?? [];
+
+// Fetch comments for each story
+interface StoryWithComments {
+  story: Story;
+  comments: Comment[];
+}
+
+const storiesWithComments: StoryWithComments[] = [];
+
+for (const story of stories) {
+  const commentsRes = await serverFetch<Comment[]>(
+    Astro.cookies,
+    `/api/v1/stories/${story.id}/comments`,
+  );
+  storiesWithComments.push({
+    story,
+    comments: commentsRes.data ?? [],
+  });
+}
+
+const totalComments = storiesWithComments.reduce(
+  (acc, s) => acc + s.comments.length,
+  0,
+);
+
+const formatDate = (dateStr: string) => {
+  return new Date(dateStr).toLocaleDateString("es-MX", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+---
+
+<Layout title="Comentarios - Dashboard" description="Comentarios de las stories">
+  <section slot="main" class="comments-page">
+    <div class="comments-header">
+      <div>
+        <h1 class="page-title">Comentarios</h1>
+        <p class="page-subtitle">{totalComments} comentarios en {stories.length} stories</p>
+      </div>
+    </div>
+
+    {storiesWithComments.length === 0 ? (
+      <div class="comments-empty">
+        <iconify-icon
+          icon="mdi:comment-text-multiple-outline"
+          width="48"
+          height="48"
+          style="opacity: 0.3;"
+        />
+        <p>No hay stories activas</p>
+        <span>Los comentarios apareceran cuando haya stories publicadas</span>
+      </div>
+    ) : (
+      <div class="comments-list">
+        {storiesWithComments.map(({ story, comments }) => (
+          <article class="comments-story-group">
+            <div class="story-group-header">
+              <div class="story-group-thumb">
+                <video
+                  src={story.videoUrl}
+                  muted
+                  preload="metadata"
+                  class="group-thumb-video"
+                />
+              </div>
+              <div class="story-group-info">
+                <span class="story-group-id" title={story.id}>
+                  {story.id.substring(0, 8)}...
+                </span>
+                <span class="story-group-date">{formatDate(story.createdAt)}</span>
+                <span class="story-group-count">
+                  {comments.length} {comments.length === 1 ? "comentario" : "comentarios"}
+                </span>
+              </div>
+            </div>
+
+            {comments.length === 0 ? (
+              <p class="no-comments-text">Sin comentarios aun</p>
+            ) : (
+              <div class="comments-thread">
+                {comments.map((comment) => (
+                  <div class="comment-item">
+                    <div class="comment-avatar">
+                      <iconify-icon icon="mdi:account-circle" width="28" height="28" />
+                    </div>
+                    <div class="comment-body">
+                      <p class="comment-content">{comment.content}</p>
+                      <span class="comment-date">{formatDate(comment.createdAt)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style is:inline>
+  .comments-page {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-color-text);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
+    color: color-mix(in srgb, var(--color-color-text) 60%, transparent);
+    margin: 0;
+  }
+
+  .comments-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 3rem;
+    text-align: center;
+    border: 2px dashed color-mix(in srgb, var(--color-color-text) 15%, transparent);
+    border-radius: 1rem;
+  }
+
+  .comments-empty p {
+    margin: 0;
+    font-weight: 600;
+    color: var(--color-color-text);
+    opacity: 0.6;
+  }
+
+  .comments-empty span {
+    font-size: 0.8rem;
+    color: var(--color-color-text);
+    opacity: 0.4;
+  }
+
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .comments-story-group {
+    border: 1px solid color-mix(in srgb, var(--color-color-text) 10%, transparent);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  .story-group-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: color-mix(in srgb, var(--color-color-text) 3%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-color-text) 8%, transparent);
+  }
+
+  .story-group-thumb {
+    width: 40px;
+    height: 56px;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    background: #1a1a2e;
+    flex-shrink: 0;
+  }
+
+  .group-thumb-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .story-group-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .story-group-id {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--color-caracol);
+    font-weight: 600;
+  }
+
+  .story-group-date {
+    font-size: 0.75rem;
+    color: color-mix(in srgb, var(--color-color-text) 50%, transparent);
+  }
+
+  .story-group-count {
+    font-size: 0.75rem;
+    color: color-mix(in srgb, var(--color-color-text) 40%, transparent);
+  }
+
+  .no-comments-text {
+    padding: 1rem;
+    margin: 0;
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--color-color-text) 40%, transparent);
+    text-align: center;
+  }
+
+  .comments-thread {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comment-item {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-color-text) 5%, transparent);
+    transition: background 0.15s ease;
+  }
+
+  .comment-item:last-child {
+    border-bottom: none;
+  }
+
+  .comment-item:hover {
+    background: color-mix(in srgb, var(--color-color-text) 2%, transparent);
+  }
+
+  .comment-avatar {
+    color: color-mix(in srgb, var(--color-color-text) 30%, transparent);
+    flex-shrink: 0;
+    padding-top: 0.1rem;
+  }
+
+  .comment-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .comment-content {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--color-color-text);
+    word-break: break-word;
+  }
+
+  .comment-date {
+    font-size: 0.7rem;
+    color: color-mix(in srgb, var(--color-color-text) 40%, transparent);
+  }
+
+  @media (max-width: 640px) {
+    .story-group-header {
+      padding: 0.5rem 0.75rem;
+    }
+    .comment-item {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+import { isAuthenticated } from "@src/shared/utils/auth";
+import Layout from "./layout/Layout.astro";
+import { serverFetch } from "@features/dashboard/services/server-fetch";
+import type { Ban } from "@features/dashboard/types/dashboard.types";
+import BansPanel from "@features/dashboard/components/BansPanel";
+
+const payload = await isAuthenticated(Astro.cookies);
+
+if (!payload) {
+  return Astro.redirect("/login");
+}
+
+const bansRes = await serverFetch<Ban[]>(Astro.cookies, "/api/v1/admin/bans");
+const bans = bansRes.data ?? [];
+---
+
+<Layout title="Baneos - Dashboard" description="Gestion de IPs baneadas">
+  <section slot="main" class="bans-page">
+    <div class="bans-header">
+      <div>
+        <h1 class="page-title">Baneos</h1>
+        <p class="page-subtitle">Administra las IPs bloqueadas</p>
+      </div>
+    </div>
+
+    <BansPanel initialBans={bans} client:load />
+  </section>
+</Layout>
+
+<style is:inline>
+  .bans-page {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .bans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-color-text);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
+    color: color-mix(in srgb, var(--color-color-text) 60%, transparent);
+    margin: 0;
+  }
+</style>
