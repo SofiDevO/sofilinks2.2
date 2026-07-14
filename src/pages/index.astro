@@ -24,6 +24,13 @@ export const prerender = true;
   title="Hola Raccoones ! 🦝"
   description="¡Bienvenidos a mi espacio en la web! Soy Sofi, una desarrolladora apasionada por la tecnología y el código. Aquí encontrarás enlaces a mis proyectos, redes sociales y recursos favoritos. ¡Explora y conéctate conmigo!"
 >
+  <a
+    id="dashboard-btn"
+    class="absolute right-5 z-100 text-ufo px-3 py-2 rounded-sm bg-violet-800 top-2 text-md hidden"
+    href="/dashboard"
+  >
+    Dashboard
+  </a>
   <Header userData={userData} />
   <main
     class="main-container flex flex-col justify-center items-center w-full mt-16 md:mt-20 space-y-6 pb-10 h-full px-4 gap-[.8rem] shadow-none border-0"
@@ -91,3 +98,17 @@ export const prerender = true;
 
   <Footer />
 </Layout>
+
+<script>
+  fetch("/api/auth/verify")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && data.authenticated) {
+        const btn = document.getElementById("dashboard-btn");
+        if (btn) {
+          btn.classList.remove("hidden");
+        }
+      }
+    })
+    .catch((err) => console.error("Error verifying auth:", err));
+</script>

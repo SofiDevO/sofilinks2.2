@@ -1,10 +1,9 @@
 ---
-import { isAuthenticated } from "@src/shared/utils/auth";
 import Layout from "./layout/Layout.astro";
 import { serverFetch } from "@features/dashboard/services/server-fetch";
-import type { Story, Comment } from "@features/stories/types/stories.types";
-import type { Ban } from "@features/dashboard/types/dashboard.types";
+import type { Story } from "@features/stories/types/stories.types";
 
+import { isAuthenticated } from "@src/shared/utils/auth";
 const payload = await isAuthenticated(Astro.cookies);
 
 if (!payload) {
@@ -13,56 +12,59 @@ if (!payload) {
 
 // Fetch all data server-side for the overview
 const storiesRes = await serverFetch<Story[]>(Astro.cookies, "/api/v1/stories");
-const bansRes = await serverFetch<Ban[]>(Astro.cookies, "/api/v1/admin/bans");
+
+interface DashboardStats {
+  storiesCount: number;
+  commentsCount: number;
+  likesCount: number;
+  bansCount: number;
+}
+
+const statsRes = await serverFetch<DashboardStats>(
+  Astro.cookies,
+  "/api/v1/admin/stats",
+);
 
 const stories = storiesRes.data ?? [];
-const bans = bansRes.data ?? [];
-
-// Fetch comments and likes for each story
-let totalComments = 0;
-let totalLikes = 0;
-
-for (const story of stories) {
-  const commentsRes = await serverFetch<Comment[]>(
-    Astro.cookies,
-    `/api/v1/stories/${story.id}/comments`,
-  );
-  const likesRes = await serverFetch<{ count: number }>(
-    Astro.cookies,
-    `/api/v1/stories/${story.id}/likes`,
-  );
-  totalComments += commentsRes.data?.length ?? 0;
-  totalLikes += likesRes.data?.count ?? 0;
-}
+const dashboardStats = statsRes.data ?? {
+  storiesCount: 0,
+  commentsCount: 0,
+  likesCount: 0,
+  bansCount: 0,
+};
 
 const stats = [
   {
     label: "Stories activas",
-    value: stories.length,
+    value: dashboardStats.storiesCount,
     icon: "mdi:movie-open-outline",
     color: "#8b5cf6",
-    gradient: "linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05))",
+    gradient:
+      "linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05))",
   },
   {
     label: "Comentarios",
-    value: totalComments,
+    value: dashboardStats.commentsCount,
     icon: "mdi:comment-text-multiple-outline",
     color: "#3b82f6",
-    gradient: "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05))",
+    gradient:
+      "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05))",
   },
   {
     label: "Likes totales",
-    value: totalLikes,
+    value: dashboardStats.likesCount,
     icon: "mdi:heart-outline",
     color: "#ef4444",
-    gradient: "linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05))",
+    gradient:
+      "linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05))",
   },
   {
     label: "IPs baneadas",
-    value: bans.length,
+    value: dashboardStats.bansCount,
     icon: "mdi:shield-lock-outline",
     color: "#f59e0b",
-    gradient: "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05))",
+    gradient:
+      "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05))",
   },
 ];
 ---
@@ -70,57 +72,70 @@ const stats = [
 <Layout title="Dashboard" description="Panel de administracion">
   <section slot="main" class="dashboard-overview">
     <h1 class="overview-title">Panel de control</h1>
-    <p class="overview-subtitle">Resumen de actividad en las ultimas 24 horas</p>
+    <p class="overview-subtitle">
+      Resumen de actividad en las ultimas 24 horas
+    </p>
 
     <div class="stats-grid">
-      {stats.map((stat) => (
-        <article class="stat-card" style={`--stat-color: ${stat.color}; --stat-gradient: ${stat.gradient};`}>
-          <div class="stat-icon-wrapper">
-            <iconify-icon
-              icon={stat.icon}
-              width="28"
-              height="28"
-              style={`color: ${stat.color};`}
-            />
-          </div>
-          <div class="stat-content">
-            <span class="stat-value">{stat.value}</span>
-            <span class="stat-label">{stat.label}</span>
-          </div>
-        </article>
-      ))}
+      {
+        stats.map((stat) => (
+          <article
+            class="stat-card"
+            style={`--stat-color: ${stat.color}; --stat-gradient: ${stat.gradient};`}
+          >
+            <div class="stat-icon-wrapper">
+              <iconify-icon
+                icon={stat.icon}
+                width="28"
+                height="28"
+                style={`color: ${stat.color};`}
+              />
+            </div>
+            <div class="stat-content">
+              <span class="stat-value">{stat.value}</span>
+              <span class="stat-label">{stat.label}</span>
+            </div>
+          </article>
+        ))
+      }
     </div>
 
-    {stories.length > 0 && (
-      <section class="recent-section">
-        <h2 class="section-title">Stories recientes</h2>
-        <div class="recent-stories">
-          {stories.slice(0, 4).map((story) => (
-            <a href="/dashboard/stories" class="recent-story-card">
-              <div class="story-video-thumb">
-                <video
-                  src={story.videoUrl}
-                  muted
-                  preload="metadata"
-                  class="thumb-video"
-                />
-                <div class="thumb-overlay">
-                  <iconify-icon icon="mdi:play-circle-outline" width="32" height="32" />
+    {
+      stories.length > 0 && (
+        <section class="recent-section">
+          <h2 class="section-title">Stories recientes</h2>
+          <div class="recent-stories">
+            {stories.slice(0, 4).map((story) => (
+              <a href="/dashboard/stories" class="recent-story-card">
+                <div class="story-video-thumb">
+                  <video
+                    src={story.videoUrl}
+                    muted
+                    preload="metadata"
+                    class="thumb-video"
+                  />
+                  <div class="thumb-overlay">
+                    <iconify-icon
+                      icon="mdi:play-circle-outline"
+                      width="32"
+                      height="32"
+                    />
+                  </div>
                 </div>
-              </div>
-              <span class="story-date">
-                {new Date(story.createdAt).toLocaleDateString("es-MX", {
-                  day: "numeric",
-                  month: "short",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
+                <span class="story-date">
+                  {new Date(story.createdAt).toLocaleDateString("es-MX", {
+                    day: "numeric",
+                    month: "short",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
   </section>
 </Layout>
 
@@ -158,12 +173,15 @@ const stats = [
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--stat-color) 15%, transparent);
+    box-shadow: 0 8px 24px
+      color-mix(in srgb, var(--stat-color) 15%, transparent);
   }
 
   .stat-icon-wrapper {
@@ -221,8 +239,11 @@ const stats = [
     border-radius: 0.75rem;
     overflow: hidden;
     background: var(--color-card);
-    border: 1px solid color-mix(in srgb, var(--color-color-text) 8%, transparent);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid
+      color-mix(in srgb, var(--color-color-text) 8%, transparent);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   .recent-story-card:hover {
