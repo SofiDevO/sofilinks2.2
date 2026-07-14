@@ -3,7 +3,7 @@ import { isAuthenticated } from "@src/shared/utils/auth";
 import Layout from "./layout/Layout.astro";
 import { serverFetch } from "@features/dashboard/services/server-fetch";
 import type { Story } from "@features/stories/types/stories.types";
-import StoriesPanel from "@features/dashboard/components/StoriesPanel";
+import StoriesPanel from "@features/dashboard/components/StoriesPanel.tsx";
 
 const payload = await isAuthenticated(Astro.cookies);
 

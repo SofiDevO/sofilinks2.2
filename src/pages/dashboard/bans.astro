@@ -3,7 +3,7 @@ import { isAuthenticated } from "@src/shared/utils/auth";
 import Layout from "./layout/Layout.astro";
 import { serverFetch } from "@features/dashboard/services/server-fetch";
 import type { Ban } from "@features/dashboard/types/dashboard.types";
-import BansPanel from "@features/dashboard/components/BansPanel";
+import BansPanel from "@features/dashboard/components/BansPanel.tsx";
 
 const payload = await isAuthenticated(Astro.cookies);
 

@@ -21,52 +21,11 @@ async function proxyFetch(
 
 export default function BansPanel({ initialBans }: Props) {
   const [bans, setBans] = useState<Ban[]>(initialBans);
-  const [ipAddress, setIpAddress] = useState("");
-  const [reason, setReason] = useState("");
-  const [isBanning, setIsBanning] = useState(false);
   const [unbanningIp, setUnbanningIp] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const refreshBans = async () => {
-    const res = await proxyFetch("/api/v1/admin/bans", "GET");
-    if (res.success && res.data) {
-      setBans(res.data);
-    }
-  };
-
-  const handleBan = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!ipAddress.trim()) {
-      setError("La direccion IP es obligatoria");
-      return;
-    }
-
-    setIsBanning(true);
-    setError(null);
-
-    try {
-      const res = await proxyFetch("/api/v1/admin/bans", "POST", {
-        ipAddress: ipAddress.trim(),
-        reason: reason.trim() || undefined,
-      });
-
-      if (!res.success) {
-        throw new Error(res.error || "Error al banear la IP");
-      }
-
-      setIpAddress("");
-      setReason("");
-      await refreshBans();
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsBanning(false);
-    }
-  };
-
   const handleUnban = async (ip: string) => {
-    if (!confirm(`Desbanear la IP ${ip}?`)) return;
+    if (!confirm(`¿Desbanear la IP ${ip}?`)) return;
 
     setUnbanningIp(ip);
     setError(null);
@@ -105,45 +64,6 @@ export default function BansPanel({ initialBans }: Props) {
         </div>
       )}
 
-      <form onSubmit={handleBan} className="ban-form">
-        <div className="form-group">
-          <label htmlFor="ban-ip">Direccion IP</label>
-          <input
-            id="ban-ip"
-            type="text"
-            value={ipAddress}
-            onChange={(e) => setIpAddress(e.target.value)}
-            placeholder="192.168.1.1"
-            className="form-input"
-            disabled={isBanning}
-          />
-        </div>
-        <div className="form-group" style={{ flex: 1 }}>
-          <label htmlFor="ban-reason">Razon (opcional)</label>
-          <input
-            id="ban-reason"
-            type="text"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            placeholder="Spam, abuso..."
-            className="form-input"
-            disabled={isBanning}
-          />
-        </div>
-        <button type="submit" disabled={isBanning} className="btn-ban">
-          {isBanning ? (
-            <div className="progress-spinner small" />
-          ) : (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-              </svg>
-              Banear
-            </>
-          )}
-        </button>
-      </form>
-
       {bans.length === 0 ? (
         <div className="empty-state">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.4">
@@ -158,9 +78,9 @@ export default function BansPanel({ initialBans }: Props) {
             <thead>
               <tr>
                 <th>IP</th>
-                <th>Razon</th>
+                <th>Razón</th>
                 <th>Fecha de baneo</th>
-                <th style={{ width: "100px" }}>Accion</th>
+                <th style={{ width: "100px" }}>Acción</th>
               </tr>
             </thead>
             <tbody>
