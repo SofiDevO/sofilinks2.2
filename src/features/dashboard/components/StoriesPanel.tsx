@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import type { Story } from "@features/stories/types/stories.types";
+import { VideoPreview } from "./VideoPreview";
 import "./dashboard.css";
 
 interface Props {
@@ -175,18 +176,7 @@ export default function StoriesPanel({ initialStories }: Props) {
           {stories.map((story) => (
             <article key={story.id} className="story-card">
               <div className="story-card-video">
-                <video
-                  src={story.videoUrl}
-                  muted
-                  preload="metadata"
-                  playsInline
-                  onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
-                  onMouseLeave={(e) => {
-                    const v = e.target as HTMLVideoElement;
-                    v.pause();
-                    v.currentTime = 0;
-                  }}
-                />
+                <VideoPreview src={story.videoUrl} />
               </div>
               <div className="story-card-footer">
                 <span className="story-card-date">{formatDate(story.createdAt)}</span>

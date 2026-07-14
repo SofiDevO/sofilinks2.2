@@ -9,8 +9,16 @@ const pathname = Astro.url.pathname;
 
 const navItems = [
   { label: "Overview", href: "/dashboard", icon: "mdi:view-dashboard-outline" },
-  { label: "Stories", href: "/dashboard/stories", icon: "mdi:movie-open-outline" },
-  { label: "Comentarios", href: "/dashboard/comments", icon: "mdi:comment-text-multiple-outline" },
+  {
+    label: "Stories",
+    href: "/dashboard/stories",
+    icon: "mdi:movie-open-outline",
+  },
+  {
+    label: "Comentarios",
+    href: "/dashboard/comments",
+    icon: "mdi:comment-text-multiple-outline",
+  },
   { label: "Baneos", href: "/dashboard/bans", icon: "mdi:shield-lock-outline" },
 ];
 ---
@@ -49,34 +57,35 @@ const navItems = [
         </header>
         <nav class="sidebar-nav">
           <ul>
-            {navItems.map((item) => {
-              const isActive = pathname === item.href ||
-                (item.href !== "/dashboard" && pathname.startsWith(item.href));
-              return (
-                <li>
-                  <a
-                    href={item.href}
-                    class:list={["nav-link", { active: isActive }]}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    <iconify-icon
-                      icon={item.icon}
-                      width="22"
-                      height="22"
-                    />
-                    <span class="nav-label">{item.label}</span>
-                  </a>
-                </li>
-              );
-            })}
+            {
+              navItems.map((item) => {
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== "/dashboard" &&
+                    pathname.startsWith(item.href));
+                return (
+                  <li>
+                    <a
+                      href={item.href}
+                      class:list={["nav-link", { active: isActive }]}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      <iconify-icon icon={item.icon} width="22" height="22" />
+                      <span class="nav-label">{item.label}</span>
+                    </a>
+                  </li>
+                );
+              })
+            }
           </ul>
           <div class="nav-divider"></div>
-          <a href="/api/auth/logout" class="nav-link logout-link" id="logout-btn">
-            <iconify-icon
-              icon="mdi:logout"
-              width="22"
-              height="22"
-            />
+          <a
+            href="/api/auth/logout"
+            class="nav-link logout-link"
+            id="logout-btn"
+          >
+            <iconify-icon icon="mdi:logout" width="22" height="22"
+            ></iconify-icon>
             <span class="nav-label">Cerrar sesion</span>
           </a>
         </nav>
@@ -90,7 +99,7 @@ const navItems = [
 
 <style is:inline>
   .dashboard-grid {
-    --sidebar-width: 4.5rem;
+    --sidebar-width: 6rem;
     --sidebar-padding: 2rem 1rem;
     display: grid;
     grid-template-columns: var(--sidebar-width) 1fr;
@@ -121,9 +130,14 @@ const navItems = [
     flex-direction: column;
     align-items: flex-start;
     padding: 1rem;
-    border-right: 1px solid color-mix(in srgb, var(--color-color-text) 12%, transparent);
-    background: color-mix(in srgb, var(--color-primary) 95%, var(--color-caracol) 5%);
-    overflow: hidden;
+    border-right: 1px solid
+      color-mix(in srgb, var(--color-color-text) 12%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--color-primary) 95%,
+      var(--color-caracol) 5%
+    );
+    /* overflow: hidden; */
   }
 
   .dashboard-main {
@@ -192,7 +206,9 @@ const navItems = [
     opacity: 0;
     width: 0;
     overflow: hidden;
-    transition: opacity 0.2s ease, width 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      width 0.2s ease;
   }
 
   .dashboad-sidebar.active .nav-label {
