@@ -175,7 +175,6 @@ export function VideoPreview({
       <video
         ref={videoRef}
         src={src}
-        muted
         playsInline
         onSeeked={handleSeeked}
         onLoadedData={handleLoadedData}
