@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Story, Comment } from "@features/stories/types/stories.types";
 import { VideoPreview } from "./VideoPreview";
+import { StoryCanvas } from "./StoryCanvas";
 import "./dashboard.css";
 
 interface StoryWithComments {
@@ -147,7 +148,11 @@ export default function CommentsPanel({ initialStoriesWithComments }: Props) {
             <article key={story.id} className="comments-story-group">
               <div className="story-group-header">
                 <div className="story-group-thumb">
-                  <VideoPreview src={story.videoUrl} hoverToPlay={false} />
+                  {story.mediaType === "video" && story.mediaUrl ? (
+                    <VideoPreview src={story.mediaUrl} hoverToPlay={false} />
+                  ) : (
+                    <StoryCanvas story={story} />
+                  )}
                 </div>
                 <div className="story-group-info">
                   <span className="story-group-id" title={story.id}>

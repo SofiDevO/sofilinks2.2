@@ -1,7 +1,6 @@
 ---
 import Layout from "./layout/Layout.astro";
 import { serverFetch } from "@features/dashboard/services/server-fetch";
-import type { Story } from "@features/stories/types/stories.types";
 
 import { isAuthenticated } from "@src/shared/utils/auth";
 const payload = await isAuthenticated(Astro.cookies);
@@ -9,9 +8,6 @@ const payload = await isAuthenticated(Astro.cookies);
 if (!payload) {
   return Astro.redirect("/login");
 }
-
-// Fetch all data server-side for the overview
-const storiesRes = await serverFetch<Story[]>(Astro.cookies, "/api/v1/stories");
 
 interface DashboardStats {
   storiesCount: number;
@@ -25,7 +21,6 @@ const statsRes = await serverFetch<DashboardStats>(
   "/api/v1/admin/stats",
 );
 
-const stories = storiesRes.data ?? [];
 const dashboardStats = statsRes.data ?? {
   storiesCount: 0,
   commentsCount: 0,
@@ -41,6 +36,7 @@ const stats = [
     color: "#8b5cf6",
     gradient:
       "linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05))",
+    link: "/dashboard/stories",
   },
   {
     label: "Comentarios",
@@ -49,6 +45,7 @@ const stats = [
     color: "#3b82f6",
     gradient:
       "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05))",
+    link: "/dashboard/comments",
   },
   {
     label: "Likes totales",
@@ -57,6 +54,7 @@ const stats = [
     color: "#ef4444",
     gradient:
       "linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05))",
+    link: "/dashboard/stories",
   },
   {
     label: "IPs baneadas",
@@ -65,6 +63,7 @@ const stats = [
     color: "#f59e0b",
     gradient:
       "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05))",
+    link: "/dashboard/bans",
   },
 ];
 ---
@@ -79,7 +78,8 @@ const stats = [
     <div class="stats-grid">
       {
         stats.map((stat) => (
-          <article
+          <a
+            href={stat.link}
             class="stat-card"
             style={`--stat-color: ${stat.color}; --stat-gradient: ${stat.gradient};`}
           >
@@ -95,48 +95,12 @@ const stats = [
               <span class="stat-value">{stat.value}</span>
               <span class="stat-label">{stat.label}</span>
             </div>
-          </article>
+          </a>
         ))
       }
     </div>
 
-    {
-      stories.length > 0 && (
-        <section class="recent-section">
-          <h2 class="section-title">Stories recientes</h2>
-          <div class="recent-stories">
-            {stories.slice(0, 4).map((story) => (
-              <a href="/dashboard/stories" class="recent-story-card">
-                <div class="story-video-thumb">
-                  <video
-                    src={`${story.videoUrl}#t=0.5`}
-                    muted
-                    playsinline
-                    preload="metadata"
-                    class="thumb-video"
-                  />
-                  <div class="thumb-overlay">
-                    <iconify-icon
-                      icon="mdi:play-circle-outline"
-                      width="32"
-                      height="32"
-                    />
-                  </div>
-                </div>
-                <span class="story-date">
-                  {new Date(story.createdAt).toLocaleDateString("es-MX", {
-                    day: "numeric",
-                    month: "short",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
-              </a>
-            ))}
-          </div>
-        </section>
-      )
-    }
+
   </section>
 </Layout>
 
@@ -174,14 +138,15 @@ const stats = [
     display: flex;
     align-items: center;
     gap: 1rem;
+    text-decoration: none;
     transition:
-      transform 0.2s ease,
+      border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
 
   .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px
+    border-color: var(--stat-color);
+    box-shadow: 0 6px 20px
       color-mix(in srgb, var(--stat-color) 15%, transparent);
   }
 
