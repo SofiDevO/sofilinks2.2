@@ -15,24 +15,12 @@ export function VideoPreview({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const playPromiseRef = useRef<Promise<void> | null>(null);
   const isHoveredRef = useRef(false);
+  const pendingCanPlayRef = useRef<(() => void) | null>(null);
   const [hasThumbnail, setHasThumbnail] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [fallbackToVideo, setFallbackToVideo] = useState(false);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    setHasThumbnail(false);
-    setFallbackToVideo(false);
-    setIsPlaying(false);
-
-    video.preload = "auto";
-    video.currentTime = 0.5;
-  }, [src]);
-
-  const handleSeeked = () => {
-    if (hasThumbnail || fallbackToVideo) return;
+  const drawThumbnail = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
@@ -55,20 +43,85 @@ export function VideoPreview({
     }
   };
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    setHasThumbnail(false);
+    setFallbackToVideo(false);
+    setIsPlaying(false);
+
+    video.preload = "auto";
+
+    let timer: NodeJS.Timeout | null = null;
+    if (video.readyState >= 2 && video.currentTime === 0.5) {
+      timer = setTimeout(() => {
+        drawThumbnail();
+      }, 50);
+    } else {
+      video.currentTime = 0.5;
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      if (pendingCanPlayRef.current && videoRef.current) {
+        videoRef.current.removeEventListener("canplay", pendingCanPlayRef.current);
+        pendingCanPlayRef.current = null;
+      }
+    };
+  }, [src]);
+
+  const handleSeeked = () => {
+    if (hasThumbnail || fallbackToVideo) return;
+    drawThumbnail();
+  };
+
+  const handleLoadedData = () => {
+    const video = videoRef.current;
+    if (video && video.readyState >= 2 && video.currentTime === 0.5) {
+      drawThumbnail();
+    }
+  };
+
   const handleMouseEnter = () => {
     if (!hoverToPlay) return;
     isHoveredRef.current = true;
     setIsPlaying(true);
     const video = videoRef.current;
     if (video) {
+      // Seek to beginning
       video.currentTime = 0;
-      const playPromise = video.play();
-      playPromiseRef.current = playPromise;
-      playPromise.catch((err) => {
-        if (err.name !== "AbortError") {
-          console.error("Play error:", err);
-        }
-      });
+
+      // Clean up any existing listener first
+      if (pendingCanPlayRef.current) {
+        video.removeEventListener("canplay", pendingCanPlayRef.current);
+        pendingCanPlayRef.current = null;
+      }
+
+      const playVideo = () => {
+        if (!isHoveredRef.current) return;
+        const playPromise = video.play();
+        playPromiseRef.current = playPromise;
+        playPromise.catch((err) => {
+          if (err.name !== "AbortError") {
+            console.error("Play error:", err);
+          }
+        });
+      };
+
+      if (video.readyState >= 2) {
+        playVideo();
+      } else {
+        const handleCanPlay = () => {
+          video.removeEventListener("canplay", handleCanPlay);
+          if (pendingCanPlayRef.current === handleCanPlay) {
+            pendingCanPlayRef.current = null;
+          }
+          playVideo();
+        };
+        pendingCanPlayRef.current = handleCanPlay;
+        video.addEventListener("canplay", handleCanPlay);
+      }
     }
   };
 
@@ -78,6 +131,12 @@ export function VideoPreview({
     setIsPlaying(false);
     const video = videoRef.current;
     if (video) {
+      // Clean up pending canplay listener
+      if (pendingCanPlayRef.current) {
+        video.removeEventListener("canplay", pendingCanPlayRef.current);
+        pendingCanPlayRef.current = null;
+      }
+
       const playPromise = playPromiseRef.current;
       if (playPromise) {
         playPromise
@@ -119,6 +178,7 @@ export function VideoPreview({
         muted
         playsInline
         onSeeked={handleSeeked}
+        onLoadedData={handleLoadedData}
         onError={() => setFallbackToVideo(true)}
         style={{
           width: "100%",

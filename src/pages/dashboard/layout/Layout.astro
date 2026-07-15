@@ -3,7 +3,6 @@ import BaseHead from "@core/components/BaseHead.astro";
 import ThemeButton from "@src/shared/components/ThemeButton.astro";
 
 const { title, description } = Astro.props;
-import { ClientRouter } from "astro:transitions";
 
 const pathname = Astro.url.pathname;
 
@@ -26,7 +25,6 @@ const navItems = [
 <html lang="es">
   <head>
     <BaseHead title={title} description={description} />
-    <ClientRouter slot="header" />
   </head>
   <body class="flex flex-col min-h-screen w-full">
     <ThemeButton class="fixed bottom-5 right-5 z-[100]" iconColor="#140030" />
