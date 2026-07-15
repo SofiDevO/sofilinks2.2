@@ -109,8 +109,9 @@ const stats = [
               <a href="/dashboard/stories" class="recent-story-card">
                 <div class="story-video-thumb">
                   <video
-                    src={story.videoUrl}
+                    src={`${story.videoUrl}#t=0.5`}
                     muted
+                    playsinline
                     preload="metadata"
                     class="thumb-video"
                   />

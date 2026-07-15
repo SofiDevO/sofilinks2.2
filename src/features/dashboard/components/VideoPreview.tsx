@@ -27,7 +27,6 @@ export function VideoPreview({
     setFallbackToVideo(false);
     setIsPlaying(false);
 
-    video.crossOrigin = "anonymous";
     video.preload = "auto";
     video.currentTime = 0.5;
   }, [src]);
@@ -120,6 +119,7 @@ export function VideoPreview({
         muted
         playsInline
         onSeeked={handleSeeked}
+        onError={() => setFallbackToVideo(true)}
         style={{
           width: "100%",
           height: "100%",
