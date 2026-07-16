@@ -70,14 +70,40 @@ export class StoriesViewerController {
 
     this.viewport = this.modal.querySelector(".stories-viewport") as HTMLElement;
 
-    this.initEvents();
-    this.checkAutoOpen();
+    this.init();
+  }
+
+  private async init() {
+    // Bind modal controls that should always be active regardless of stories presence
+    this.btnClose.addEventListener("click", () => this.closeModal());
+    this.backdrop.addEventListener("click", () => this.closeModal());
+
+    const res = await storiesService.getActiveStories();
+    if (res.success && res.data && res.data.length > 0) {
+      this.stories = res.data;
+      this.loaded = true;
+      this.buildProgressSegments();
+
+      this.initEvents();
+      this.checkAutoOpen();
+    } else {
+      this.stories = [];
+      this.loaded = true;
+      this.deactivateTrigger();
+    }
+  }
+
+  private deactivateTrigger() {
+    if (this.triggerBtn) {
+      const ring = this.triggerBtn.querySelector(".story-ring") as HTMLElement;
+      if (ring) ring.style.display = "none";
+      this.triggerBtn.style.cursor = "default";
+      this.triggerBtn.style.pointerEvents = "none"; // Disable all mouse interactions
+    }
   }
 
   private initEvents() {
     this.triggerBtn?.addEventListener("click", () => this.openModal());
-    this.btnClose.addEventListener("click", () => this.closeModal());
-    this.backdrop.addEventListener("click", () => this.closeModal());
 
     this.btnPrev.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -264,16 +290,14 @@ export class StoriesViewerController {
 
   private openModal() {
     if (this.isOpen) return;
+    if (this.stories.length === 0) return;
+    
     this.isOpen = true;
     this.modal.classList.add("is-open");
     this.modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
     this.animatedStories.clear(); // Reset anim state
-    if (!this.loaded) {
-      this.loadStories();
-    } else {
-      this.goToStory(0);
-    }
+    this.goToStory(0);
   }
 
   private closeModal() {
@@ -307,18 +331,6 @@ export class StoriesViewerController {
   }
 
   // --- Data loading & Interactions ---
-
-  private async loadStories() {
-    const res = await storiesService.getActiveStories();
-    if (!res.success || !res.data?.length) {
-      this.track.innerHTML = `<p style="color:rgba(255,255,255,0.5);font-size:0.9rem;text-align:center;padding:2rem;">No hay stories activas</p>`;
-      return;
-    }
-    this.stories = res.data;
-    this.loaded = true;
-    this.buildProgressSegments();
-    this.goToStory(0);
-  }
 
   private buildProgressSegments() {
     this.progressBar.innerHTML = this.stories
