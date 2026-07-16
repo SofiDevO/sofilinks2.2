@@ -1,0 +1,140 @@
+---
+import type { Story } from "@features/stories/types/stories.types";
+import type { ApiResponse } from "@shared/types/api.types";
+
+interface Props {
+  profile__pic: string;
+  transition?: string;
+  animate?: string;
+}
+
+const { profile__pic, transition, animate } = Astro.props;
+const pathname = Astro.url.pathname;
+
+const API_URL = import.meta.env.PUBLIC_STORIES_API_URL || "http://localhost:8787";
+const API_KEY = import.meta.env.PUBLIC_STORIES_API_KEY ?? "";
+
+let stories: Story[] = [];
+try {
+  const res = await fetch(`${API_URL}/api/v1/stories`, {
+    headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
+  });
+  if (res.ok) {
+    const json: ApiResponse<Story[]> = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      stories = json.data;
+    }
+  }
+} catch {
+  // Silently fail - no stories available
+}
+
+const latestStory = stories.reduce((latest, current) => {
+  return new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest;
+}, stories[0]);
+const latestStoryId = latestStory?.id || "";
+
+const hasStories = stories.length > 0;
+const containerClass = `profile__container lg:w-[150px] lg:h-[150px] w-[120px] h-[120px] rounded-full overflow-hidden bg-[--bg-main-color] ${
+  pathname === "/about" ? "profile__container-about" : "profile__container"
+}`;
+---
+
+{
+  hasStories ? (
+    <button
+      id="story-avatar-btn"
+      type="button"
+      data-latest-id={latestStoryId}
+      aria-label="Ver stories activas"
+      class="story-ring-btn"
+      transition:name={transition}
+      transition:animate={animate}
+    >
+      <span class="story-ring" aria-hidden="true" />
+      <div class={containerClass}>
+        <img
+          id="avatar"
+          class="w-full object-cover h-full avatar"
+          src={profile__pic}
+          alt="Profile image"
+        />
+      </div>
+    </button>
+  ) : (
+    <div
+      transition:animate={animate}
+      transition:name={transition}
+      class={containerClass}
+    >
+      <img
+        id="avatar"
+        class="w-full object-cover h-full avatar"
+        src={profile__pic}
+        alt="Profile image"
+      />
+    </div>
+  )
+}
+
+<style>
+  .story-ring-btn {
+    position: relative;
+    display: block;
+    width: fit-content;
+    background: none;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    outline-offset: 3px;
+
+    &:focus-visible {
+      outline: 2px solid #a78bfa;
+    }
+  }
+
+  .story-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      #a855f7,
+      #ec4899,
+      #f97316,
+      #facc15,
+      #a855f7
+    );
+    padding: 3.5px;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: ring-spin 2.5s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes ring-spin {
+    to {
+      filter: hue-rotate(360deg);
+    }
+  }
+
+  .profile__container {
+    --color-ring: rgb(var(--bg-main-color));
+    border: 3.5px solid var(--color-caracol);
+    border: 3.5px solid var(--color-ring);
+    filter: saturate(2);
+  }
+
+  .profile__container-about {
+    border: 3.5px solid var(--color-caracol);
+    filter: saturate(2);
+  }
+
+  .avatar {
+    filter: saturate(0.5);
+  }
+</style>

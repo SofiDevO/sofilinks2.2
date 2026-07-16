@@ -1,0 +1,587 @@
+---
+
+---
+
+<div
+  id="stories-modal"
+  class="stories-modal"
+  aria-modal="true"
+  aria-hidden="true"
+  role="dialog"
+  aria-label="Stories"
+>
+  <div class="stories-backdrop" id="stories-backdrop"></div>
+
+  <div class="stories-shell">
+    <!-- UI overlay: outside overflow:hidden so it's always visible -->
+    <div class="stories-ui">
+      <div class="stories-progress-bar" id="stories-progress-bar"></div>
+      <button
+        id="stories-close"
+        class="stories-close"
+        aria-label="Cerrar stories"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M18 6L6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Content viewport: overflow:hidden, clip-path applied here -->
+    <div class="stories-viewport">
+      <div class="stories-track" id="stories-track">
+        <div class="stories-loading" id="stories-loading">
+          <span class="spinner"></span>
+        </div>
+      </div>
+
+      <button
+        class="stories-nav stories-nav--prev"
+        id="stories-prev"
+        aria-label="Story anterior"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M15 18l-6-6 6-6"></path>
+        </svg>
+      </button>
+      <button
+        class="stories-nav stories-nav--next"
+        id="stories-next"
+        aria-label="Siguiente story"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M9 18l6-6-6-6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stories-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+
+    &.is-open {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+
+  .stories-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  /* Shell: outer wrapper, not overflow:hidden */
+  .stories-shell {
+    position: relative;
+    z-index: 1;
+    width: min(420px, 96vw);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* UI overlay: progress bars + close — always above everything */
+  .stories-ui {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px 8px;
+    z-index: 10;
+    position: absolute;
+    z-index: 900;
+    top: 0;
+    width: 100%;
+    background: #0000006b;
+  }
+
+  .stories-progress-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 3px;
+  }
+
+  .stories-close {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    backdrop-filter: blur(6px);
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  /* Viewport: clips the story content, not the UI */
+  .stories-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1.5px rgba(168, 85, 247, 0.4),
+      0 30px 80px rgba(0, 0, 0, 0.7);
+    background: #0f0a1e;
+  }
+
+  .stories-track {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .stories-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(168, 85, 247, 0.25);
+    border-top-color: #a855f7;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .stories-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.35);
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    backdrop-filter: blur(6px);
+    transition:
+      background 0.15s ease,
+      opacity 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    &:disabled {
+      opacity: 0.2;
+      cursor: default;
+    }
+
+    &.stories-nav--prev {
+      left: 10px;
+    }
+    &.stories-nav--next {
+      right: 10px;
+    }
+  }
+</style>
+
+<!-- Global styles for elements created dynamically via JS -->
+<style is:global>
+  .story-progress-segment {
+    flex: 1;
+    height: 3px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+  }
+
+  .story-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #ffffff;
+    border-radius: 99px;
+  }
+
+  .story-slide {
+    position: absolute;
+    top: 30rem;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .story-slide video,
+  .story-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .story-slide canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  import type { Story } from "@features/stories/types/stories.types";
+  import { storiesService } from "@features/stories/services/stories.service";
+
+  const MAX_STATIC_DURATION_MS = 10_000;
+
+  const modal = document.getElementById("stories-modal")!;
+  const backdrop = document.getElementById("stories-backdrop")!;
+  const track = document.getElementById("stories-track")!;
+  const progressBar = document.getElementById("stories-progress-bar")!;
+  const btnClose = document.getElementById("stories-close")!;
+  const btnPrev = document.getElementById("stories-prev") as HTMLButtonElement;
+  const btnNext = document.getElementById("stories-next") as HTMLButtonElement;
+  const triggerBtn = document.getElementById("story-avatar-btn");
+
+  const viewport = modal.querySelector(".stories-viewport") as HTMLElement;
+
+  let stories: Story[] = [];
+  let currentIndex = 0;
+  let progressTimer: ReturnType<typeof setTimeout> | null = null;
+  let loaded = false;
+  let isOpen = false;
+
+  // --- Helpers ---
+
+  function getActiveVideo(): HTMLVideoElement | null {
+    return track.querySelector("video");
+  }
+
+  function stopActiveMedia() {
+    const video = getActiveVideo();
+    if (video) {
+      video.pause();
+      video.src = "";
+      video.load();
+    }
+  }
+
+  function clearTimers() {
+    if (progressTimer) clearTimeout(progressTimer);
+    progressTimer = null;
+  }
+
+  // --- Modal lifecycle ---
+
+  function openModal() {
+    if (isOpen) return;
+    isOpen = true;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    if (!loaded) {
+      loadStories();
+    } else {
+      goToStory(0);
+    }
+  }
+
+  function closeModal() {
+    if (!isOpen) return;
+    isOpen = false;
+    clearTimers();
+    stopActiveMedia();
+    track.innerHTML = "";
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  async function loadStories() {
+    const res = await storiesService.getActiveStories();
+    if (!res.success || !res.data?.length) {
+      track.innerHTML = `<p style="color:rgba(255,255,255,0.5);font-size:0.9rem;text-align:center;padding:2rem;">No hay stories activas</p>`;
+      return;
+    }
+    stories = res.data;
+    loaded = true;
+    buildProgressSegments();
+    goToStory(0);
+  }
+
+  function buildProgressSegments() {
+    progressBar.innerHTML = stories
+      .map(
+        (_, i) =>
+          `<div class="story-progress-segment" data-index="${i}"><div class="story-progress-fill"></div></div>`,
+      )
+      .join("");
+  }
+
+  // --- Renderers ---
+
+  function renderTextStory(story: Story, container: HTMLElement) {
+    const canvas = document.createElement("canvas");
+
+    const rect = viewport.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.display = "block";
+
+    const ctx = canvas.getContext("2d")!;
+    ctx.scale(dpr, dpr);
+
+    const w = rect.width;
+    const h = rect.height;
+
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, "#6d28d9");
+    grad.addColorStop(1, "#0f0a1e");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    const text = story.textContent ?? "";
+    const maxWidth = w - 60;
+    const baseFontSize = Math.max(
+      18,
+      Math.min(48, Math.floor((w * 0.9) / Math.max(Math.sqrt(text.length), 1))),
+    );
+    ctx.font = `bold ${baseFontSize}px 'Inter', system-ui, sans-serif`;
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.shadowColor = "rgba(0,0,0,0.9)";
+    ctx.shadowBlur = 10;
+
+    const words = text.split(" ");
+    const lines: string[] = [];
+    let line = "";
+    for (const word of words) {
+      const test = line ? `${line} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    if (line) lines.push(line);
+
+    const lineHeight = baseFontSize * 1.4;
+    const totalHeight = lines.length * lineHeight;
+    let y = (h - totalHeight) / 2 + baseFontSize;
+    for (const l of lines) {
+      ctx.fillText(l, w / 2, y);
+      y += lineHeight;
+    }
+
+    container.appendChild(canvas);
+  }
+
+  function renderImageStory(story: Story, container: HTMLElement) {
+    const img = document.createElement("img");
+    img.src = story.mediaUrl ?? "";
+    img.alt = "Story";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit =
+      story.imageAspectRatio === "9:16" ? "cover" : "contain";
+    container.appendChild(img);
+  }
+
+  function renderVideoStory(story: Story, container: HTMLElement) {
+    const video = document.createElement("video");
+    video.src = story.mediaUrl ?? "";
+    video.autoplay = true;
+    video.muted = false;
+    video.loop = false;
+    video.playsInline = true;
+    video.style.width = "100%";
+    video.style.height = "100%";
+    video.style.objectFit = "cover";
+
+    video.addEventListener("ended", () => advanceStory());
+
+    video.addEventListener("loadedmetadata", () => {
+      const durationMs = video.duration * 1000;
+      syncProgressBarDuration(durationMs);
+    });
+
+    container.appendChild(video);
+    video.play().catch(() => {});
+  }
+
+  // --- Story navigation ---
+
+  function goToStory(index: number) {
+    clearTimers();
+    stopActiveMedia();
+    currentIndex = index;
+
+    const story = stories[index];
+    if (!story) return;
+
+    track.innerHTML = "";
+    const slide = document.createElement("div");
+    slide.className = "story-slide";
+
+    if (story.mediaType === "text") {
+      renderTextStory(story, slide);
+    } else if (story.mediaType === "image") {
+      renderImageStory(story, slide);
+    } else {
+      renderVideoStory(story, slide);
+    }
+
+    track.appendChild(slide);
+    updateNav();
+    startProgress(MAX_STATIC_DURATION_MS);
+  }
+
+  function startProgress(duration: number) {
+    const segments = progressBar.querySelectorAll(".story-progress-segment");
+    segments.forEach((s, i) => {
+      const fill = s.querySelector(".story-progress-fill") as HTMLElement;
+      fill.style.transition = "none";
+      fill.style.width = i < currentIndex ? "100%" : "0%";
+    });
+
+    const currentFill = segments[currentIndex]?.querySelector(
+      ".story-progress-fill",
+    ) as HTMLElement;
+    if (!currentFill) return;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        currentFill.style.transition = `width ${duration}ms linear`;
+        currentFill.style.width = "100%";
+      });
+    });
+
+    clearTimers();
+    progressTimer = setTimeout(() => advanceStory(), duration);
+  }
+
+  function syncProgressBarDuration(durationMs: number) {
+    clearTimers();
+    const segments = progressBar.querySelectorAll(".story-progress-segment");
+    const currentFill = segments[currentIndex]?.querySelector(
+      ".story-progress-fill",
+    ) as HTMLElement;
+    if (!currentFill) return;
+
+    currentFill.style.transition = "none";
+    currentFill.style.width = "0%";
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        currentFill.style.transition = `width ${durationMs}ms linear`;
+        currentFill.style.width = "100%";
+      });
+    });
+
+    progressTimer = setTimeout(() => advanceStory(), durationMs);
+  }
+
+  function advanceStory() {
+    if (currentIndex < stories.length - 1) {
+      goToStory(currentIndex + 1);
+    } else {
+      closeModal();
+    }
+  }
+
+  function updateNav() {
+    btnPrev.disabled = currentIndex === 0;
+    btnNext.disabled = currentIndex === stories.length - 1;
+  }
+
+  // --- Event listeners ---
+
+  triggerBtn?.addEventListener("click", openModal);
+  btnClose.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", closeModal);
+  btnPrev.addEventListener("click", () => {
+    if (currentIndex > 0) goToStory(currentIndex - 1);
+  });
+  btnNext.addEventListener("click", () => {
+    if (currentIndex < stories.length - 1) {
+      goToStory(currentIndex + 1);
+    } else {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (!modal.classList.contains("is-open")) return;
+    if (e.key === "Escape") closeModal();
+    if (e.key === "ArrowRight") {
+      if (currentIndex < stories.length - 1) goToStory(currentIndex + 1);
+      else closeModal();
+    }
+    if (e.key === "ArrowLeft") {
+      if (currentIndex > 0) goToStory(currentIndex - 1);
+    }
+  });
+
+  // --- Auto-open logic ---
+  if (triggerBtn) {
+    const latestId = triggerBtn.getAttribute("data-latest-id");
+    const seenId = localStorage.getItem("last_seen_story_id");
+    if (latestId && seenId !== latestId) {
+      openModal();
+      localStorage.setItem("last_seen_story_id", latestId);
+    }
+  }
+</script>

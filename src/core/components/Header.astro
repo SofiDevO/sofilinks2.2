@@ -1,5 +1,6 @@
 ---
 import Avatar from "@shared/components/Avatar.astro";
+import StoriesModal from "@shared/components/StoriesModal.astro";
 const { userData } = Astro.props;
 import { fade } from "astro:transitions";
 ---
@@ -23,6 +24,8 @@ import { fade } from "astro:transitions";
     animate="fade"
   />
 </header>
+
+<StoriesModal />
 
 <script>
   import {

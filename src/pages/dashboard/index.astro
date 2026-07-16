@@ -99,8 +99,6 @@ const stats = [
         ))
       }
     </div>
-
-
   </section>
 </Layout>
 
@@ -124,8 +122,8 @@ const stats = [
   }
 
   .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 2.5rem;
   }
