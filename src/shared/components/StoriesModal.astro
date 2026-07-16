@@ -199,6 +199,12 @@ import StoryCommentsPanel from "@features/stories/components/StoryCommentsPanel.
       transform: translateY(-220px);
       opacity: 0;
     }
+  /* Hide native mobile webview play overlays and player controls */
+  video::-webkit-media-controls-start-playback-button,
+  video::-webkit-media-controls-container,
+  video::-webkit-media-controls {
+    display: none !important;
+    -webkit-appearance: none !important;
   }
 </style>
 

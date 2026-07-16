@@ -551,6 +551,14 @@ export class StoriesViewerController {
     img.style.height = "100%";
     img.style.objectFit =
       story.imageAspectRatio === "9:16" ? "cover" : "contain";
+    
+    // Smooth transition to avoid blank image flash
+    img.style.opacity = "0";
+    img.style.transition = "opacity 0.15s ease-in-out";
+    img.addEventListener("load", () => {
+      img.style.opacity = "1";
+    });
+
     container.appendChild(img);
   }
 
@@ -561,9 +569,19 @@ export class StoriesViewerController {
     video.muted = false;
     video.loop = false;
     video.playsInline = true;
+    video.setAttribute("webkit-playsinline", "true");
+    video.setAttribute("preload", "auto");
     video.style.width = "100%";
     video.style.height = "100%";
     video.style.objectFit = "cover";
+
+    // Hide video element until it actually starts playing to prevent native play button flash
+    video.style.opacity = "0";
+    video.style.transition = "opacity 0.2s ease-in-out";
+
+    video.addEventListener("playing", () => {
+      video.style.opacity = "1";
+    });
 
     video.addEventListener("ended", () => this.advanceStory());
     video.addEventListener("loadedmetadata", () => {
@@ -572,7 +590,13 @@ export class StoriesViewerController {
     });
 
     container.appendChild(video);
-    video.play().catch(() => {});
+    
+    // Autoplay fallback: if mobile blocks unmuted play, catch the error and retry muted
+    video.play().catch((err) => {
+      console.warn("Autoplay blocked, retrying muted...", err);
+      video.muted = true;
+      video.play().catch((e) => console.error("Play failed even when muted:", e));
+    });
   }
 
   // --- Story navigation ---
