@@ -67,10 +67,13 @@ import StoryCommentsPanel from "@features/stories/components/StoryCommentsPanel.
   .stories-shell {
     position: relative;
     z-index: 1;
-    width: min(410px, 95vw);
+    width: 373px;
     display: flex;
     flex-direction: column;
     height: auto;
+    @media screen and (max-width: 768px) {
+      width: 410px;
+    }
   }
 
   .stories-viewport {
