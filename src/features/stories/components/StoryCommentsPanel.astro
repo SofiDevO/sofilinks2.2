@@ -1,0 +1,126 @@
+---
+---
+
+<div id="stories-comments-panel" class="stories-comments-panel">
+  <div class="comments-panel-header">
+    <span class="comments-panel-title">Comentarios</span>
+    <button id="stories-comments-close" class="comments-close-btn" aria-label="Cerrar comentarios">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M18 6L6 18M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+  <div id="stories-comments-list" class="stories-comments-list">
+    <!-- Comments will be populated dynamically -->
+  </div>
+</div>
+
+<style>
+  .stories-comments-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65%;
+    z-index: 50;
+    background: rgba(15, 10, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1.5px solid rgba(168, 85, 247, 0.3);
+    border-radius: 1.25rem 1.25rem 0 0;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    pointer-events: all;
+
+    &.is-open {
+      transform: translateY(0);
+    }
+  }
+
+  .comments-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .comments-panel-title {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .comments-close-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+  }
+
+  .stories-comments-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    
+    /* Scrollbar decoration */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+    }
+  }
+</style>
+
+<style is:global>
+  .comment-item-bubble {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    border-radius: 12px;
+  }
+
+  .comment-item-content {
+    color: white;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    word-break: break-word;
+  }
+
+  .comment-item-date {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.7rem;
+  }
+
+  .no-comments-placeholder {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.82rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+</style>

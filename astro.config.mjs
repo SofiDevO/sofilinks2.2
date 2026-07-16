@@ -35,13 +35,13 @@ export default defineConfig({
       }),
       BEARER_TOKEN: envField.string({ context: "server", access: "secret" }),
       PUBLIC_STORIES_API_URL: envField.string({
-        context: "server",
-        access: "secret",
+        context: "client",
+        access: "public",
         optional: true,
       }),
       PUBLIC_STORIES_API_KEY: envField.string({
-        context: "server",
-        access: "secret",
+        context: "client",
+        access: "public",
         optional: false,
       }),
 

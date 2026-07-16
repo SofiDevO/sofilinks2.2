@@ -13,11 +13,27 @@
     <button type="submit" id="stories-reply-send" class="stories-reply-send" disabled>Send</button>
   </form>
 
+  <!-- Minimalist comment bubble icon button with count badge (visible only when comments exist) -->
+  <button id="stories-comments-btn" class="stories-comments-btn hidden" aria-label="Ver comentarios">
+    <svg
+      class="comment-icon"
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+    </svg>
+    <span id="stories-comments-count" class="stories-comments-count">0</span>
+  </button>
+
   <button id="stories-like-btn" class="stories-like-btn" aria-label="Dar like">
     <svg
       class="heart-icon"
-      width="24"
-      height="24"
+      width="22"
+      height="22"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -38,8 +54,8 @@
     z-index: 30;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 20px 16px 24px;
+    gap: 8px;
+    padding: 20px 12px 24px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
     pointer-events: all;
   }
@@ -51,7 +67,7 @@
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 999px;
-    padding: 4px 6px 4px 16px;
+    padding: 4px 6px 4px 12px;
     backdrop-filter: blur(8px);
     transition:
       border-color 0.2s ease,
@@ -69,7 +85,7 @@
     border: none;
     outline: none;
     color: white;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     height: 32px;
     padding: 0;
 
@@ -83,9 +99,9 @@
     border: none;
     color: #a855f7;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 8px;
     height: 32px;
     display: flex;
     align-items: center;
@@ -107,6 +123,7 @@
     }
   }
 
+  .stories-comments-btn,
   .stories-like-btn {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -115,14 +132,19 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 6px;
-    height: 42px;
-    padding: 0 16px;
+    justify-content: center;
+    gap: 5px;
+    height: 40px;
+    padding: 0 12px;
     backdrop-filter: blur(8px);
     transition:
       transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275),
       background-color 0.2s ease,
       border-color 0.2s ease;
+
+    &.hidden {
+      display: none !important;
+    }
 
     &:hover {
       background: rgba(255, 255, 255, 0.18);
@@ -132,22 +154,27 @@
     &:active {
       transform: scale(0.92);
     }
-
-    &.is-liked {
-      background: rgba(236, 72, 153, 0.15);
-      border-color: rgba(236, 72, 153, 0.45);
-      color: #ec4899;
-
-      .heart-icon {
-        fill: #ec4899;
-        animation: heart-pop 0.3s ease-out forwards;
-      }
-    }
   }
 
+  .stories-comments-btn {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .stories-comments-count,
   .stories-like-count {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 500;
+  }
+
+  .stories-like-btn.is-liked {
+    background: rgba(236, 72, 153, 0.15);
+    border-color: rgba(236, 72, 153, 0.45);
+    color: #ec4899;
+
+    .heart-icon {
+      fill: #ec4899;
+      animation: heart-pop 0.3s ease-out forwards;
+    }
   }
 
   @keyframes heart-pop {

@@ -2,6 +2,7 @@
 import StoryHeader from "@features/stories/components/StoryHeader.astro";
 import StoryNavButtons from "@features/stories/components/StoryNavButtons.astro";
 import StoryFooter from "@features/stories/components/StoryFooter.astro";
+import StoryCommentsPanel from "@features/stories/components/StoryCommentsPanel.astro";
 ---
 
 <div
@@ -31,6 +32,9 @@ import StoryFooter from "@features/stories/components/StoryFooter.astro";
 
       <!-- Comments input and likes footer subcomponent -->
       <StoryFooter />
+
+      <!-- Slide-up comments panel drawer -->
+      <StoryCommentsPanel />
     </div>
   </div>
 </div>
@@ -111,7 +115,7 @@ import StoryFooter from "@features/stories/components/StoryFooter.astro";
   }
 </style>
 
-<!-- Global styles for dynamically created segments and elements -->
+<!-- Global styles for dynamically created segments, elements and floating bubbles -->
 <style is:global>
   .story-progress-segment {
     flex: 1;
@@ -151,6 +155,46 @@ import StoryFooter from "@features/stories/components/StoryFooter.astro";
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  /* Transparent floating comment bubbles style */
+  .story-comment-bubble {
+    position: absolute;
+    bottom: 80px; /* starts just above the reply bar */
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 14px 14px 14px 4px;
+    color: white;
+    font-size: 0.8rem;
+    max-width: 220px;
+    line-height: 1.3;
+    pointer-events: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    z-index: 25;
+    word-wrap: break-word;
+    animation: float-up-bubble 4.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  @keyframes float-up-bubble {
+    0% {
+      transform: translateY(20px) scale(0.85);
+      opacity: 0;
+    }
+    10% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-220px);
+      opacity: 0;
+    }
   }
 </style>
 

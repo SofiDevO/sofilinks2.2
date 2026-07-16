@@ -1,4 +1,4 @@
-import type { Story } from "../types/stories.types";
+import type { Story, Comment } from "../types/stories.types";
 import { storiesService } from "../services/stories.service";
 
 const MAX_STATIC_DURATION_MS = 10_000;
@@ -19,6 +19,13 @@ export class StoriesViewerController {
   private likeBtn: HTMLButtonElement;
   private likeCountEl: HTMLElement;
 
+  // New Comment Button & Drawer elements
+  private commentsBtn: HTMLButtonElement;
+  private commentsCountEl: HTMLElement;
+  private commentsPanel: HTMLElement;
+  private commentsCloseBtn: HTMLElement;
+  private commentsListEl: HTMLElement;
+
   private viewport: HTMLElement;
 
   private stories: Story[] = [];
@@ -33,6 +40,10 @@ export class StoriesViewerController {
   private totalDuration = 0;
   private elapsedTime = 0;
   private remainingTime = 0;
+
+  // Cache to track whether floating comments animation has run on current story load
+  private animatedStories = new Set<string>();
+  private activeBubbleTimers: number[] = [];
 
   constructor() {
     this.modal = document.getElementById("stories-modal")!;
@@ -49,6 +60,13 @@ export class StoriesViewerController {
     this.replySend = document.getElementById("stories-reply-send") as HTMLButtonElement;
     this.likeBtn = document.getElementById("stories-like-btn") as HTMLButtonElement;
     this.likeCountEl = document.getElementById("stories-like-count")!;
+
+    // comments panel drawer & footer elements
+    this.commentsBtn = document.getElementById("stories-comments-btn") as HTMLButtonElement;
+    this.commentsCountEl = document.getElementById("stories-comments-count")!;
+    this.commentsPanel = document.getElementById("stories-comments-panel")!;
+    this.commentsCloseBtn = document.getElementById("stories-comments-close")!;
+    this.commentsListEl = document.getElementById("stories-comments-list")!;
 
     this.viewport = this.modal.querySelector(".stories-viewport") as HTMLElement;
 
@@ -75,14 +93,18 @@ export class StoriesViewerController {
       }
     });
 
-    // Toggle pause/resume on canvas/media click
-    this.track.addEventListener("click", () => this.togglePause());
+    // Toggle pause/resume on canvas/media click (only if comments panel is closed)
+    this.track.addEventListener("click", () => {
+      if (!this.commentsPanel.classList.contains("is-open")) {
+        this.togglePause();
+      }
+    });
 
     // Reply input keyboard & state triggers
     this.replyInput.addEventListener("focus", () => this.pauseStory());
     this.replyInput.addEventListener("blur", () => {
       setTimeout(() => {
-        if (document.activeElement !== this.replyInput) {
+        if (document.activeElement !== this.replyInput && !this.commentsPanel.classList.contains("is-open")) {
           this.resumeStory();
         }
       }, 150);
@@ -98,16 +120,36 @@ export class StoriesViewerController {
       this.handleLike();
     });
 
+    // Toggle comments panel (BottomSheet)
+    this.commentsBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.openCommentsPanel();
+    });
+
+    this.commentsCloseBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.closeCommentsPanel();
+    });
+
     document.addEventListener("keydown", (e) => {
       if (!this.modal.classList.contains("is-open")) return;
       if (document.activeElement === this.replyInput) return;
 
-      if (e.key === "Escape") this.closeModal();
+      if (e.key === "Escape") {
+        if (this.commentsPanel.classList.contains("is-open")) {
+          this.closeCommentsPanel();
+        } else {
+          this.closeModal();
+        }
+      }
       if (e.key === "Space") {
         e.preventDefault();
-        this.togglePause();
+        if (!this.commentsPanel.classList.contains("is-open")) {
+          this.togglePause();
+        }
       }
       if (e.key === "ArrowRight") {
+        if (this.commentsPanel.classList.contains("is-open")) return;
         if (this.currentIndex < this.stories.length - 1) {
           this.goToStory(this.currentIndex + 1);
         } else {
@@ -115,6 +157,7 @@ export class StoriesViewerController {
         }
       }
       if (e.key === "ArrowLeft") {
+        if (this.commentsPanel.classList.contains("is-open")) return;
         if (this.currentIndex > 0) this.goToStory(this.currentIndex - 1);
       }
     });
@@ -149,6 +192,12 @@ export class StoriesViewerController {
   private clearTimers() {
     if (this.progressTimer) clearTimeout(this.progressTimer);
     this.progressTimer = null;
+    this.clearBubbleTimers();
+  }
+
+  private clearBubbleTimers() {
+    this.activeBubbleTimers.forEach((t) => clearTimeout(t));
+    this.activeBubbleTimers = [];
   }
 
   // --- Pause/Resume logic ---
@@ -219,6 +268,7 @@ export class StoriesViewerController {
     this.modal.classList.add("is-open");
     this.modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+    this.animatedStories.clear(); // Reset anim state
     if (!this.loaded) {
       this.loadStories();
     } else {
@@ -229,6 +279,7 @@ export class StoriesViewerController {
   private closeModal() {
     if (!this.isOpen) return;
     this.isOpen = false;
+    this.closeCommentsPanel();
     this.clearTimers();
     this.stopActiveMedia();
     this.track.innerHTML = "";
@@ -239,6 +290,20 @@ export class StoriesViewerController {
     // Clear input
     this.replyInput.value = "";
     this.replySend.disabled = true;
+  }
+
+  // --- Bottom Sheet comments panel ---
+
+  private openCommentsPanel() {
+    this.pauseStory();
+    this.commentsPanel.classList.add("is-open");
+  }
+
+  private closeCommentsPanel() {
+    if (this.commentsPanel.classList.contains("is-open")) {
+      this.commentsPanel.classList.remove("is-open");
+      this.resumeStory();
+    }
   }
 
   // --- Data loading & Interactions ---
@@ -271,25 +336,112 @@ export class StoriesViewerController {
     const res = await storiesService.getLikesCount(storyId);
     if (res.success && res.data) {
       this.likeCountEl.textContent = res.data.count.toString();
+      if (res.data.hasLiked) {
+        this.likeBtn.classList.add("is-liked");
+      }
+    }
+  }
+
+  private async loadStoryComments(storyId: string) {
+    // Reset footer comments button state
+    this.commentsBtn.classList.add("hidden");
+    this.commentsCountEl.textContent = "0";
+    this.commentsListEl.innerHTML = `<div class="spinner-container"><span class="spinner"></span></div>`;
+
+    const res = await storiesService.getComments(storyId);
+    if (!res.success || !res.data) {
+      this.commentsListEl.innerHTML = `<p class="no-comments-placeholder">Error al cargar comentarios</p>`;
+      return;
     }
 
-    if (sessionStorage.getItem(`liked_${storyId}`)) {
-      this.likeBtn.classList.add("is-liked");
+    const comments = res.data;
+    const count = comments.length;
+
+    // Show button with badge ONLY if comments exist
+    if (count > 0) {
+      this.commentsCountEl.textContent = count.toString();
+      this.commentsBtn.classList.remove("hidden");
+
+      // Render full comments inside Drawer
+      this.commentsListEl.innerHTML = comments
+        .map((c) => {
+          const dateStr = new Date(c.createdAt).toLocaleDateString(undefined, {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          return `
+            <div class="comment-item-bubble">
+              <span class="comment-item-content">${c.content}</span>
+              <span class="comment-item-date">${dateStr}</span>
+            </div>
+          `;
+        })
+        .join("");
+
+      // Trigger floating bubbles if they haven't run on this load of the current story
+      if (!this.animatedStories.has(storyId)) {
+        this.animatedStories.add(storyId);
+        this.triggerFloatingComments(comments);
+      }
+    } else {
+      this.commentsListEl.innerHTML = `<p class="no-comments-placeholder">Aún no hay respuestas en esta story</p>`;
     }
+  }
+
+  private triggerFloatingComments(comments: Comment[]) {
+    // Clear any previous scheduled bubbles
+    this.clearBubbleTimers();
+
+    // Remove any floating bubbles left in viewport
+    const oldBubbles = this.viewport.querySelectorAll(".story-comment-bubble");
+    oldBubbles.forEach((b) => b.remove());
+
+    // Sort comments by newest first (default api response is usually newest or oldest, sort just in case)
+    const sortedComments = [...comments].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    // Limit to latest 5 to avoid cluttering screen
+    const itemsToAnimate = sortedComments.slice(0, 5);
+
+    itemsToAnimate.forEach((c, index) => {
+      const timer = setTimeout(() => {
+        if (!this.isOpen || this.isPaused) return;
+        this.spawnCommentBubble(c.content);
+      }, index * 800) as unknown as number; // Escalate spawning
+      
+      this.activeBubbleTimers.push(timer);
+    });
+  }
+
+  private spawnCommentBubble(text: string) {
+    const bubble = document.createElement("div");
+    bubble.className = "story-comment-bubble";
+    bubble.textContent = text;
+
+    // Random horizontal position (within 10% to 55% to avoid overlapping footer buttons)
+    const randomLeft = 10 + Math.random() * 45;
+    bubble.style.left = `${randomLeft}%`;
+
+    // Clean up bubble element from DOM after animation completes
+    bubble.addEventListener("animationend", () => {
+      bubble.remove();
+    });
+
+    this.viewport.appendChild(bubble);
   }
 
   private async handleLike() {
     const story = this.stories[this.currentIndex];
     if (!story) return;
 
-    if (sessionStorage.getItem(`liked_${story.id}`)) {
-      return; // Already liked
+    if (this.likeBtn.classList.contains("is-liked")) {
+       return; // Already liked
     }
 
     this.likeBtn.classList.add("is-liked");
     const currentVal = parseInt(this.likeCountEl.textContent || "0", 10);
     this.likeCountEl.textContent = (currentVal + 1).toString();
-    sessionStorage.setItem(`liked_${story.id}`, "true");
 
     await storiesService.addLike(story.id);
   }
@@ -312,7 +464,9 @@ export class StoriesViewerController {
       this.replyInput.placeholder = originalPlaceholder;
     }, 2000);
 
+    // Optimistically reload comments list after sending comment
     await storiesService.addComment(story.id, content);
+    this.loadStoryComments(story.id);
   }
 
   // --- Renderers ---
@@ -416,6 +570,11 @@ export class StoriesViewerController {
     this.stopActiveMedia();
     this.currentIndex = index;
 
+    // Ensure comments drawer is closed when changing stories
+    if (this.commentsPanel.classList.contains("is-open")) {
+      this.commentsPanel.classList.remove("is-open");
+    }
+
     const story = this.stories[index];
     if (!story) return;
 
@@ -434,6 +593,7 @@ export class StoriesViewerController {
     this.track.appendChild(slide);
     this.updateNav();
     this.loadStoryLikes(story.id);
+    this.loadStoryComments(story.id); // Triggers drawer list load + floating animation
 
     // Reset pause state managers
     this.isPaused = false;

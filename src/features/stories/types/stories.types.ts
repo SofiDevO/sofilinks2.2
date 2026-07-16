@@ -19,4 +19,5 @@ export interface Comment {
 
 export interface LikeResponse {
   count: number;
+  hasLiked: boolean;
 }
