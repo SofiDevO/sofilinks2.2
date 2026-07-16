@@ -1,0 +1,55 @@
+---
+---
+
+<div class="stories-ui">
+  <div class="stories-progress-bar" id="stories-progress-bar"></div>
+  <button id="stories-close" class="stories-close" aria-label="Cerrar stories">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M18 6L6 18M6 6l12 12"></path>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .stories-ui {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px 8px;
+    position: absolute;
+    z-index: 900;
+    top: 0;
+    width: 100%;
+    background: #0000006b;
+    pointer-events: none;
+  }
+
+  .stories-progress-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 3px;
+  }
+
+  .stories-close {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    backdrop-filter: blur(6px);
+    transition: background 0.15s ease;
+    pointer-events: all;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+</style>
