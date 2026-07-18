@@ -523,6 +523,32 @@
   color: #d97706;
   border: 1px solid rgba(245, 158, 11, 0.2);
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-toggle-ip {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 0 0.15rem;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-toggle-ip:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.btn-toggle-ip:active {
+  transform: scale(0.9);
 }
 
 .comment-content {

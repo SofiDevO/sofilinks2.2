@@ -26,12 +26,33 @@ async function proxyFetch(
   return res.json();
 }
 
+const maskIpAddress = (ip: string): string => {
+  if (!ip) return "";
+  if (ip.includes(":")) {
+    const parts = ip.split(":");
+    const lastPart = [...parts].reverse().find((p) => p !== "") || "4";
+    return `********::${lastPart}`;
+  } else {
+    const parts = ip.split(".");
+    const lastPart = parts[parts.length - 1] || "1";
+    return `***.***.***.${lastPart}`;
+  }
+};
+
 export default function CommentsPanel({ initialStoriesWithComments }: Props) {
   const [data, setData] = useState<StoryWithComments[]>(initialStoriesWithComments);
   const [banningIp, setBanningIp] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [visibleIps, setVisibleIps] = useState<Record<string, boolean>>({});
+
+  const toggleIpVisibility = (commentId: string) => {
+    setVisibleIps((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
 
   const handleBanIp = async (ip: string, commentContent: string) => {
     if (!confirm(`¿Estás segura de que quieres banear la IP: ${ip}?\nEsto bloqueará al usuario para que no publique más comentarios o likes.`)) {
@@ -180,8 +201,26 @@ export default function CommentsPanel({ initialStoriesWithComments }: Props) {
                         <div className="comment-meta-row">
                           <span className="comment-date">{formatDate(comment.createdAt)}</span>
                           {comment.ipAddress && (
-                            <span className="comment-ip-badge" title="IP del autor">
-                              IP: {comment.ipAddress}
+                            <span className="comment-ip-badge" title={visibleIps[comment.id] ? "IP del autor" : "IP del autor (oculta)"}>
+                              IP: {visibleIps[comment.id] ? comment.ipAddress : maskIpAddress(comment.ipAddress)}
+                              <button
+                                onClick={() => toggleIpVisibility(comment.id)}
+                                className="btn-toggle-ip"
+                                type="button"
+                                title={visibleIps[comment.id] ? "Ocultar IP" : "Mostrar IP"}
+                              >
+                                {visibleIps[comment.id] ? (
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                  </svg>
+                                ) : (
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                  </svg>
+                                )}
+                              </button>
                             </span>
                           )}
                         </div>
@@ -193,7 +232,7 @@ export default function CommentsPanel({ initialStoriesWithComments }: Props) {
                             onClick={() => handleBanIp(comment.ipAddress!, comment.content)}
                             disabled={banningIp === comment.ipAddress}
                             className="btn-comment-action ban"
-                            title={`Banear IP ${comment.ipAddress}`}
+                            title={visibleIps[comment.id] ? `Banear IP ${comment.ipAddress}` : "Banear IP del autor"}
                           >
                             {banningIp === comment.ipAddress ? (
                               <div className="progress-spinner small" />
