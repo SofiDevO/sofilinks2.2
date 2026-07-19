@@ -5,16 +5,16 @@ const { url, title } = Support.youtube;
 ---
 
 <article
-  class="yt-card relative w-full h-full transition-bg duration-500 bg-gradient-to-t from-softpurple to-white hover:bg-gradient-to-t hover:from-red-500 hover:to-red-800 flex flex-row flex-wrap lg:items-center items-start justify-center gap-10 p-2 group"
+  class="yt-card relative w-full h-full transition-bg duration-500 from-softpurple to-white hover:bg-gradient-to-t hover:from-red-500 hover:to-red-800 flex flex-row flex-wrap lg:items-center items-start justify-center gap-10 p-2 group"
 >
   <div class="flex flex-col gap-5 lg:gap-10">
     <h3
-      class="yt-title text-text font-bold text-lg xl:text-3xl text-pretty group-hover:text-white"
+      class="yt-title text-black font-bold text-lg xl:text-3xl text-pretty group-hover:text-white"
     >
       {title}
     </h3>
     <a
-      class="yt-button z-20 text-text font-bold text-lg text-white group-hover:text-red-600 group-hover:bg-white bg-red-600 px-5 py-2 rounded-md text-center w-full lg:max-w-[200px]"
+      class="yt-button z-20 text-white font-bold text-lg group-hover:text-red-600 group-hover:bg-white bg-red-600 px-5 py-2 rounded-md text-center w-full lg:max-w-[200px]"
       href={url}
       target="_blank"
       >Unirte

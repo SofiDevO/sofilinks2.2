@@ -16,24 +16,16 @@ import StoryCommentsPanel from "@features/stories/components/StoryCommentsPanel.
   <div class="stories-backdrop" id="stories-backdrop"></div>
 
   <div class="stories-shell">
-    <!-- UI overlay: modular subcomponent -->
     <StoryHeader />
 
-    <!-- Content viewport -->
     <div class="stories-viewport">
       <div class="stories-track" id="stories-track">
         <div class="stories-loading" id="stories-loading">
           <span class="spinner"></span>
         </div>
       </div>
-
-      <!-- Navigation buttons subcomponent -->
       <StoryNavButtons />
-
-      <!-- Comments input and likes footer subcomponent -->
       <StoryFooter />
-
-      <!-- Slide-up comments panel drawer -->
       <StoryCommentsPanel />
     </div>
   </div>
@@ -119,7 +111,6 @@ import StoryCommentsPanel from "@features/stories/components/StoryCommentsPanel.
   }
 </style>
 
-<!-- Global styles for dynamically created segments, elements and floating bubbles -->
 <style is:global>
   .story-progress-segment {
     flex: 1;
