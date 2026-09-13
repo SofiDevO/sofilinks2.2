@@ -11,6 +11,7 @@ import SwiperComponent from "@features/youtube/components/SwiperComponent/Swiper
 import Afiliados from "@features/products/components/afiliados/Afiliados.astro";
 import FetchYt from "@features/youtube/components/fetch-yt/FetchYt.astro";
 import Footer from "@core/components/footer/Footer.astro";
+import YoutubeBtn from "@src/core/components/YoutubeBtn.astro";
 const YoutubeChannel =
   "https://www.youtube.com/channel/UC36_js-krsAHAEAWpEDhHtw".split(
     "channel/",
@@ -44,59 +45,19 @@ export const prerender = true;
     <SocialIcons />
 
     <BentoMain userData={userData} />
-    <script
-      is:inline
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3828278469742835"
-      crossorigin="anonymous"></script>
-    <!-- sofilinks -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-3828278469742835"
-      data-ad-slot="5063347301"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+
     <BlogPost />
     <SwiperComponent CHANNEL_ID={YoutubeChannel} />
-    <script
-      is:inline
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3828278469742835"
-      crossorigin="anonymous"></script>
-    <!-- sofilinks -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-3828278469742835"
-      data-ad-slot="5063347301"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <div class="flex flex-col items-center gap-4 w-full justify-center">
+      <YoutubeBtn text="Sofi-vlog" url="https://www.youtube.com/@sofi-vlog" />
+      <YoutubeBtn
+        text="sofiraccoon"
+        url="https://www.youtube.com/@Sofi_raccoon"
+      />
+    </div>
     <SupportBento />
     <Afiliados />
     <FetchYt />
-    <script
-      is:inline
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3828278469742835"
-      crossorigin="anonymous"></script>
-    <!-- sofilinks -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-3828278469742835"
-      data-ad-slot="5063347301"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
   </main>
 
   <Footer />

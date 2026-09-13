@@ -1,0 +1,17 @@
+---
+interface Props {
+  text: string;
+  url: string;
+}
+const { text, url } = Astro.props as Props;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="nofollow noopener noreferrer"
+  class="bg-red-600 text-white p-4 text-2xl font-bold items-center gap-1 rounded-sm w-full flex justify-center"
+>
+  <iconify-icon icon="ant-design:youtube-filled"></iconify-icon>
+  {text}
+</a>
